@@ -19,6 +19,7 @@ function UserPost() {
   const addAmount = () => {
     setItems((prevItems) => prevItems + 1);
   };
+  const variant = "underlined";
   return (
     <div className="m-auto mt-10 w-3/4 border p-10">
       <Select label="選擇活動名稱" className="mb-2 max-w-xs">
@@ -56,6 +57,15 @@ function UserPost() {
       >
         <p className="text-stone-800">more #hashtag</p>
       </Button>
+      <div className="grid w-full grid-cols-12 gap-4">
+        <Input
+          key={variant}
+          variant={variant}
+          labelPlacement="outside"
+          placeholder="輸入地點"
+          className="col-span-12 mb-6 md:col-span-6 md:mb-4"
+        />
+      </div>
       <form className="mb-4 ">
         <label className="mr-4 ">
           <input
