@@ -2,10 +2,10 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-
-function Calendar() {
+import React from "react";
+const Calendar: React.FC = () => {
   return (
-    <div className="w-200 h-200 mt-20">
+    <div className="w-200 mt-40">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -16,6 +16,6 @@ function Calendar() {
       />
     </div>
   );
-}
+};
 
 export default Calendar;

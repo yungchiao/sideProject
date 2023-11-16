@@ -8,8 +8,6 @@ import {
 import "firebase/firestore";
 import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 const firebaseConfig = {
   apiKey: "AIzaSyA69gAsOHrnfSdhKmKQniLUVExD9Kz8QK0",
@@ -53,7 +51,6 @@ function Profile() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -145,13 +142,6 @@ function Profile() {
           <ButtonA>註冊</ButtonA>
         </Button>
       </ButtonContainer>
-      <div className="mt-4 text-center">
-        <DatePicker
-          className="cursor-pointer bg-yellow-500 text-center text-blue-500"
-          selected={selectedDate}
-          onChange={(date) => setSelectedDate(date)}
-        />
-      </div>
     </>
   );
 }

@@ -10,11 +10,13 @@ import {
   User,
 } from "@nextui-org/react";
 import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { DeleteIcon } from "./DeleteIcon";
 import { EditIcon } from "./EditIcon";
 import { EyeIcon } from "./EyeIcon";
 import { columns, users } from "./data";
-
+const PageLink = styled(Link)``;
 const statusColorMap = {
   active: "success",
   paused: "danger",
@@ -106,9 +108,9 @@ export default function Post() {
         </TableBody>
       </Table>
       <div className="relative">
-        <div className="fixed bottom-4 right-4 z-50 h-10 w-10 cursor-pointer rounded-full bg-stone-700">
+        <div className="fixed bottom-8 right-8 z-50 h-10 w-10 cursor-pointer rounded-full bg-stone-700">
           <p className="flex items-center justify-center text-3xl text-gray-100">
-            +
+            <PageLink to="/userpost">+</PageLink>
           </p>
         </div>
       </div>
