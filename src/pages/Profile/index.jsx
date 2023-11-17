@@ -51,6 +51,8 @@ function Profile() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [imgUrl, setImgURl] = useState("");
+  const [following, setFollowing] = useState([]);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -68,8 +70,10 @@ function Profile() {
     const docRef = doc(collection(db, "user"), email);
 
     const newUser = {
+      avatar: imgUrl,
       email: email,
       following: [],
+      followers: [],
       id: uid,
       name: name,
     };
