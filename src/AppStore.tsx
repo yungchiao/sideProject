@@ -64,6 +64,7 @@ class AppStore {
   activities: any[] = [];
   admins: any[] = [];
   cart: any[] = [];
+
   constructor() {
     this.app = initializeApp(this.config);
     this.db = getFirestore(this.app);
@@ -90,13 +91,30 @@ class AppStore {
       }
     });
   }
+  saveCartToLocalStorage() {
+    localStorage.setItem("cart", JSON.stringify(this.cart));
+  }
+  loadCartFromLocalStorage() {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      this.setCart(JSON.parse(savedCart));
+    }
+  }
   addToCart = (activity: any) => {
     this.cart.push(activity);
+    this.saveCartToLocalStorage();
   };
 
   getCart = () => {
     return this.cart;
   };
+  removeFromCart(item: any) {
+    this.cart = this.cart.filter((cartItem) => cartItem.id !== item.id);
+    this.saveCartToLocalStorage();
+  }
+  setCart(cartItems: any) {
+    this.cart = cartItems;
+  }
 
   newUser: NewUser | null = null;
   addUser = async (
