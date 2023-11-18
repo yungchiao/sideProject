@@ -1,8 +1,11 @@
 import { observer } from "mobx-react-lite";
-import React from "react";
+import React, { useEffect } from "react";
 import { appStore } from "../../AppStore";
 
 const UserPage: React.FC = observer(() => {
+  useEffect(() => {
+    appStore.fetchActivities();
+  }, []);
   return (
     <>
       {appStore.newUser && (
@@ -12,6 +15,18 @@ const UserPage: React.FC = observer(() => {
           <img src={appStore.newUser.avatar} alt="Avatar" />
         </div>
       )}
+      {appStore.activities.map((activity) => (
+        <div key={activity.id}>
+          <h3>{activity.name}</h3>
+          <p>{activity.date.toDate().toLocaleString()}</p>
+          <img src={activity.image} />
+          <p>{activity.weather}</p>
+          <p>{activity.position}</p>
+          {activity.hashtags.map((hashtag: string, index: number) => (
+            <p key={index}>#{hashtag}</p>
+          ))}
+        </div>
+      ))}
     </>
   );
 });

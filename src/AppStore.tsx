@@ -6,7 +6,14 @@ import {
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
-import { Firestore, doc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  Firestore,
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore";
 import {
   FirebaseStorage,
   getDownloadURL,
@@ -53,7 +60,7 @@ class AppStore {
   db: Firestore;
   auth: Auth;
   storage: FirebaseStorage;
-
+  activities: any[] = [];
   constructor() {
     this.app = initializeApp(this.config);
     this.db = getFirestore(this.app);
@@ -126,6 +133,14 @@ class AppStore {
       this.newUser = null;
     });
   }
+  fetchActivities = async () => {
+    const db = getFirestore();
+    const querySnapshot = await getDocs(collection(db, "activity"));
+    this.activities = [];
+    querySnapshot.forEach((doc) => {
+      this.activities.push({ id: doc.id, ...doc.data() });
+    });
+  };
 }
 
 export const appStore = new AppStore();
