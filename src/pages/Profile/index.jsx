@@ -7,11 +7,10 @@ import {
 } from "firebase/auth";
 import "firebase/firestore";
 import { collection, doc, getFirestore } from "firebase/firestore";
-import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 
 const Title = styled.p`
@@ -47,19 +46,7 @@ const Profile = observer(() => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [imageUpload, setImageUpload] = useState(null);
-  const uploadImage = async () => {
-    try {
-      if (imageUpload === null) return;
-      const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-      await uploadBytes(imageRef, imageUpload);
-      const downloadURL = await getDownloadURL(imageRef);
-      return downloadURL;
-    } catch (error) {
-      console.error("上傳圖片失敗", error);
-      throw error;
-    }
-  };
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -101,7 +88,7 @@ const Profile = observer(() => {
 
       console.log("注冊成功：", user);
     } catch (error) {
-      console.log("注冊失败：", error);
+      console.log("注冊失敗：", error);
     }
   };
   return (
@@ -140,7 +127,7 @@ const Profile = observer(() => {
           setImageUpload(e.target.files[0]);
         }}
       ></input>
-      <Button onClick={() => appStore.uploadImager(avatar)}>
+      <Button onClick={() => appStore.uploadImage(avatar)}>
         <ButtonA>上傳頭貼</ButtonA>
       </Button>
       <ButtonContainer>

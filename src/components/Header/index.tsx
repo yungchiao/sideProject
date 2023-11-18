@@ -28,6 +28,11 @@ const Header: React.FC = () => {
               社群
             </Link>
           </NavbarItem>
+          <NavbarItem>
+            <Link color="foreground" to="/cart">
+              訂單
+            </Link>
+          </NavbarItem>
         </NavbarContent>
       </NavbarContent>
 

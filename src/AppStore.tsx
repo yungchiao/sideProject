@@ -9,9 +9,10 @@ import {
 import {
   Firestore,
   collection,
+  deleteDoc,
   doc,
-  getDocs,
   getFirestore,
+  onSnapshot,
   setDoc,
 } from "firebase/firestore";
 import {
@@ -61,6 +62,8 @@ class AppStore {
   auth: Auth;
   storage: FirebaseStorage;
   activities: any[] = [];
+  admins: any[] = [];
+  cart: any[] = [];
   constructor() {
     this.app = initializeApp(this.config);
     this.db = getFirestore(this.app);
@@ -87,6 +90,13 @@ class AppStore {
       }
     });
   }
+  addToCart = (activity: any) => {
+    this.cart.push(activity);
+  };
+
+  getCart = () => {
+    return this.cart;
+  };
 
   newUser: NewUser | null = null;
   addUser = async (
@@ -135,11 +145,37 @@ class AppStore {
   }
   fetchActivities = async () => {
     const db = getFirestore();
-    const querySnapshot = await getDocs(collection(db, "activity"));
-    this.activities = [];
-    querySnapshot.forEach((doc) => {
-      this.activities.push({ id: doc.id, ...doc.data() });
+    const activitiesCollection = collection(db, "activity");
+
+    onSnapshot(activitiesCollection, (snapshot) => {
+      const updatedActivities = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      this.activities = updatedActivities;
     });
+  };
+  fetchAdmin = async () => {
+    const db = getFirestore();
+    const adminsCollection = collection(db, "admin");
+
+    onSnapshot(adminsCollection, (snapshot) => {
+      const updatedAdmins = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      this.admins = updatedAdmins;
+    });
+  };
+
+  deleteAdmin = async (id: any) => {
+    try {
+      await deleteDoc(doc(this.db, "admin", id));
+
+      this.admins = this.admins.filter((admin) => admin.id !== id);
+    } catch (error) {
+      console.error("刪除失敗", error);
+    }
   };
 }
 

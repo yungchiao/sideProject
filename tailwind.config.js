@@ -7,11 +7,14 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@nextui-org/theme/dist/components/button.js",
-    // or you can use a glob pattern (multiple component styles)
     './node_modules/@nextui-org/theme/dist/components/(button|snippet|code|input).js'
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'trash': "url('./src/pages/Admin/trash.png')",
+      }
+    }
   },
   darkMode: "class",
   plugins: [nextui()],

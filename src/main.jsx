@@ -2,8 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App.jsx";
+import Cart from "./components/Cart";
 import "./index.css";
-import Activity from "./pages/Activity";
+import Admin from "./pages/Admin";
 import Paint from "./pages/Paint";
 import Post from "./pages/Post";
 import UserPost from "./pages/Post/UserPost";
@@ -17,8 +18,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="post" element={<Post />} />
       <Route path="userpost" element={<UserPost />} />
       <Route path="paint" element={<Paint />} />
-      <Route path="activity" element={<Activity />} />
+      <Route path="admin" element={<Admin />} />
       <Route path="userpage" element={<UserPage />} />
+      <Route path="cart" element={<Cart />} />
     </Routes>
   </BrowserRouter>,
 );
