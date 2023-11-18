@@ -8,6 +8,7 @@ import Paint from "./pages/Paint";
 import Post from "./pages/Post";
 import UserPost from "./pages/Post/UserPost";
 import Profile from "./pages/Profile";
+import UserPage from "./pages/UserPage";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Routes>
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="userpost" element={<UserPost />} />
       <Route path="paint" element={<Paint />} />
       <Route path="activity" element={<Activity />} />
+      <Route path="userpage" element={<UserPage />} />
     </Routes>
   </BrowserRouter>,
 );

@@ -1,4 +1,4 @@
-import { Input } from "@nextui-org/react";
+import { Input, avatar } from "@nextui-org/react";
 import { initializeApp } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
@@ -6,18 +6,13 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import "firebase/firestore";
-import { collection, doc, getFirestore, setDoc } from "firebase/firestore";
+import { collection, doc, getFirestore } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import styled from "styled-components";
-const firebaseConfig = {
-  apiKey: "AIzaSyA69gAsOHrnfSdhKmKQniLUVExD9Kz8QK0",
-  authDomain: "gravity-fd062.firebaseapp.com",
-  projectId: "gravity-fd062",
-  storageBucket: "gravity-fd062.appspot.com",
-  messagingSenderId: "835366327544",
-  appId: "1:835366327544:web:6b68f2b9e5101c5eb2d70d",
-  measurementId: "G-X55F254YTP",
-};
+import { v4 } from "uuid";
+import { appStore } from "../../AppStore";
 
 const Title = styled.p`
   margin-right: 10px;
@@ -42,18 +37,29 @@ const ButtonContainer = styled.div`
   gap: 20px;
   display: flex;
 `;
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(appStore.config);
 const db = getFirestore(app);
-function Profile() {
+export const storage = getStorage(app);
+const Profile = observer(() => {
   const auth = getAuth();
   const currentUser = auth.currentUser;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [imgUrl, setImgURl] = useState("");
-  const [following, setFollowing] = useState([]);
-
+  const [imageUpload, setImageUpload] = useState(null);
+  const uploadImage = async () => {
+    try {
+      if (imageUpload === null) return;
+      const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+      await uploadBytes(imageRef, imageUpload);
+      const downloadURL = await getDownloadURL(imageRef);
+      return downloadURL;
+    } catch (error) {
+      console.error("上傳圖片失敗", error);
+      throw error;
+    }
+  };
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -66,21 +72,6 @@ function Profile() {
     setName(e.target.value);
   };
 
-  const addUser = async (uid) => {
-    const docRef = doc(collection(db, "user"), email);
-
-    const newUser = {
-      avatar: imgUrl,
-      email: email,
-      following: [],
-      followers: [],
-      id: uid,
-      name: name,
-    };
-
-    await setDoc(docRef, newUser);
-  };
-
   const handleLogin = () => {
     if (email && password) {
       const docRef = doc(collection(db, "user"), email);
@@ -88,7 +79,6 @@ function Profile() {
         .then((userCredential) => {
           const user = userCredential.user;
           console.log("登入成功：", user);
-          // addUser(email, name, docRef);
         })
         .catch((error) => {
           console.error("登入失敗：", error);
@@ -96,18 +86,23 @@ function Profile() {
     }
   };
 
-  const handleRegister = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+  const handleRegister = async (email, password) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      const user = userCredential.user;
 
-        addUser(user.uid);
+      const imageUrl = await uploadImage();
 
-        console.log("註冊成功：", user);
-      })
-      .catch((error) => {
-        console.log("註冊失敗QQ");
-      });
+      appStore.addUser(user.uid, email, name, imageUrl);
+
+      console.log("注冊成功：", user);
+    } catch (error) {
+      console.log("注冊失败：", error);
+    }
   };
   return (
     <>
@@ -138,6 +133,16 @@ function Profile() {
           onChange={handlePasswordChange}
         />
       </div>
+      <input
+        type="file"
+        className="mb-4 "
+        onChange={(e) => {
+          setImageUpload(e.target.files[0]);
+        }}
+      ></input>
+      <Button onClick={() => appStore.uploadImager(avatar)}>
+        <ButtonA>上傳頭貼</ButtonA>
+      </Button>
       <ButtonContainer>
         <Button onClick={handleLogin}>
           <ButtonA>登入</ButtonA>
@@ -145,9 +150,12 @@ function Profile() {
         <Button onClick={() => handleRegister(email, password)}>
           <ButtonA>註冊</ButtonA>
         </Button>
+        <Button onClick={appStore.logout}>
+          <ButtonA>登出</ButtonA>
+        </Button>
       </ButtonContainer>
     </>
   );
-}
+});
 
 export default Profile;
