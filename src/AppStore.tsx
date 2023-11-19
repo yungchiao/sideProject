@@ -140,7 +140,7 @@ class AppStore {
 
       this.newUser = newUser;
     } catch (error) {
-      console.error("添加用户失败", error);
+      console.error("加入用戶失敗", error);
     }
   };
   uploadImage = async (imageUpload: File): Promise<string> => {

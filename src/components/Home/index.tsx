@@ -39,7 +39,7 @@ const Home: React.FC = observer(() => {
       {appStore.admins.map((admin: Admin) => (
         <div
           key={admin.id}
-          className="mx-auto mt-4 w-3/4 rounded-lg border p-4"
+          className="mx-auto mt-4 w-3/4 cursor-pointer rounded-lg border p-4"
           onClick={() => handleAdminClick(admin)}
         >
           <h3>{admin.name}</h3>
@@ -61,7 +61,7 @@ const Home: React.FC = observer(() => {
         </div>
       ))}
       {isDetailOpen && selectedAdmin && (
-        <div className="detail-container border ">
+        <div className="detail-container  border">
           <h3>{selectedAdmin.name}</h3>
           <p>{selectedAdmin.date?.toDate()?.toLocaleString()}</p>
           <p>{selectedAdmin.position}</p>
