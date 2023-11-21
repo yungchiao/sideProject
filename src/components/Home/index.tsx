@@ -12,8 +12,15 @@ const Home: React.FC = observer(() => {
     price: number;
     images: string;
     hashtags: [];
-    date: Timestamp;
+    startTime: Timestamp;
+    endTime: Timestamp;
     content: string;
+  }
+  interface CartItem {
+    name: string;
+    quantity: number;
+    price: number;
+    id: string;
   }
   const [isDetailOpen, setDetailOpen] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
@@ -23,17 +30,33 @@ const Home: React.FC = observer(() => {
   };
   const handleAdminClick = (admin: any) => {
     setSelectedAdmin(admin);
+
     toggleDetail();
   };
   useEffect(() => {
     appStore.fetchAdmin();
   }, []);
   const handleSignUp = () => {
-    if (selectedAdmin) {
-      appStore.addToCart({ ...selectedAdmin, quantity });
-      alert("加入訂單成功！");
+    if (selectedAdmin && quantity > 0) {
+      const cartItem: CartItem = {
+        name: selectedAdmin.name,
+        quantity: quantity,
+        price: selectedAdmin.price,
+        id: selectedAdmin.id,
+      };
+
+      const userEmail = appStore.currentUserEmail;
+      if (userEmail) {
+        appStore.addToCart(userEmail, cartItem);
+        alert("加入訂單成功！");
+      } else {
+        alert("用戶未登入");
+      }
+    } else {
+      alert("請選擇數量");
     }
   };
+
   return (
     <div className="mt-28">
       {appStore.admins.map((admin: Admin) => (
@@ -44,9 +67,8 @@ const Home: React.FC = observer(() => {
         >
           <h3>{admin.name}</h3>
           <p>
-            {admin.date?.toDate
-              ? admin.date.toDate().toLocaleString()
-              : "No Date"}
+            {admin.startTime?.toDate()?.toLocaleString()}-
+            {admin.endTime?.toDate()?.toLocaleString()}
           </p>
           <p>{admin.position}</p>
           <p>活動費用：NT${admin.price}</p>
@@ -63,7 +85,8 @@ const Home: React.FC = observer(() => {
       {isDetailOpen && selectedAdmin && (
         <div className="detail-container  border">
           <h3>{selectedAdmin.name}</h3>
-          <p>{selectedAdmin.date?.toDate()?.toLocaleString()}</p>
+          <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
+          <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
           <p>{selectedAdmin.position}</p>
           <p>{selectedAdmin.price}</p>
           <img src={selectedAdmin.images} className="h-auto w-60" />

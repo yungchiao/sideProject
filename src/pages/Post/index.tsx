@@ -1,71 +1,31 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-} from "@nextui-org/react";
-import React, { useState } from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-const Activity: React.FC = () => {
-  const [isFollowed, setIsFollowed] = useState<boolean>(false);
+import { UserFollow, appStore } from "../../AppStore";
+import UserSearch from "./UserSearch";
+interface UserProfileProps {
+  user: UserFollow;
+}
+
+const Activity: React.FC<UserProfileProps> = observer(() => {
+  useEffect(() => {
+    appStore.fetchActivities();
+  }, []);
+  const renderUserProfile = () => {
+    if (appStore.newUser) {
+      const userFollow: UserFollow = {
+        id: appStore.newUser.id,
+        userName: appStore.newUser.name,
+        userEmail: appStore.newUser.email,
+      };
+      // return <UserProfile user={userFollow} />;
+    }
+    return null;
+  };
   return (
-    <Card className="mx-auto mt-4 max-w-[740px] border p-4">
-      <CardHeader className="justify-between">
-        <div className="flex gap-5">
-          <Avatar
-            isBordered
-            radius="full"
-            size="md"
-            src="/avatars/avatar-1.png"
-          />
-          <div className="flex flex-col items-start justify-center gap-1">
-            <h4 className="text-small font-semibold leading-none text-default-600">
-              Zoey Lang
-            </h4>
-            <h5 className="text-small tracking-tight text-default-400">
-              @zoeylang
-            </h5>
-          </div>
-        </div>
-        <Button
-          className={
-            isFollowed
-              ? "border-default-200 bg-transparent text-foreground"
-              : ""
-          }
-          color="primary"
-          radius="full"
-          size="sm"
-          variant={isFollowed ? "bordered" : "solid"}
-          onPress={() => setIsFollowed(!isFollowed)}
-        >
-          {isFollowed ? "Unfollow" : "Follow"}
-        </Button>
-      </CardHeader>
-      <CardBody className="px-3 py-0 text-small text-default-400">
-        <p>
-          Frontend developer and UI/UX enthusiast. Join me on this coding
-          adventure!
-        </p>
-        <span className="pt-2">
-          #FrontendWithZoey
-          <span className="py-2" aria-label="computer" role="img">
-            💻
-          </span>
-        </span>
-      </CardBody>
-      <CardFooter className="gap-3">
-        <div className="flex gap-1">
-          <p className="text-small font-semibold text-default-400">4</p>
-          <p className=" text-small text-default-400">Following</p>
-        </div>
-        <div className="flex gap-1">
-          <p className="text-small font-semibold text-default-400">97.1K</p>
-          <p className="text-small text-default-400">Followers</p>
-        </div>
-      </CardFooter>
+    <div className="mt-28">
+      <UserSearch />
+      <div>{renderUserProfile()}</div>
 
       <div className="relative">
         <div className="fixed bottom-8 right-8 z-50 h-10 w-10 cursor-pointer rounded-full bg-stone-700">
@@ -74,8 +34,26 @@ const Activity: React.FC = () => {
           </p>
         </div>
       </div>
-    </Card>
+
+      {appStore.activities.map((activity) => (
+        <div
+          key={activity.id}
+          className="mx-auto mt-4 w-3/4 rounded-lg border p-4"
+        >
+          <h3>{activity.name}</h3>
+          <p>{activity.startTime?.toDate()?.toLocaleString()}</p>
+          <p>{activity.endTime?.toDate()?.toLocaleString()}</p>
+          <img src={activity.image} className="h-auto w-60" />
+          <p>{activity.weather}</p>
+          <p>{activity.position}</p>
+          {activity.hashtags.map((hashtag: string, index: number) => (
+            <p key={index}>#{hashtag}</p>
+          ))}
+          <p>{activity.content}</p>
+        </div>
+      ))}
+    </div>
   );
-};
+});
 
 export default Activity;

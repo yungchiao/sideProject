@@ -92,7 +92,7 @@ const Profile = observer(() => {
     }
   };
   return (
-    <>
+    <div className="mt-28">
       <Title>暱稱</Title>
       <div className="ml-10 mr-10 flex w-80 flex-wrap gap-4 md:flex-nowrap">
         <Input
@@ -141,7 +141,7 @@ const Profile = observer(() => {
           <ButtonA>登出</ButtonA>
         </Button>
       </ButtonContainer>
-    </>
+    </div>
   );
 });
 

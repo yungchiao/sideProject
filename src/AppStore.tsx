@@ -11,9 +11,15 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
+  getDocs,
   getFirestore,
   onSnapshot,
+  query,
+  runTransaction,
   setDoc,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 import {
   FirebaseStorage,
@@ -46,6 +52,12 @@ interface NewUser {
   name: string;
 }
 
+export interface UserFollow {
+  id: string;
+  userName: string;
+  userEmail: string;
+}
+
 class AppStore {
   config: FirebaseConfig = {
     apiKey: "AIzaSyA69gAsOHrnfSdhKmKQniLUVExD9Kz8QK0",
@@ -62,9 +74,14 @@ class AppStore {
   auth: Auth;
   storage: FirebaseStorage;
   activities: any[] = [];
+  userActivities: any[] = [];
   admins: any[] = [];
   cart: any[] = [];
-
+  searchResults: UserFollow[] = [];
+  followingList: string[] = [];
+  chats: any[] = [];
+  currentUserEmail = null;
+  currentAdminId = null;
   constructor() {
     this.app = initializeApp(this.config);
     this.db = getFirestore(this.app);
@@ -86,23 +103,69 @@ class AppStore {
           name: "",
         };
         this.newUser = newUser;
+        this.setCurrentUser(user.email);
       } else {
         this.newUser = null;
+        this.setCurrentUser(null);
       }
     });
   }
-  saveCartToLocalStorage() {
-    localStorage.setItem("cart", JSON.stringify(this.cart));
-  }
-  loadCartFromLocalStorage() {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      this.setCart(JSON.parse(savedCart));
+  async newCart(email: string, cartItem: any) {
+    const userRef = doc(this.db, "user", email);
+
+    try {
+      await runTransaction(this.db, async (transaction) => {
+        const userDoc = await transaction.get(userRef);
+        if (!userDoc.exists()) {
+          throw new Error("用戶不存在");
+        }
+        const existingCartItems = userDoc.data().cartItems || [];
+        transaction.update(userRef, {
+          cartItems: [...existingCartItems, cartItem],
+        });
+      });
+    } catch (error) {
+      console.error("添加到購物車失敗", error);
     }
   }
-  addToCart = (activity: any) => {
-    this.cart.push(activity);
-    this.saveCartToLocalStorage();
+  async deleteFromCart(email: string, cartItemId: string) {
+    const userRef = doc(this.db, "user", email);
+
+    try {
+      await runTransaction(this.db, async (transaction) => {
+        const userDoc = await transaction.get(userRef);
+        if (!userDoc.exists()) {
+          throw new Error("用戶不存在");
+        }
+        const existingCartItems = userDoc.data().cartItems || [];
+        const updatedCartItems = existingCartItems.filter(
+          (item: any) => item.id !== cartItemId,
+        );
+        transaction.update(userRef, {
+          cartItems: updatedCartItems,
+        });
+      });
+    } catch (error) {
+      console.error("刪除失敗", error);
+    }
+  }
+  addToCart = async (email: any, cartItem: any) => {
+    const userRef = doc(this.db, "user", email);
+
+    try {
+      await runTransaction(this.db, async (transaction) => {
+        const userDoc = await transaction.get(userRef);
+        if (!userDoc.exists()) {
+          throw new Error("用戶不存在");
+        }
+        const existingCartItems = userDoc.data().cartItems || [];
+        transaction.update(userRef, {
+          cartItems: [...existingCartItems, cartItem],
+        });
+      });
+    } catch (error) {
+      console.error("新增至購物車失敗", error);
+    }
   };
 
   getCart = () => {
@@ -110,11 +173,37 @@ class AppStore {
   };
   removeFromCart(item: any) {
     this.cart = this.cart.filter((cartItem) => cartItem.id !== item.id);
-    this.saveCartToLocalStorage();
   }
   setCart(cartItems: any) {
     this.cart = cartItems;
   }
+  updateCartItemQuantity = async (
+    email: any,
+    cartItemId: any,
+    newQuantity: any,
+  ) => {
+    const db = getFirestore();
+    const userRef = doc(db, "user", email);
+
+    try {
+      await runTransaction(db, async (transaction) => {
+        const userDoc = await transaction.get(userRef);
+        if (!userDoc.exists()) {
+          throw new Error("用戶不存在");
+        }
+
+        const newCartItems = userDoc
+          .data()
+          .cartItems.map((item: any) =>
+            item.id === cartItemId ? { ...item, quantity: newQuantity } : item,
+          );
+
+        transaction.update(userRef, { cartItems: newCartItems });
+      });
+    } catch (error) {
+      console.error("更新購物車失敗", error);
+    }
+  };
 
   newUser: NewUser | null = null;
   addUser = async (
@@ -173,6 +262,39 @@ class AppStore {
       this.activities = updatedActivities;
     });
   };
+  fetchUserActivities = async () => {
+    const db = getFirestore();
+    const querySnapshot = await getDocs(
+      query(
+        collection(db, "activity"),
+        where("id", "==", appStore.currentUserEmail),
+      ),
+    );
+    const posts = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    this.userActivities = posts;
+  };
+
+  fetchCart = async (email: any) => {
+    const db = getFirestore();
+    const userRef = doc(db, "user", email);
+    try {
+      const docSnapshot = await getDoc(userRef);
+      if (docSnapshot.exists()) {
+        const userCartItems = docSnapshot.data().cartItems || [];
+        return userCartItems;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      console.error("獲取購物車資訊失敗", error);
+      return [];
+    }
+  };
+
   fetchAdmin = async () => {
     const db = getFirestore();
     const adminsCollection = collection(db, "admin");
@@ -195,6 +317,125 @@ class AppStore {
       console.error("刪除失敗", error);
     }
   };
+  setSearchResults(users: UserFollow[]) {
+    this.searchResults = users;
+  }
+
+  async followUser(userToFollow: string) {
+    if (!this.newUser) return;
+    this.newUser.following.push(userToFollow);
+
+    const userRef = doc(this.db, "user", this.newUser.email);
+    await updateDoc(userRef, {
+      following: this.newUser.following,
+    });
+  }
+  async addFollowUser(userToFollowEmail: string) {
+    if (!this.newUser) return;
+
+    const currentUserRef = doc(this.db, "user", this.newUser.id);
+
+    const userToFollowRef = doc(this.db, "user", userToFollowEmail);
+
+    try {
+      const currentUserSnap = await getDoc(currentUserRef);
+      if (currentUserSnap.exists()) {
+        await updateDoc(currentUserRef, {
+          following: [...currentUserSnap.data().following, userToFollowEmail],
+        });
+      }
+
+      const userToFollowSnap = await getDoc(userToFollowRef);
+      if (userToFollowSnap.exists()) {
+        await updateDoc(userToFollowRef, {
+          followers: [...userToFollowSnap.data().followers, this.newUser.email],
+        });
+      }
+    } catch (error) {
+      console.error("追蹤失敗", error);
+    }
+  }
+
+  async unfollowUser(userToUnfollow: string) {
+    if (!this.newUser) return;
+    this.newUser.following = this.newUser.following.filter(
+      (email) => email !== userToUnfollow,
+    );
+
+    const userRef = doc(this.db, "user", this.newUser.email);
+    await updateDoc(userRef, {
+      following: this.newUser.following,
+    });
+  }
+
+  async searchUsers(searchTerm: string) {
+    const usersCol = collection(this.db, "user");
+    const q = query(usersCol, where("email", "==", searchTerm));
+    const querySnapshot = await getDocs(q);
+
+    const users: UserFollow[] = [];
+    querySnapshot.forEach((doc) => {
+      users.push({
+        id: doc.id,
+        userName: doc.data().name,
+        userEmail: doc.data().email,
+      } as UserFollow);
+    });
+
+    this.searchResults = users;
+  }
+  setCurrentUser(userEmail: any) {
+    this.currentUserEmail = userEmail;
+  }
+
+  setCurrentAdmin(adminId: any) {
+    this.currentAdminId = adminId;
+  }
+  fetchChats() {
+    const userEmail = this.currentUserEmail;
+    if (!userEmail) {
+      this.chats = [];
+      return;
+    }
+
+    const chatRef = doc(this.db, "adminChat", userEmail);
+
+    onSnapshot(chatRef, (doc) => {
+      if (doc.exists()) {
+        this.chats = [{ id: doc.id, ...doc.data() }];
+      } else {
+        this.chats = [];
+      }
+    });
+  }
+
+  async sendMessage(text: string) {
+    const userEmail = this.currentUserEmail;
+    if (!userEmail) return;
+    const chatRef = doc(this.db, "adminChat", userEmail);
+
+    await runTransaction(this.db, async (transaction) => {
+      const chatDoc = await transaction.get(chatRef);
+      const newMessage = {
+        timestamp: new Date().toISOString(),
+        text: text,
+      };
+
+      let currentMessages = [];
+      if (chatDoc.exists()) {
+        currentMessages = chatDoc.data().messages || [];
+      }
+
+      transaction.set(
+        chatRef,
+        {
+          currentUserEmail: userEmail,
+          messages: [...currentMessages, newMessage],
+        },
+        { merge: true },
+      );
+    });
+  }
 }
 
 export const appStore = new AppStore();

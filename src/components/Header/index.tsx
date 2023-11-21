@@ -15,7 +15,9 @@ const Header: React.FC = () => {
     <Navbar isBordered className="fixed top-0  z-20 border-b-2 bg-white p-6">
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-          <p className="hidden font-bold text-inherit sm:block">ICON</p>
+          <Link color="foreground" to="/">
+            <p className="hidden font-bold text-inherit sm:block">ICON</p>
+          </Link>
         </NavbarBrand>
         <NavbarContent className="hidden gap-3 sm:flex">
           <NavbarItem>
@@ -31,6 +33,11 @@ const Header: React.FC = () => {
           <NavbarItem>
             <Link color="foreground" to="/cart">
               訂單
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Link color="foreground" to="/chat">
+              客服聊聊
             </Link>
           </NavbarItem>
         </NavbarContent>

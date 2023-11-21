@@ -11,9 +11,9 @@ const Paint: React.FC = () => {
   useEffect(() => {
     const sketch = (p: p5) => {
       p.setup = () => {
-        p.createCanvas(700, 700);
+        p.createCanvas(700, 500);
         p.background(255);
-        const borderWidth = 2;
+        const borderWidth = 1;
         p.stroke(0);
         p.strokeWeight(borderWidth);
         p.rect(
@@ -74,7 +74,7 @@ const Paint: React.FC = () => {
 
   return (
     <>
-      <div className="m-auto my-10  w-3/4 border border-stone-800 p-4">
+      <div className="m-auto mb-10 mt-28 w-3/4 border border-stone-800 p-4">
         <div className="flex justify-center ">
           {isEraser ? (
             <Button

@@ -1,50 +1,79 @@
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { Timestamp, collection, doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
-import { animals } from "./activityName";
 export const storage = getStorage(appStore.app);
-const UserPost = observer(() => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [items, setItems] = useState(1);
-  const [selectedOption, setSelectedOption] = useState("");
-  const [position, setPosition] = useState("");
-  const [hashtags, setHashtags] = useState({});
-  const [activityName, setActivityName] = useState("");
-  const [content, setContent] = useState("");
-  const [imageUpload, setImageUpload] = useState(null);
-  const uploadImage = async () => {
-    try {
-      if (imageUpload === null) return;
-      const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-      await uploadBytes(imageRef, imageUpload);
-      const downloadURL = await getDownloadURL(imageRef);
-      return downloadURL;
-    } catch (error) {
-      console.error("上傳圖片失敗", error);
-      throw error;
-    }
+interface Hashtag {
+  [key: string]: boolean;
+}
+interface Admin {
+  id: string;
+  name: string;
+  position: string;
+  price: number;
+  images: string;
+  hashtags: [];
+  startTime: Timestamp;
+  endTime: Timestamp;
+  content: string;
+}
+const UserPost: React.FC = observer(() => {
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
+  const [startDate, endDate] = dateRange;
+  const [items, setItems] = useState<number>(1);
+  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [position, setPosition] = useState<string>("");
+  const [hashtags, setHashtags] = useState<Hashtag>({});
+  const [activityName, setActivityName] = useState<string>("");
+  const [content, setContent] = useState<string>("");
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
+  useEffect(() => {
+    appStore.fetchAdmin();
+  }, []);
+  const handleDateChange = (dates: [Date | null, Date | null]) => {
+    setDateRange(dates);
   };
-  const handleRadioChange = (event) => {
+  const formatDateRange = (start: Date | null, end: Date | null) => {
+    if (start && end) {
+      const startFormatted = start.toLocaleDateString();
+      const endFormatted = end.toLocaleDateString();
+      return `${startFormatted}-${endFormatted}`;
+    }
+
+    return "Select Date Range";
+  };
+  const uploadImage = async (): Promise<string> => {
+    if (!imageUpload) throw new Error("No image file provided");
+    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
+    await uploadBytes(imageRef, imageUpload);
+    return getDownloadURL(imageRef);
+  };
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
   };
   const addAmount = () => {
     setItems((prevItems) => prevItems + 1);
   };
-  const handleHashtagChange = (index, event) => {
-    const updatedHashtags = { ...hashtags, [index]: event.target.value };
-    setHashtags(updatedHashtags);
+  const handleHashtagChange = (
+    index: number,
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setHashtags({ ...hashtags, [index]: event.target.value });
   };
-  const handlePositionChange = (e) => {
-    setPosition(e.target.value);
+
+  const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPosition(event.target.value);
   };
-  const handleContent = (value) => {
-    setContent({ ...content, value });
+  const handleContent = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(event.target.value);
   };
   const handleSubmit = async () => {
     try {
@@ -56,12 +85,14 @@ const UserPost = observer(() => {
         const docRef = doc(articlesCollection);
         setDoc(docRef, {
           name: activityName,
-          date: selectedDate,
+          startTime: startDate,
+          endTime: endDate,
           weather: selectedOption,
           hashtags: Object.values(hashtags),
           content: content,
           position: position,
           image: imageUrl,
+          id: appStore.currentUserEmail,
         });
       }
 
@@ -73,23 +104,39 @@ const UserPost = observer(() => {
 
   const variant = "underlined";
   return (
-    <div className="m-auto mt-10 w-3/4 border p-10">
+    <div className="m-auto mt-28 w-3/4 border p-10">
       <Select
-        label="選擇活動名稱"
-        className="mb-2 max-w-xs"
-        onChange={(e) => setActivityName(e.target.value)}
+        aria-label="Select Activity Name"
+        label={activityName ? "" : "選擇活動名稱"}
+        className="max-w-xs"
+        onChange={(e) => {
+          const selectedAdmin = appStore.admins.find(
+            (admin) => admin.id === e.target.value,
+          );
+          if (selectedAdmin) {
+            setActivityName(selectedAdmin.name);
+          }
+        }}
       >
-        {animals.map((animal) => (
-          <SelectItem key={animal.value} value={animal.value}>
-            {animal.label}
+        {appStore.admins.map((admin: Admin) => (
+          <SelectItem
+            key={admin.id}
+            value={admin.id}
+            className="bg-stone-800 text-gray-100"
+          >
+            {admin.name}
           </SelectItem>
         ))}
       </Select>
-      <div className="mt-4 ">
+
+      <div className="mt-4">
+        <p>{formatDateRange(startDate, endDate)}</p>
         <DatePicker
-          className="z-20 mb-4 cursor-pointer rounded-lg bg-stone-800 text-center text-gray-100"
-          selected={selectedDate}
-          onChange={(date) => setSelectedDate(date)}
+          selectsRange={true}
+          startDate={startDate}
+          endDate={endDate}
+          onChange={handleDateChange}
+          className="z-20 mb-4 w-60 cursor-pointer rounded-lg bg-stone-800 text-center text-gray-100"
         />
       </div>
       {Array.from({ length: items }).map((_, index) => (
@@ -156,7 +203,13 @@ const UserPost = observer(() => {
       <input
         type="file"
         className="mb-4 "
-        onChange={(e) => setImageUpload(e.target.files[0])}
+        onChange={(e) => {
+          if (e.target.files && e.target.files.length > 0) {
+            setImageUpload(e.target.files[0]);
+          } else {
+            setImageUpload(null);
+          }
+        }}
       ></input>
       <Button
         className="mb-2 border border-stone-800 bg-white"
@@ -173,7 +226,7 @@ const UserPost = observer(() => {
           base: "w-4/5 ",
           input: "resize-y min-h-[120px]",
         }}
-        onChange={(e) => setContent(e.target.value)}
+        onChange={handleContent}
       />
       <div className="mx-auto mt-10 flex items-center justify-center">
         <Button className="bg-stone-800">

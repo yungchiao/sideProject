@@ -5,10 +5,10 @@ import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import Form from "./Form";
-
 export const storage = getStorage(appStore.app);
 
 interface Hashtag {
@@ -32,7 +32,7 @@ const Admin: React.FC = observer(() => {
   const [imageName, setImageName] = useState("");
   const [startDate, endDate] = dateRange;
   const [items, setItems] = useState<number>(1);
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState<string>("");
   const [position, setPosition] = useState<string>("");
   const [hashtags, setHashtags] = useState<Hashtag>({});
   const [activityName, setActivityName] = useState<string>("");
@@ -43,21 +43,27 @@ const Admin: React.FC = observer(() => {
   );
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     setDateRange(dates);
+
+    console.log("Date Range Selected:", dates);
   };
   const handleSelectedActivity = (activity: ActivityType) => {
     setSelectedActivity(activity);
     setActivityName(activity.name);
-    setPrice(activity.price);
+    setPrice(activity.price.toString());
     setContent(activity.content);
     setImageUpload(activity.images);
     setPosition(activity.position);
     setHashtags(activity.hashtags);
   };
 
-  const formatDateRange = () => {
-    return startDate && endDate
-      ? `${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}`
-      : "Select Date Range";
+  const formatDateRange = (start: Date | null, end: Date | null) => {
+    if (start && end) {
+      const startFormatted = start.toLocaleDateString();
+      const endFormatted = end.toLocaleDateString();
+      return `${startFormatted}-${endFormatted}`;
+    }
+
+    return "Select Date Range";
   };
 
   const uploadImage = async (): Promise<string> => {
@@ -81,7 +87,7 @@ const Admin: React.FC = observer(() => {
   };
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPrice(Number(event.target.value));
+    setPrice(event.target.value);
   };
 
   const handleContent = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +139,7 @@ const Admin: React.FC = observer(() => {
 
   const variant = "underlined";
   return (
-    <div className="m-auto mt-2 flex w-4/5 border p-10">
+    <div className="m-auto mt-28 flex w-4/5 border p-10">
       <div className="m-auto mt-2 max-h-screen w-3/5 overflow-scroll border p-10">
         <Input
           label="Activity Name"
@@ -148,7 +154,7 @@ const Admin: React.FC = observer(() => {
           />
         </div>
         <div className="mt-4">
-          <p>{formatDateRange()}</p>
+          <p>{formatDateRange(startDate, endDate)}</p>
           <DatePicker
             selectsRange={true}
             startDate={startDate}
@@ -158,20 +164,20 @@ const Admin: React.FC = observer(() => {
           />
         </div>
 
-        {Object.entries(hashtags).map(([index, value], i) => (
+        {Array.from({ length: items }, (_, i) => (
           <Input
             type="url"
             className="mb-4 w-40"
             placeholder="hashtag"
             labelPlacement="outside"
-            value={value}
+            value={hashtags[i] || ""}
             startContent={
               <div className="pointer-events-none flex items-center">
                 <span className="text-small text-default-400">#</span>
               </div>
             }
-            key={index}
-            onChange={(e) => handleHashtagChange(Number(index), e)}
+            key={i}
+            onChange={(e) => handleHashtagChange(i, e)}
           />
         ))}
         <Button
@@ -226,6 +232,11 @@ const Admin: React.FC = observer(() => {
             <p className="text-white">新增</p>
           </Button>
         </div>
+        <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
+          <p className="text-white">
+            <Link to="/adminchat">又要跟客戶聊聊</Link>
+          </p>
+        </button>
       </div>
       <div className="ml-4 mt-2 max-h-screen w-2/5 overflow-scroll border p-10">
         <Form onActivitySelect={handleSelectedActivity} />
