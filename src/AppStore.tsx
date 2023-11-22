@@ -234,7 +234,7 @@ class AppStore {
   };
   uploadImage = async (imageUpload: File): Promise<string> => {
     try {
-      if (!imageUpload) throw new Error("No image file provided");
+      if (!imageUpload) throw new Error("未選取圖片");
 
       const imageRef = ref(this.storage, `images/${imageUpload.name + v4()}`);
       await uploadBytes(imageRef, imageUpload);
@@ -249,6 +249,7 @@ class AppStore {
     signOut(auth).then(() => {
       this.newUser = null;
     });
+    alert("登出成功！");
   }
   fetchActivities = async () => {
     const db = getFirestore();
@@ -261,6 +262,21 @@ class AppStore {
       }));
       this.activities = updatedActivities;
     });
+  };
+  fetchUserData = async (userId: string) => {
+    const db = getFirestore();
+    const userRef = doc(db, "user", userId);
+
+    try {
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        this.newUser = userSnap.data() as NewUser;
+      } else {
+        console.log("查無此人");
+      }
+    } catch (error) {
+      console.error("獲取用戶數據失敗", error);
+    }
   };
   fetchUserActivities = async () => {
     const db = getFirestore();

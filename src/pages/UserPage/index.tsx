@@ -4,22 +4,36 @@ import { appStore } from "../../AppStore";
 
 const UserPage: React.FC = observer(() => {
   useEffect(() => {
-    appStore.fetchUserActivities();
-  }, []);
+    const userId = appStore.currentUserEmail;
+
+    if (userId) {
+      appStore.fetchUserData(userId);
+      appStore.fetchUserActivities();
+    }
+  }, [appStore.currentUserEmail]);
 
   return (
     <div className="mt-28">
       {appStore.newUser && (
-        <div>
-          <p>暱稱: {appStore.newUser.name}</p>
-          <p>Email: {appStore.newUser.email}</p>
-          <img src={appStore.newUser.avatar} alt="Avatar" />
+        <div className="mx-auto mt-4  flex flex-wrap justify-center text-center">
+          <div>
+            <p className=" mt-4 flex justify-center">
+              暱稱: {appStore.newUser.name}
+            </p>
+            <p className=" mt-4 flex justify-center">
+              Email: {appStore.newUser.email}
+            </p>
+            <img
+              src={appStore.newUser.avatar}
+              alt="Avatar"
+              className="mx-auto mt-4 flex h-40 w-40 rounded-full"
+            />
+          </div>
         </div>
       )}
-
-      {appStore.userActivities.map((activity) => (
+      {appStore.userActivities.map((activity, index) => (
         <div
-          key={activity.id}
+          key={`${activity.name}-${activity.startTime}-${index}`}
           className="mx-auto mt-4 w-3/4 rounded-lg border p-4"
         >
           <h3>{activity.name}</h3>

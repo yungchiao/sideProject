@@ -43,8 +43,6 @@ const Admin: React.FC = observer(() => {
   );
   const handleDateChange = (dates: [Date | null, Date | null]) => {
     setDateRange(dates);
-
-    console.log("Date Range Selected:", dates);
   };
   const handleSelectedActivity = (activity: ActivityType) => {
     setSelectedActivity(activity);
@@ -122,11 +120,13 @@ const Admin: React.FC = observer(() => {
       if (selectedActivity) {
         const docRef = doc(appStore.db, "admin", selectedActivity.id);
         await updateDoc(docRef, activityData);
+        alert("活動更新成功！");
         console.log("活動更新成功！");
       } else {
         const articlesCollection = collection(appStore.db, "admin");
         const docRef = doc(articlesCollection);
         await setDoc(docRef, activityData);
+
         console.log("活動新增成功！");
       }
     } catch (error) {

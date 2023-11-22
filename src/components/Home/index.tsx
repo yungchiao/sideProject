@@ -30,7 +30,7 @@ const Home: React.FC = observer(() => {
   };
   const handleAdminClick = (admin: any) => {
     setSelectedAdmin(admin);
-
+    console.log("Clicked event:", admin);
     toggleDetail();
   };
   useEffect(() => {
@@ -44,7 +44,6 @@ const Home: React.FC = observer(() => {
         price: selectedAdmin.price,
         id: selectedAdmin.id,
       };
-
       const userEmail = appStore.currentUserEmail;
       if (userEmail) {
         appStore.addToCart(userEmail, cartItem);

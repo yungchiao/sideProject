@@ -1,5 +1,5 @@
 import { Button, Input } from "@nextui-org/react";
-import { arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot, runTransaction } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
@@ -31,18 +31,35 @@ const Chat = observer(() => {
 
   const sendMessage = async () => {
     if (message.trim() && appStore.currentUserEmail) {
-      const userRef = doc(appStore.db, "adminChat", appStore.currentUserEmail);
-      const newMessage = {
-        text: message,
-        createdAt: new Date(),
-        sender: "client",
-      };
+      try {
+        const userRef = doc(
+          appStore.db,
+          "adminChat",
+          appStore.currentUserEmail,
+        );
+        const newMessage = {
+          text: message,
+          createdAt: new Date(),
+          sender: "client",
+        };
 
-      await updateDoc(userRef, {
-        messages: arrayUnion(newMessage),
-      });
+        await runTransaction(appStore.db, async (transaction) => {
+          const chatDoc = await transaction.get(userRef);
+          let currentMessages = chatDoc.data()?.messages || [];
 
-      setMessage("");
+          transaction.set(
+            userRef,
+            {
+              messages: [...currentMessages, newMessage],
+            },
+            { merge: true },
+          );
+        });
+
+        setMessage("");
+      } catch (error) {
+        console.error("发送消息失败", error);
+      }
     }
   };
 

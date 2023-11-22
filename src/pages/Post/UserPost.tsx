@@ -97,6 +97,7 @@ const UserPost: React.FC = observer(() => {
       }
 
       console.log("貼文已添加到 Firestore");
+      alert("已發布貼文！");
     } catch (error) {
       console.error("添加貼文失敗", error);
     }

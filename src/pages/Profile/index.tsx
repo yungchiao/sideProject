@@ -1,61 +1,34 @@
-import { Input, avatar } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import { initializeApp } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import "firebase/firestore";
 import { collection, doc, getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { ChangeEvent, useState } from "react";
 import { appStore } from "../../AppStore";
 
-const Title = styled.p`
-  margin-right: 10px;
-`;
-const Button = styled.button`
-  display: flex;
-  margin-top: 10px;
-  cursor: pointer;
-  background-color: black;
-  color: #fff;
-  border: none;
-  width: 80px;
-  height: 30px;
-  padding: auto auto;
-  border-radius: 6px;
-`;
-const ButtonA = styled.p`
-  margin: auto auto;
-`;
-const ButtonContainer = styled.div`
-  justify-content: center;
-  gap: 20px;
-  display: flex;
-`;
 const app = initializeApp(appStore.config);
 const db = getFirestore(app);
 export const storage = getStorage(app);
-const Profile = observer(() => {
+const Profile: React.FC = observer(() => {
   const auth = getAuth();
-  const currentUser = auth.currentUser;
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-
-  const handleEmailChange = (e) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
-  const handleNameChange = (e) => {
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
 
@@ -65,15 +38,17 @@ const Profile = observer(() => {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
+          alert("登入成功!");
           console.log("登入成功：", user);
         })
         .catch((error) => {
+          alert("登入失敗!");
           console.error("登入失敗：", error);
         });
     }
   };
 
-  const handleRegister = async (email, password) => {
+  const handleRegister = async (email: string, password: string) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -82,18 +57,22 @@ const Profile = observer(() => {
       );
       const user = userCredential.user;
 
-      const imageUrl = await uploadImage();
-
-      appStore.addUser(user.uid, email, name, imageUrl);
-
-      console.log("注冊成功：", user);
+      if (imageUpload) {
+        await appStore.addUser(user.uid, email, name, imageUpload);
+      } else {
+        await appStore.addUser(user.uid, email, name, new File([], ""));
+      }
+      alert("註冊成功!");
+      console.log("註冊成功：", user);
     } catch (error) {
-      console.log("注冊失敗：", error);
+      alert("註冊失敗!");
+      console.error("註冊失敗：", error);
     }
   };
+
   return (
     <div className="mt-28">
-      <Title>暱稱</Title>
+      <p className="mr-2">暱稱</p>
       <div className="ml-10 mr-10 flex w-80 flex-wrap gap-4 md:flex-nowrap">
         <Input
           type="name"
@@ -102,7 +81,7 @@ const Profile = observer(() => {
           onChange={handleNameChange}
         />
       </div>
-      <Title>帳號</Title>
+      <p className="mr-2">帳號</p>
       <div className="ml-10 mr-10 flex w-80 flex-wrap gap-4 md:flex-nowrap">
         <Input
           type="email"
@@ -111,7 +90,7 @@ const Profile = observer(() => {
           onChange={handleEmailChange}
         />
       </div>
-      <Title>密碼</Title>
+      <p className="mr-2">密碼</p>
       <div className="ml-10 mr-10 flex w-80 flex-wrap gap-4 md:flex-nowrap">
         <Input
           type="password"
@@ -122,25 +101,30 @@ const Profile = observer(() => {
       </div>
       <input
         type="file"
-        className="mb-4 "
         onChange={(e) => {
-          setImageUpload(e.target.files[0]);
+          if (e.target.files && e.target.files[0]) {
+            setImageUpload(e.target.files[0]);
+          } else {
+            setImageUpload(null);
+          }
         }}
-      ></input>
-      <Button onClick={() => appStore.uploadImage(avatar)}>
-        <ButtonA>上傳頭貼</ButtonA>
+      />
+
+      <Button onClick={() => imageUpload && appStore.uploadImage(imageUpload)}>
+        <p className="mx-auto flex">上傳頭貼</p>
       </Button>
-      <ButtonContainer>
+
+      <div className="flex justify-center gap-20">
         <Button onClick={handleLogin}>
-          <ButtonA>登入</ButtonA>
+          <p className="mx-auto flex">登入</p>
         </Button>
         <Button onClick={() => handleRegister(email, password)}>
-          <ButtonA>註冊</ButtonA>
+          <p className="mx-auto flex">註冊</p>
         </Button>
         <Button onClick={appStore.logout}>
-          <ButtonA>登出</ButtonA>
+          <p className="mx-auto flex">登出</p>
         </Button>
-      </ButtonContainer>
+      </div>
     </div>
   );
 });
