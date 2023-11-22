@@ -30,7 +30,6 @@ const Home: React.FC = observer(() => {
   };
   const handleAdminClick = (admin: any) => {
     setSelectedAdmin(admin);
-    console.log("Clicked event:", admin);
     toggleDetail();
   };
   useEffect(() => {

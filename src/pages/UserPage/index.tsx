@@ -1,6 +1,6 @@
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
 import Cart from "../../components/Cart";
 
@@ -14,6 +14,20 @@ const UserPage: React.FC = observer(() => {
     }
   }, [appStore.currentUserEmail]);
 
+  const [isDetailFollower, setDetailFollower] = useState(false);
+  const [isDetailFollowing, setDetailFollowing] = useState(false);
+  const toggleOpenFollower = () => {
+    setDetailFollower(!isDetailFollower);
+  };
+  const toggleOpenFollowing = () => {
+    setDetailFollowing(!isDetailFollowing);
+  };
+  const handleFollowerClick = () => {
+    toggleOpenFollower();
+  };
+  const handleFollowingClick = () => {
+    toggleOpenFollowing();
+  };
   return (
     <div className="mt-28 ">
       {appStore.newUser && (
@@ -31,16 +45,36 @@ const UserPage: React.FC = observer(() => {
               className="mx-auto mt-4 flex h-40 w-40 rounded-full"
             />
             <div className=" mt-6 flex items-center justify-center gap-4">
-              <div className=" block cursor-pointer">
+              <div
+                className=" block cursor-pointer"
+                onClick={handleFollowerClick}
+              >
                 <p>粉絲</p>
                 <p>{appStore.newUser.followers.length}</p>
               </div>
               <div className=" h-10 w-px bg-stone-800" />
-              <div className="block cursor-pointer">
+              <div
+                className="block cursor-pointer"
+                onClick={handleFollowingClick}
+              >
                 <p>追蹤</p>
                 <p>{appStore.newUser.following.length}</p>
               </div>
             </div>
+            {isDetailFollower && (
+              <div className="gap-4">
+                {appStore.newUser.followers.map((follower, index) => (
+                  <p key={index}>{follower}</p>
+                ))}
+              </div>
+            )}
+            {isDetailFollowing && (
+              <div className="gap-4 ">
+                {appStore.newUser.following.map((following, index) => (
+                  <p key={index}>{following}</p>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
