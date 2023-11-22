@@ -1,6 +1,8 @@
+import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { appStore } from "../../AppStore";
+import Cart from "../../components/Cart";
 
 const UserPage: React.FC = observer(() => {
   useEffect(() => {
@@ -13,7 +15,7 @@ const UserPage: React.FC = observer(() => {
   }, [appStore.currentUserEmail]);
 
   return (
-    <div className="mt-28">
+    <div className="mt-28 ">
       {appStore.newUser && (
         <div className="mx-auto mt-4  flex flex-wrap justify-center text-center">
           <div>
@@ -28,26 +30,62 @@ const UserPage: React.FC = observer(() => {
               alt="Avatar"
               className="mx-auto mt-4 flex h-40 w-40 rounded-full"
             />
+            <div className=" mt-6 flex items-center justify-center gap-4">
+              <div className=" block cursor-pointer">
+                <p>粉絲</p>
+                <p>{appStore.newUser.followers.length}</p>
+              </div>
+              <div className=" h-10 w-px bg-stone-800" />
+              <div className="block cursor-pointer">
+                <p>追蹤</p>
+                <p>{appStore.newUser.following.length}</p>
+              </div>
+            </div>
           </div>
         </div>
       )}
-      {appStore.userActivities.map((activity, index) => (
-        <div
-          key={`${activity.name}-${activity.startTime}-${index}`}
-          className="mx-auto mt-4 w-3/4 rounded-lg border p-4"
-        >
-          <h3>{activity.name}</h3>
-          <p>{activity.startTime?.toDate()?.toLocaleString()}</p>
-          <p>{activity.endTime?.toDate()?.toLocaleString()}</p>
-          <img src={activity.image} className="h-auto w-60" />
-          <p>{activity.weather}</p>
-          <p>{activity.position}</p>
-          {activity.hashtags.map((hashtag: string, index: number) => (
-            <p key={index}>#{hashtag}</p>
-          ))}
-          <p>{activity.content}</p>
-        </div>
-      ))}
+      <div className="mx-auto mt-4   rounded-lg p-4">
+        <Tabs aria-label="Options" className="flex justify-center">
+          <Tab key="post" title="貼文">
+            <Card>
+              <CardBody>
+                {appStore.userActivities.map((activity, index) => (
+                  <div
+                    key={`${activity.name}-${activity.startTime}-${index}`}
+                    className="mx-auto mt-4 w-3/4 rounded-lg border p-4"
+                  >
+                    <h3>{activity.name}</h3>
+                    <p>{activity.startTime?.toDate()?.toLocaleString()}</p>
+                    <p>{activity.endTime?.toDate()?.toLocaleString()}</p>
+                    <img src={activity.image} className="h-auto w-60" />
+                    <p>{activity.weather}</p>
+                    <p>{activity.position}</p>
+                    {activity.hashtags.map((hashtag: string, index: number) => (
+                      <p key={index}>#{hashtag}</p>
+                    ))}
+                    <p>{activity.content}</p>
+                  </div>
+                ))}
+              </CardBody>
+            </Card>
+          </Tab>
+          <Tab key="ticket" title="票券">
+            <Card>
+              <CardBody>
+                <Cart />
+              </CardBody>
+            </Card>
+          </Tab>
+          <Tab key="like" title="收藏">
+            <Card>
+              <CardBody>
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                qui officia deserunt mollit anim id est laborum.
+              </CardBody>
+            </Card>
+          </Tab>
+        </Tabs>
+      </div>
     </div>
   );
 });

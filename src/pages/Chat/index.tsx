@@ -58,7 +58,7 @@ const Chat = observer(() => {
 
         setMessage("");
       } catch (error) {
-        console.error("发送消息失败", error);
+        console.error("傳送訊息失敗", error);
       }
     }
   };

@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { UserFollow, appStore } from "../../AppStore";
+import UserProfile from "./UserProfile";
 import UserSearch from "./UserSearch";
 interface UserProfileProps {
   user: UserFollow;
@@ -18,7 +19,7 @@ const Activity: React.FC<UserProfileProps> = observer(() => {
         userName: appStore.newUser.name,
         userEmail: appStore.newUser.email,
       };
-      // return <UserProfile user={userFollow} />;
+      return <UserProfile user={userFollow} />;
     }
     return null;
   };

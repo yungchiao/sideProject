@@ -6,19 +6,12 @@ import {
   NavbarItem,
 } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 import { SearchIcon } from "./SearchIcon.tsx";
 
 const Header: React.FC = observer(() => {
-  useEffect(() => {
-    const userId = appStore.currentUserEmail;
-
-    if (userId) {
-      appStore.fetchUserData(userId);
-    }
-  }, []);
   return (
     <Navbar isBordered className="fixed top-0  z-20 border-b-2 bg-white p-6">
       <NavbarContent justify="start">
@@ -36,11 +29,6 @@ const Header: React.FC = observer(() => {
           <NavbarItem isActive>
             <Link to="/post" aria-current="page" color="secondary">
               社群
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" to="/cart">
-              訂單
             </Link>
           </NavbarItem>
           <NavbarItem>

@@ -51,7 +51,7 @@ const Cart: React.FC = observer(() => {
   }
 
   return (
-    <div className="mt-28 ">
+    <div className="mt-4 ">
       {cartItems.map((item, index) => (
         <div
           key={index}
