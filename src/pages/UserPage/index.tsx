@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
 import Cart from "../../components/Cart";
-
+import Like from "../../components/Like";
 const UserPage: React.FC = observer(() => {
   useEffect(() => {
     const userId = appStore.currentUserEmail;
@@ -113,8 +113,7 @@ const UserPage: React.FC = observer(() => {
           <Tab key="like" title="收藏">
             <Card>
               <CardBody>
-                Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                qui officia deserunt mollit anim id est laborum.
+                <Like />
               </CardBody>
             </Card>
           </Tab>

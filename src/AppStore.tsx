@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import {
   Firestore,
+  Timestamp,
   collection,
   deleteDoc,
   doc,
@@ -42,7 +43,18 @@ interface FirebaseConfig {
   appId: string;
   measurementId: string;
 }
-
+interface Admin {
+  id: string;
+  name: string;
+  position: string;
+  price: number;
+  images: string;
+  hashtags: [];
+  startTime: Timestamp;
+  endTime: Timestamp;
+  content: string;
+  isLiked?: boolean;
+}
 interface NewUser {
   avatar: string;
   email: string;
@@ -128,6 +140,24 @@ class AppStore {
       console.error("添加到購物車失敗", error);
     }
   }
+  async newLike(email: string, likeItem: any) {
+    const userRef = doc(this.db, "user", email);
+
+    try {
+      await runTransaction(this.db, async (transaction) => {
+        const userDoc = await transaction.get(userRef);
+        if (!userDoc.exists()) {
+          throw new Error("用戶不存在");
+        }
+        const existingLikeItems = userDoc.data().likeItems || [];
+        transaction.update(userRef, {
+          likeItems: [...existingLikeItems, likeItem],
+        });
+      });
+    } catch (error) {
+      console.error("收藏失敗", error);
+    }
+  }
   async deleteFromCart(email: string, cartItemId: string) {
     const userRef = doc(this.db, "user", email);
 
@@ -149,7 +179,7 @@ class AppStore {
       console.error("刪除失敗", error);
     }
   }
-  addToCart = async (email: any, cartItem: any) => {
+  async deleteFromLike(email: string, likeItemId: string) {
     const userRef = doc(this.db, "user", email);
 
     try {
@@ -158,25 +188,19 @@ class AppStore {
         if (!userDoc.exists()) {
           throw new Error("用戶不存在");
         }
-        const existingCartItems = userDoc.data().cartItems || [];
+        const existingLikeItems = userDoc.data().likeItems || [];
+        const updatedLikeItems = existingLikeItems.filter(
+          (item: any) => item.id !== likeItemId,
+        );
         transaction.update(userRef, {
-          cartItems: [...existingCartItems, cartItem],
+          likeItems: updatedLikeItems,
         });
       });
     } catch (error) {
-      console.error("新增至購物車失敗", error);
+      console.error("刪除失敗", error);
     }
-  };
+  }
 
-  getCart = () => {
-    return this.cart;
-  };
-  removeFromCart(item: any) {
-    this.cart = this.cart.filter((cartItem) => cartItem.id !== item.id);
-  }
-  setCart(cartItems: any) {
-    this.cart = cartItems;
-  }
   updateCartItemQuantity = async (
     email: any,
     cartItemId: any,
@@ -310,7 +334,25 @@ class AppStore {
       return [];
     }
   };
-
+  fetchLike = async (email: any) => {
+    const db = getFirestore();
+    const userRef = doc(db, "user", email);
+    try {
+      const docSnapshot = await getDoc(userRef);
+      if (docSnapshot.exists()) {
+        const userLikeItems = docSnapshot.data().likeItems || [];
+        return userLikeItems;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      console.error("獲取收藏清單資訊失敗", error);
+      return [];
+    }
+  };
+  setAdmins = (newAdmins: Admin[]) => {
+    this.admins = newAdmins;
+  };
   fetchAdmin = async () => {
     const db = getFirestore();
     const adminsCollection = collection(db, "admin");

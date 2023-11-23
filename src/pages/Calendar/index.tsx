@@ -102,7 +102,7 @@ const Calendar: React.FC = observer(() => {
 
       const userEmail = appStore.currentUserEmail;
       if (userEmail) {
-        appStore.addToCart(userEmail, cartItem);
+        appStore.newCart(userEmail, cartItem);
         alert("加入訂單成功！");
       } else {
         alert("用戶未登入");
