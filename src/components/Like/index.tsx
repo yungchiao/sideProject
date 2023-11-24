@@ -29,8 +29,8 @@ const Like: React.FC = observer(() => {
     const itemToDelete = likeItems[itemIndex];
 
     if (itemToDelete && appStore.currentUserEmail) {
-      const newCartItems = likeItems.filter((_, index) => index !== itemIndex);
-      setLikeItems(newCartItems);
+      const newLikeItems = likeItems.filter((_, index) => index !== itemIndex);
+      setLikeItems(newLikeItems);
 
       appStore.deleteFromLike(appStore.currentUserEmail, itemToDelete.id);
       window.alert("取消收藏");

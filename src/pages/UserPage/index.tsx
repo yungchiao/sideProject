@@ -18,9 +18,15 @@ const UserPage: React.FC = observer(() => {
   const [isDetailFollowing, setDetailFollowing] = useState(false);
   const toggleOpenFollower = () => {
     setDetailFollower(!isDetailFollower);
+    isDetailFollowing
+      ? setDetailFollowing(!isDetailFollowing)
+      : setDetailFollowing(isDetailFollowing);
   };
   const toggleOpenFollowing = () => {
     setDetailFollowing(!isDetailFollowing);
+    isDetailFollower
+      ? setDetailFollower(!isDetailFollower)
+      : setDetailFollower(isDetailFollower);
   };
   const handleFollowerClick = () => {
     toggleOpenFollower();

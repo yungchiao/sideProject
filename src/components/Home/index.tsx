@@ -61,7 +61,7 @@ const Home: React.FC = observer(() => {
         appStore.setAdmins(updatedAdmins);
       });
     }
-  }, []);
+  }, [appStore.currentUserEmail]);
 
   const handleSignUp = () => {
     if (selectedAdmin && quantity > 0) {
@@ -164,7 +164,7 @@ const Home: React.FC = observer(() => {
             viewBox="0 0 24 24"
             strokeWidth="0.8"
             stroke="currentColor"
-            className="absolute right-5 top-5 h-8 w-8"
+            className="absolute right-5 top-5 h-8 w-8 cursor-pointer"
             fill={admin.isLiked ? "red" : "none"}
             onClick={() => handleIconClick(admin.id)}
           >

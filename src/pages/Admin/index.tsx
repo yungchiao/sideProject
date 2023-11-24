@@ -17,11 +17,14 @@ interface Hashtag {
 interface ActivityType {
   id: string;
   name: string;
-  images: File;
+  imagesFile: File;
   price: number;
   content: string;
   hashtags: { [key: string]: string };
   position: string;
+  startTime: Date;
+  endTime: Date;
+  images: string;
 }
 
 const Admin: React.FC = observer(() => {
@@ -29,7 +32,6 @@ const Admin: React.FC = observer(() => {
     null,
     null,
   ]);
-  const [imageName, setImageName] = useState("");
   const [startDate, endDate] = dateRange;
   const [items, setItems] = useState<number>(1);
   const [price, setPrice] = useState<string>("");
@@ -38,6 +40,8 @@ const Admin: React.FC = observer(() => {
   const [activityName, setActivityName] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const [currentImageUrl, setCurrentImageUrl] = useState("");
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const [selectedActivity, setSelectedActivity] = useState<ActivityType | null>(
     null,
   );
@@ -45,13 +49,19 @@ const Admin: React.FC = observer(() => {
     setDateRange(dates);
   };
   const handleSelectedActivity = (activity: ActivityType) => {
+    const start = activity.startTime.toDate();
+    const end = activity.endTime.toDate();
+    setDateRange([start, end]);
+    setCurrentImageUrl(activity.images);
+    setSelectedImageFile(null);
     setSelectedActivity(activity);
     setActivityName(activity.name);
     setPrice(activity.price.toString());
     setContent(activity.content);
-    setImageUpload(activity.images);
+    setImageUpload(activity.imagesFile);
     setPosition(activity.position);
     setHashtags(activity.hashtags);
+    console.log([activity.startTime, activity.endTime]);
   };
 
   const formatDateRange = (start: Date | null, end: Date | null) => {
@@ -61,10 +71,10 @@ const Admin: React.FC = observer(() => {
       return `${startFormatted}-${endFormatted}`;
     }
 
-    return "Select Date Range";
+    return "請選擇日期與時間";
   };
 
-  const uploadImage = async (): Promise<string> => {
+  const uploadImage = async (imagesFile: File): Promise<string> => {
     if (!imageUpload) {
       throw new Error("No image file provided");
     }
@@ -91,12 +101,16 @@ const Admin: React.FC = observer(() => {
   const handleContent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContent(event.target.value);
   };
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImageUpload(e.target.files[0]);
-      setImageName(e.target.files[0].name);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const newImageFile = event.target.files[0];
+      setImageUpload(newImageFile);
+      setSelectedImageFile(newImageFile);
+      setCurrentImageUrl(URL.createObjectURL(newImageFile));
     }
   };
+
   const handleSubmit = async () => {
     try {
       let imageUrl = "";
@@ -104,6 +118,11 @@ const Admin: React.FC = observer(() => {
         const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
         await uploadBytes(imageRef, imageUpload);
         imageUrl = await getDownloadURL(imageRef);
+      }
+      let imageUrlToSave = currentImageUrl;
+
+      if (selectedImageFile) {
+        imageUrlToSave = await uploadImage(selectedImageFile);
       }
 
       const activityData = {
@@ -113,7 +132,7 @@ const Admin: React.FC = observer(() => {
         hashtags: Object.values(hashtags),
         content: content,
         position: position,
-        images: imageUrl,
+        images: imageUrlToSave,
         price: price,
       };
 
@@ -198,22 +217,18 @@ const Admin: React.FC = observer(() => {
             value={position}
           />
         </div>
-        <div className="flex">
-          <input
-            type="file"
-            className="mb-4 "
-            onChange={(e) => {
-              if (e.target.files && e.target.files.length > 0) {
-                setImageUpload(e.target.files[0]);
-              }
-            }}
-          ></input>
-          <Button
-            className="mb-2 border border-stone-800 bg-white"
-            onClick={uploadImage}
-          >
-            <p className="text-stone-800">上傳檔案</p>
+        <div className="block">
+          <input type="file" className="mb-4 " onChange={handleImageChange} />
+          <Button className="mb-4 border border-stone-800 bg-white">
+            <p className=" text-stone-800">上傳檔案</p>
           </Button>
+          {currentImageUrl && (
+            <img
+              src={currentImageUrl}
+              alt="Current Activity"
+              className="mb-2 h-auto w-24"
+            />
+          )}
         </div>
         <Textarea
           variant="bordered"

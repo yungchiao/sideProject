@@ -9,11 +9,14 @@ interface FormProps {
 interface ActivityType {
   id: string;
   name: string;
-  images: File;
+  imagesFile: File;
   price: number;
   content: string;
   hashtags: {};
   position: string;
+  startTime: Date;
+  endTime: Date;
+  images: string;
 }
 
 const Form: React.FC<FormProps> = ({ onActivitySelect }) => {
