@@ -1,10 +1,18 @@
 import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
+import { getAuth } from "firebase/auth";
+import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import Cart from "../../components/Cart";
 import Like from "../../components/Like";
+export const storage = getStorage(appStore.app);
 const UserPage: React.FC = observer(() => {
+  appStore.db = getFirestore(appStore.app);
+  const auth = getAuth();
   useEffect(() => {
     const userId = appStore.currentUserEmail;
 
@@ -16,6 +24,8 @@ const UserPage: React.FC = observer(() => {
 
   const [isDetailFollower, setDetailFollower] = useState(false);
   const [isDetailFollowing, setDetailFollowing] = useState(false);
+  const [isChangeAvatar, setChangeAvatar] = useState(false);
+  const [imageUpload, setImageUpload] = useState<File | null>(null);
   const toggleOpenFollower = () => {
     setDetailFollower(!isDetailFollower);
     isDetailFollowing
@@ -34,22 +44,123 @@ const UserPage: React.FC = observer(() => {
   const handleFollowingClick = () => {
     toggleOpenFollowing();
   };
+  const toggleChangeAvatar = () => {
+    setChangeAvatar(!isChangeAvatar);
+  };
+  const handleChangeAvatar = () => {
+    toggleChangeAvatar();
+  };
+  const uploadImage = async (imageFile: File): Promise<string> => {
+    const imageRef = ref(storage, `images/${imageFile.name + v4()}`);
+    await uploadBytes(imageRef, imageFile);
+    return getDownloadURL(imageRef);
+  };
+  const handleChangeProfile = async () => {
+    try {
+      const userEmail = auth.currentUser?.email;
+      if (!userEmail) {
+        throw new Error("未檢測到用戶郵箱。");
+      }
+
+      if (imageUpload) {
+        const imageUrl = await uploadImage(imageUpload);
+        const userDocRef = doc(appStore.db, "users", userEmail);
+        await updateDoc(userDocRef, { avatar: imageUrl });
+        alert("頭像更新成功！");
+      } else {
+        alert("請選擇一個圖片文件。");
+      }
+    } catch (error) {
+      console.error("更改頭像失敗", error);
+      alert("更改頭像失敗");
+    }
+  };
+
   return (
     <div className="mt-28 ">
       {appStore.newUser && (
-        <div className="mx-auto mt-4  flex flex-wrap justify-center text-center">
-          <div>
+        <div className="mx-auto mt-4  flex  flex-wrap justify-center text-center">
+          <div className=" relative">
             <p className=" mt-4 flex justify-center">
               暱稱: {appStore.newUser.name}
             </p>
-            <p className=" mt-4 flex justify-center">
+            <p className=" mx-24 mt-4  flex justify-center">
               Email: {appStore.newUser.email}
             </p>
-            <img
-              src={appStore.newUser.avatar}
-              alt="Avatar"
-              className="mx-auto mt-4 flex h-40 w-40 rounded-full"
-            />
+            <div className="relative">
+              <img
+                src={appStore.newUser.avatar}
+                alt="Avatar"
+                className="relative mx-auto mt-4 flex h-40 w-40 rounded-full"
+              />
+              <button
+                className="absolute  bottom-5 right-28 h-10 w-10 rounded-full border-1 border-stone-600 bg-white"
+                onClick={handleChangeAvatar}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1"
+                  stroke="currentColor"
+                  className="mx-2 flex h-6 w-6 justify-center"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+                  />
+                </svg>
+              </button>
+              <div className="   flex justify-end">
+                {isChangeAvatar && (
+                  <div className="  absolute right-2 top-24 ml-4 h-auto  w-24 justify-center rounded-md bg-stone-200 py-1">
+                    <Link to="/paint">繪製頭貼</Link>
+
+                    <div className="container mx-auto mt-2">
+                      <input
+                        type="file"
+                        id="file-upload"
+                        className="hidden"
+                        onChange={async (e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            setImageUpload(e.target.files[0]);
+                            try {
+                              const imageUrl = await uploadImage(
+                                e.target.files[0],
+                              );
+                              const userEmail = auth.currentUser?.email;
+                              if (!userEmail) {
+                                throw new Error("未檢測到用戶。");
+                              }
+                              const userDocRef = doc(
+                                appStore.db,
+                                "user",
+                                userEmail,
+                              );
+                              await updateDoc(userDocRef, { avatar: imageUrl });
+                              alert("頭像更新成功！");
+                            } catch (error) {
+                              console.error("更改頭像失敗", error);
+                              alert("更改頭像失敗");
+                            }
+                          } else {
+                            setImageUpload(null);
+                          }
+                        }}
+                      />
+                      <label
+                        htmlFor="file-upload"
+                        className=" cursor-pointer rounded bg-stone-800 px-4 py-2 font-bold text-white "
+                      >
+                        上傳檔案
+                      </label>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className=" mt-6 flex items-center justify-center gap-4">
               <div
                 className=" block cursor-pointer"
@@ -84,7 +195,7 @@ const UserPage: React.FC = observer(() => {
           </div>
         </div>
       )}
-      <div className="mx-auto mt-4   rounded-lg p-4">
+      <div className="mx-auto mb-6   rounded-lg p-4">
         <Tabs aria-label="Options" className="flex justify-center">
           <Tab key="post" title="貼文">
             <Card>
@@ -92,7 +203,7 @@ const UserPage: React.FC = observer(() => {
                 {appStore.userActivities.map((activity, index) => (
                   <div
                     key={`${activity.name}-${activity.startTime}-${index}`}
-                    className="mx-auto mt-4 w-3/4 rounded-lg border p-4"
+                    className="mx-auto mt-6 w-3/4 rounded-lg border p-4"
                   >
                     <h3>{activity.name}</h3>
                     <p>{activity.startTime?.toDate()?.toLocaleString()}</p>

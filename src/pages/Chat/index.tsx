@@ -15,7 +15,7 @@ interface Message {
 }
 const Chat = observer(() => {
   const [message, setMessage] = useState("");
-  const [chats, setChats] = useState<Chat[]>([]);
+
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
   useEffect(() => {
     if (!appStore.currentUserEmail) return;

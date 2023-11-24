@@ -7,7 +7,12 @@ interface UserProfileProps {
   user: UserFollow;
 }
 
-const UserProfile: React.FC<UserProfileProps> = observer(({ user }) => {
+const UserProfile: React.FC<
+  UserProfileProps & {
+    isVisible: boolean;
+    toggleVisibility: (email: string) => void;
+  }
+> = observer(({ user, isVisible, toggleVisibility }) => {
   const isFollowing =
     appStore.newUser?.following.includes(user.userEmail) || false;
 
@@ -19,17 +24,24 @@ const UserProfile: React.FC<UserProfileProps> = observer(({ user }) => {
       appStore.addFollowUser(user.userEmail);
     }
   };
-
+  const handleHideClick = () => {
+    toggleVisibility(user.userEmail);
+  };
   return (
-    <div className=" mt-2 flex items-center justify-center">
-      <h3>{user.userName}</h3>
-      <p>{user.userEmail}</p>
-      <Button
-        onClick={handleFollowClick}
-        className="ml-2 border border-stone-800 bg-white"
-      >
-        {isFollowing ? "取消追蹤" : "追蹤"}
-      </Button>
+    <div>
+      {isVisible ? (
+        <div className=" mt-2 flex items-center justify-center gap-4">
+          <h3>{user.userName}</h3>
+          <p>{user.userEmail}</p>
+          <Button
+            onClick={handleFollowClick}
+            className="ml-2 border border-stone-800 bg-white"
+          >
+            {isFollowing ? "取消追蹤" : "追蹤"}
+          </Button>
+          <button onClick={handleHideClick}>x</button>
+        </div>
+      ) : null}
     </div>
   );
 });

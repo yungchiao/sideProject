@@ -1,14 +1,26 @@
 import { Input } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UserFollow, appStore } from "../../AppStore";
 import { SearchIcon } from "../../components/Header/SearchIcon";
 import UserProfile from "./UserProfile";
 const UserSearch: React.FC = observer(() => {
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [visibilityMap, setVisibilityMap] = useState<Record<string, boolean>>(
+    {},
+  );
+  useEffect(() => {
+    const newVisibilityMap: Record<string, boolean> = {};
+    appStore.searchResults.forEach((user) => {
+      newVisibilityMap[user.userEmail] = true;
+    });
+    setVisibilityMap(newVisibilityMap);
+  }, [appStore.searchResults]);
   const handleSearch = () => {
     appStore.searchUsers(searchTerm);
+  };
+  const toggleVisibility = (email: string) => {
+    setVisibilityMap((prev) => ({ ...prev, [email]: !prev[email] }));
   };
 
   return (
@@ -33,9 +45,14 @@ const UserSearch: React.FC = observer(() => {
           搜尋帳號
         </button>
       </div>
+
       {appStore.searchResults.map((user: UserFollow) => (
-        <div className="flex justify-center">
-          <UserProfile key={user.userEmail} user={user} />
+        <div key={user.userEmail} className="flex justify-center">
+          <UserProfile
+            user={user}
+            isVisible={visibilityMap[user.userEmail]}
+            toggleVisibility={toggleVisibility}
+          />
         </div>
       ))}
     </>

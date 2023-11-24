@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
@@ -24,7 +25,7 @@ const Cart: React.FC = observer(() => {
     const item = cartItems[itemIndex];
     const newQuantity = item.quantity + quantityChange;
 
-    if (newQuantity >= 0) {
+    if (newQuantity >= 1) {
       setCartItems((currentItems) =>
         currentItems.map((ci, index) =>
           index === itemIndex ? { ...ci, quantity: newQuantity } : ci,
@@ -49,6 +50,10 @@ const Cart: React.FC = observer(() => {
       window.alert("已刪除商品");
     }
   }
+  const subtotal = cartItems.reduce(
+    (prev, item) => prev + item.price * item.quantity,
+    0,
+  );
 
   return (
     <div className="mt-4 ">
@@ -75,13 +80,21 @@ const Cart: React.FC = observer(() => {
           >
             +
           </button>
-
           <p className=" py-2">價格: NT${item.price}元</p>
+          <p className=" py-2">小計: NT${item.price * item.quantity}元</p>
           <button onClick={() => deleteItem(index)}>
             <div className="h-8 w-8 cursor-pointer bg-[url('/trash.png')] bg-contain" />
           </button>
         </div>
       ))}
+      <div className="flex justify-center">
+        <div className=" text-center">
+          <p className="mt-4">總金額：NT$ {subtotal} 元</p>
+          <Button className="mt-8 bg-stone-700">
+            <p className="text-white">確認付款</p>
+          </Button>
+        </div>
+      </div>
     </div>
   );
 });
