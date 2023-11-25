@@ -1,18 +1,40 @@
 import { Button } from "@nextui-org/react";
+import { getAuth } from "firebase/auth";
+import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { observer } from "mobx-react-lite";
 import p5 from "p5";
 import React, { useEffect, useRef, useState } from "react";
+import { v4 } from "uuid";
 
-const Paint: React.FC = () => {
+const Paint: React.FC = observer(() => {
   const sketchRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [color, setColor] = useState<string>("black");
   const [isEraser, setIsEraser] = useState<boolean>(false);
   const [p5Instance, setP5Instance] = useState<p5 | null>(null);
 
   useEffect(() => {
     const sketch = (p: p5) => {
+      let bg: p5.Image | undefined;
+      p.preload = () => {
+        bg = p.loadImage(
+          "/bg.jpg",
+          (img) => {
+            console.log("Image loaded successfully");
+          },
+          (err) => {
+            console.error("Failed to load image:", err);
+          },
+        );
+      };
+
       p.setup = () => {
-        p.createCanvas(700, 500);
-        p.background(255);
+        const canvas = p.createCanvas(700, 500);
+        canvasRef.current = canvas.elt;
+        if (bg) {
+          p.image(bg, 0, 0, p.width, p.height);
+        }
         const borderWidth = 1;
         p.stroke(0);
         p.strokeWeight(borderWidth);
@@ -71,6 +93,44 @@ const Paint: React.FC = () => {
       };
     }
   }, [color, isEraser, p5Instance]);
+  const saveDrawing = () => {
+    if (p5Instance) {
+      p5Instance.saveCanvas("myDrawing", "png");
+    }
+  };
+  const saveAndUploadDrawing = async () => {
+    if (canvasRef.current) {
+      canvasRef.current.toBlob(async (blob) => {
+        if (!blob) {
+          console.error("無法辨識圖片");
+          return;
+        }
+        const file = new File([blob], "drawing.png", { type: "image/png" });
+        try {
+          const imageUrl = await uploadImage(file);
+          await updateAvatarUrl(imageUrl);
+          alert("上傳成功");
+        } catch (error) {
+          console.error("上傳失敗", error);
+        }
+      });
+    }
+  };
+  const auth = getAuth();
+  const updateAvatarUrl = async (imageUrl: string) => {
+    const userEmail = auth.currentUser?.email;
+    if (!userEmail) return;
+    const db = getFirestore();
+    const userDocRef = doc(db, "user", userEmail);
+    await updateDoc(userDocRef, { avatar: imageUrl });
+  };
+
+  const uploadImage = async (file: File): Promise<string> => {
+    const storage = getStorage();
+    const storageRef = ref(storage, `images/${file.name + v4()}`);
+    await uploadBytes(storageRef, file);
+    return getDownloadURL(storageRef);
+  };
 
   return (
     <>
@@ -112,11 +172,12 @@ const Paint: React.FC = () => {
         </div>
       </div>
       <div ref={sketchRef} className="flex justify-center"></div>
-      <div className="mt-4 flex justify-center">
-        <Button color="default">儲存</Button>
+      <div className="mt-4 flex justify-center gap-2">
+        <Button onClick={saveDrawing}>下載作品</Button>
+        <Button onClick={saveAndUploadDrawing}>設定為頭貼</Button>
       </div>
     </>
   );
-};
+});
 
 export default Paint;

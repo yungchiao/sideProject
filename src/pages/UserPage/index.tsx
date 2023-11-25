@@ -1,6 +1,6 @@
-import { Card, CardBody, Tab, Tabs } from "@nextui-org/react";
+import { Button, Card, CardBody, Input, Tab, Tabs } from "@nextui-org/react";
 import { getAuth } from "firebase/auth";
-import { doc, getFirestore, updateDoc } from "firebase/firestore";
+import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import { appStore } from "../../AppStore";
 import Cart from "../../components/Cart";
 import Like from "../../components/Like";
 export const storage = getStorage(appStore.app);
+
 const UserPage: React.FC = observer(() => {
   appStore.db = getFirestore(appStore.app);
   const auth = getAuth();
@@ -20,12 +21,29 @@ const UserPage: React.FC = observer(() => {
       appStore.fetchUserData(userId);
       appStore.fetchUserActivities();
     }
+    const userEmail = auth.currentUser?.email;
+    if (!userEmail) return;
+    const userDocRef = doc(appStore.db, "user", userEmail);
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      const userData = doc.data();
+      if (userData && userData.avatar) {
+        setAvatarUrl(userData.avatar);
+      }
+    });
+    return () => unsubscribe();
   }, [appStore.currentUserEmail]);
+
+  useEffect(() => {
+    const currentUserName = appStore.newUser?.name || "";
+    setUserName(currentUserName);
+  }, [appStore.newUser]);
 
   const [isDetailFollower, setDetailFollower] = useState(false);
   const [isDetailFollowing, setDetailFollowing] = useState(false);
   const [isChangeAvatar, setChangeAvatar] = useState(false);
   const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const [avatarUrl, setAvatarUrl] = useState(appStore.newUser?.avatar);
+  const [userName, setUserName] = useState<string>("");
   const toggleOpenFollower = () => {
     setDetailFollower(!isDetailFollower);
     isDetailFollowing
@@ -50,46 +68,51 @@ const UserPage: React.FC = observer(() => {
   const handleChangeAvatar = () => {
     toggleChangeAvatar();
   };
+  const nameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserName(event.target.value);
+  };
   const uploadImage = async (imageFile: File): Promise<string> => {
     const imageRef = ref(storage, `images/${imageFile.name + v4()}`);
     await uploadBytes(imageRef, imageFile);
     return getDownloadURL(imageRef);
   };
-  const handleChangeProfile = async () => {
+  const handleSubmit = async () => {
     try {
+      const NameData = {
+        name: userName,
+      };
+
       const userEmail = auth.currentUser?.email;
       if (!userEmail) {
-        throw new Error("未檢測到用戶郵箱。");
+        throw new Error("找不到該用戶！");
       }
-
-      if (imageUpload) {
-        const imageUrl = await uploadImage(imageUpload);
-        const userDocRef = doc(appStore.db, "users", userEmail);
-        await updateDoc(userDocRef, { avatar: imageUrl });
-        alert("頭像更新成功！");
-      } else {
-        alert("請選擇一個圖片文件。");
-      }
+      const userDocRef = doc(appStore.db, "user", userEmail);
+      await updateDoc(userDocRef, NameData);
+      alert("名稱更新成功！");
     } catch (error) {
-      console.error("更改頭像失敗", error);
-      alert("更改頭像失敗");
+      console.error("更改名稱失敗", error);
+      alert("更改名稱失敗");
     }
   };
-
   return (
     <div className="mt-28 ">
       {appStore.newUser && (
         <div className="mx-auto mt-4  flex  flex-wrap justify-center text-center">
           <div className=" relative">
-            <p className=" mt-4 flex justify-center">
-              暱稱: {appStore.newUser.name}
-            </p>
+            <div className=" flex items-center justify-center gap-2">
+              <Input
+                className=" my-4 flex w-40 justify-center"
+                value={userName}
+                onChange={nameChange}
+              />
+              <Button onClick={handleSubmit}>完成</Button>
+            </div>
             <p className=" mx-24 mt-4  flex justify-center">
               Email: {appStore.newUser.email}
             </p>
             <div className="relative">
               <img
-                src={appStore.newUser.avatar}
+                src={avatarUrl}
                 alt="Avatar"
                 className="relative mx-auto mt-4 flex h-40 w-40 rounded-full"
               />
@@ -112,6 +135,7 @@ const UserPage: React.FC = observer(() => {
                   />
                 </svg>
               </button>
+
               <div className="   flex justify-end">
                 {isChangeAvatar && (
                   <div className="  absolute right-2 top-24 ml-4 h-auto  w-24 justify-center rounded-md bg-stone-200 py-1">
@@ -131,7 +155,7 @@ const UserPage: React.FC = observer(() => {
                               );
                               const userEmail = auth.currentUser?.email;
                               if (!userEmail) {
-                                throw new Error("未檢測到用戶。");
+                                throw new Error("找不到該用戶！");
                               }
                               const userDocRef = doc(
                                 appStore.db,
@@ -139,10 +163,10 @@ const UserPage: React.FC = observer(() => {
                                 userEmail,
                               );
                               await updateDoc(userDocRef, { avatar: imageUrl });
-                              alert("頭像更新成功！");
+                              alert("頭貼更新成功！");
                             } catch (error) {
-                              console.error("更改頭像失敗", error);
-                              alert("更改頭像失敗");
+                              console.error("更改頭貼失敗", error);
+                              alert("更改頭貼失敗");
                             }
                           } else {
                             setImageUpload(null);
