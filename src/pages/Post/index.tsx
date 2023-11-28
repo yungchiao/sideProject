@@ -26,6 +26,10 @@ const Activity: React.FC = observer(() => {
           key={activity.postId}
           className="mx-auto mt-4 w-3/4 rounded-lg border p-4"
         >
+          <div className="mb-4 flex items-center gap-2 border-b-2 px-2 pb-2">
+            <img src={activity.avatar} className="h-10 w-10 rounded-full" />
+            <p>{activity.id}</p>
+          </div>
           <h3>{activity.name}</h3>
           <p>{activity.startTime?.toDate()?.toLocaleString()}</p>
           <p>{activity.endTime?.toDate()?.toLocaleString()}</p>
@@ -33,7 +37,9 @@ const Activity: React.FC = observer(() => {
           <p>{activity.weather}</p>
           <p>{activity.position}</p>
           {activity.hashtags.map((hashtag: string, index: number) => (
-            <p key={index}>#{hashtag}</p>
+            <p key={index} className="text-orange-900">
+              #{hashtag}
+            </p>
           ))}
           <p>{activity.content}</p>
         </div>

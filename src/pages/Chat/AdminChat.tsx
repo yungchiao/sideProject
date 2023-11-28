@@ -99,7 +99,6 @@ const AdminChat = observer(() => {
           </button>
         ))}
       </div>
-
       <div className="w-2/3 rounded-md border p-4">
         {currentMessages.map((message, index) => (
           <p

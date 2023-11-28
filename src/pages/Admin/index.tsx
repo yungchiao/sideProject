@@ -162,7 +162,7 @@ const Admin: React.FC = observer(() => {
 
   const variant = "underlined";
   return (
-    <div className="m-auto mt-28 flex w-4/5 border p-10">
+    <div className="m-auto mt-28 flex w-full  p-10">
       <div className="m-auto mt-2 max-h-screen w-3/5 overflow-scroll border p-10">
         <Input
           label="Activity Name"
@@ -264,7 +264,7 @@ const Admin: React.FC = observer(() => {
           </button>
           <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
             <p className="text-white">
-              <Link to="/adminabout">更新團隊資訊</Link>
+              <Link to="/adminabout">團隊資訊</Link>
             </p>
           </button>
         </div>

@@ -114,12 +114,6 @@ const Calendar: React.FC = observer(() => {
   };
   return (
     <div className="w-600 mt-10 flex justify-between">
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        events={events}
-        eventClick={(admin) => handleEventClick(admin)}
-      />
       {isDetailOpen && selectedAdmin && (
         <Detail
           selectedAdmin={selectedAdmin}
@@ -128,6 +122,12 @@ const Calendar: React.FC = observer(() => {
           handleSignUp={handleSignUp}
         />
       )}
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        events={events}
+        eventClick={(admin) => handleEventClick(admin)}
+      />
     </div>
   );
 });

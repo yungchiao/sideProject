@@ -142,15 +142,31 @@ class AppStore {
         if (!userDoc.exists()) {
           throw new Error("用戶不存在");
         }
-        const existingCartItems = userDoc.data().cartItems || [];
+
+        let existingCartItems = userDoc.data().cartItems || [];
+        let itemExists = false;
+
+        existingCartItems = existingCartItems.map((item: any) => {
+          if (item.id === cartItem.id) {
+            itemExists = true;
+            return { ...item, quantity: item.quantity + cartItem.quantity };
+          }
+          return item;
+        });
+
+        if (!itemExists) {
+          existingCartItems = [...existingCartItems, cartItem];
+        }
+
         transaction.update(userRef, {
-          cartItems: [...existingCartItems, cartItem],
+          cartItems: existingCartItems,
         });
       });
     } catch (error) {
       console.error("添加到購物車失敗", error);
     }
   }
+
   async newLike(email: string, likeItem: any) {
     const userRef = doc(this.db, "user", email);
 
@@ -363,6 +379,11 @@ class AppStore {
       console.error("獲取團隊資訊失敗", error);
     }
   };
+  updateAboutInfo(aboutId: any, updatedAbout: any) {
+    this.aboutInfos = this.aboutInfos.map((about) =>
+      about.id === aboutId ? updatedAbout : about,
+    );
+  }
 
   fetchAllUsersData = async () => {
     const db = getFirestore();

@@ -98,6 +98,20 @@ const AdminAbout: React.FC = observer(() => {
       console.error("更新失敗", error);
     }
   };
+  const handleDeleteImage = async (imageToDelete: string) => {
+    const updatedImages = existingImages.filter(
+      (image) => image !== imageToDelete,
+    );
+
+    try {
+      const aboutDocRef = doc(appStore.db, "about", "2bzODuaQdvKzAcFh0Abw");
+      await updateDoc(aboutDocRef, { images: updatedImages });
+
+      setExistingImages(updatedImages);
+    } catch (error) {
+      console.error("刪除圖片失敗", error);
+    }
+  };
 
   return (
     <div>
@@ -146,14 +160,21 @@ const AdminAbout: React.FC = observer(() => {
           onChange={handleImageChange}
         ></input>
       </div>
-      <div className="flex justify-center gap-4">
+      <div className=" flex items-center justify-center gap-4 ">
         {existingImages.map((imageUrl, index) => (
-          <img
-            key={index}
-            src={imageUrl}
-            alt={`Image ${index}`}
-            className="mb-2 h-auto w-36"
-          />
+          <div key={index} className="relative">
+            <img
+              src={imageUrl}
+              alt={`Image ${index}`}
+              className="h-60 w-auto overflow-hidden rounded-md"
+            />
+            <button
+              className="absolute right-0 top-0 m-1 rounded-full border bg-white p-1 text-white"
+              onClick={() => handleDeleteImage(imageUrl)}
+            >
+              <div className="h-8 w-8 cursor-pointer bg-[url('/trash.png')] bg-contain" />
+            </button>
+          </div>
         ))}
       </div>
       <div className="my-6 flex justify-center ">

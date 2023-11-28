@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { appStore } from "../../AppStore";
-
 const About: React.FC = observer(() => {
   useEffect(() => {
     appStore.fetchAbout();
