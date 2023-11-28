@@ -260,7 +260,7 @@ const UserPage: React.FC = observer(() => {
           </Tab>
         </Tabs>
       </div>
-      <Map />
+
       <div className="my-4 flex justify-center">
         <Button onClick={appStore.logout}>
           <p className="mx-auto flex">登出</p>

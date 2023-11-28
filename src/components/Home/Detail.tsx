@@ -26,7 +26,7 @@ const Detail: React.FC<DetailProps> = ({
   handleSignUp,
 }) => {
   return (
-    <div className="detail-container z-40 mx-20 mt-4 w-1/3 rounded-md  p-4">
+    <div className="detail-container z-40  mt-4 w-1/3 rounded-md  p-4">
       <h3>{selectedAdmin.name}</h3>
       <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
       <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>

@@ -14,6 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
+// import Map from "../../components/Map";
 import Form from "./Form";
 export const storage = getStorage(appStore.app);
 
@@ -209,7 +210,7 @@ const Admin: React.FC = observer(() => {
         >
           <p className="text-stone-800">more #hashtag</p>
         </Button>
-
+        {/* <Map /> */}
         <div className="grid w-full grid-cols-12 gap-4">
           <Input
             key={variant}

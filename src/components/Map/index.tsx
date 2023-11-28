@@ -1,3 +1,4 @@
+import { Button, Input } from "@nextui-org/react";
 import axios from "axios";
 import { useState } from "react";
 
@@ -20,7 +21,6 @@ const LocationInput = () => {
           },
         },
       );
-
       const { lat, lng } = response.data.results[0].geometry.location;
       setPosition({ latitude: lat, longitude: lng });
     } catch (error) {
@@ -30,10 +30,17 @@ const LocationInput = () => {
 
   return (
     <div>
-      <input type="text" value={address} onChange={handleAddressChange} />
-      <button onClick={handleSearch}>Search</button>
+      <div className="flex items-center gap-2">
+        <Input value={address} onChange={handleAddressChange} />
+        <Button
+          onClick={handleSearch}
+          className=" border border-stone-800 bg-white"
+        >
+          搜尋地點
+        </Button>
+      </div>
       {position.latitude && position.longitude && (
-        <div>
+        <div className="mt-2">
           Latitude: {position.latitude}, Longitude: {position.longitude}
         </div>
       )}

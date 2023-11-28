@@ -26,7 +26,7 @@ const Calendar: React.FC = observer(() => {
     const eventsCollection = collection(db, "admin");
     const eventsSnapshot = await getDocs(eventsCollection);
 
-    const eventsData = eventsSnapshot.docs.map((doc) => {
+    const eventsData: CalendarEvent[] = eventsSnapshot.docs.map((doc) => {
       const eventData = doc.data();
 
       const start = eventData.startTime?.toDate
@@ -54,6 +54,9 @@ const Calendar: React.FC = observer(() => {
   useEffect(() => {
     appStore.fetchAdmin();
   }, []);
+  useEffect(() => {
+    setClosestEventAsSelected();
+  }, [events]);
   interface Admin {
     id: string;
     name: string;
@@ -74,6 +77,7 @@ const Calendar: React.FC = observer(() => {
   const [isDetailOpen, setDetailOpen] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
   const [quantity, setQuantity] = useState(0);
+
   const toggleDetail = () => {
     setDetailOpen(!isDetailOpen);
   };
@@ -112,8 +116,48 @@ const Calendar: React.FC = observer(() => {
       alert("請選擇數量");
     }
   };
+  const getClosestEventDate = (): Date => {
+    const today = new Date();
+    let closestDate = today;
+    let minDiff = Infinity;
+
+    events.forEach((event) => {
+      const diff = Math.abs(event.start.getTime() - today.getTime());
+      if (diff < minDiff) {
+        closestDate = event.start;
+        minDiff = diff;
+      }
+    });
+
+    return closestDate;
+  };
+
+  const setClosestEventAsSelected = () => {
+    let closestEvent: CalendarEvent | null = null;
+    let minDiff = Infinity;
+    const today = new Date();
+
+    events.forEach((event) => {
+      const diff = Math.abs(event.start.getTime() - today.getTime());
+      if (diff < minDiff) {
+        closestEvent = event;
+        minDiff = diff;
+      }
+    });
+
+    if (closestEvent) {
+      const selectedEventAdmin = appStore.admins.find(
+        (admin) => admin.name === (closestEvent as CalendarEvent).title,
+      );
+      if (selectedEventAdmin) {
+        setSelectedAdmin(selectedEventAdmin);
+        setDetailOpen(true);
+      }
+    }
+  };
+
   return (
-    <div className="w-600 mt-10 flex justify-between">
+    <div className="mt-10 flex w-full justify-center">
       {isDetailOpen && selectedAdmin && (
         <Detail
           selectedAdmin={selectedAdmin}
@@ -125,6 +169,7 @@ const Calendar: React.FC = observer(() => {
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
+        initialDate={getClosestEventDate()}
         events={events}
         eventClick={(admin) => handleEventClick(admin)}
       />

@@ -580,17 +580,6 @@ class AppStore {
       );
     });
   }
-
-  isModalOpen = false;
-  toggleModal = () => {
-    this.isModalOpen = !this.isModalOpen;
-  };
-  openModal = () => {
-    this.isModalOpen = true;
-  };
-  closeModal = () => {
-    this.isModalOpen = false;
-  };
 }
 
 export const appStore = new AppStore();
