@@ -9,6 +9,7 @@ import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import Cart from "../../components/Cart";
 import Like from "../../components/Like";
+import Map from "../../components/Map";
 export const storage = getStorage(appStore.app);
 
 const UserPage: React.FC = observer(() => {
@@ -259,6 +260,7 @@ const UserPage: React.FC = observer(() => {
           </Tab>
         </Tabs>
       </div>
+      <Map />
       <div className="my-4 flex justify-center">
         <Button onClick={appStore.logout}>
           <p className="mx-auto flex">登出</p>
