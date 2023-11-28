@@ -5,7 +5,10 @@ import App from "./App";
 import Cart from "./components/Cart";
 import Header from "./components/Header";
 import "./index.css";
+import About from "./pages/About";
 import Admin from "./pages/Admin";
+import AdminAbout from "./pages/Admin/AdminAbout";
+import Checkout from "./pages/Admin/Checkout";
 import Chat from "./pages/Chat";
 import AdminChat from "./pages/Chat/AdminChat";
 import Paint from "./pages/Paint";
@@ -26,7 +29,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="userpage" element={<UserPage />} />
       <Route path="cart" element={<Cart />} />
       <Route path="chat" element={<Chat />} />
+      <Route path="about" element={<About />} />
+      <Route path="checkout" element={<Checkout />} />
       <Route path="adminchat" element={<AdminChat />} />
+      <Route path="adminabout" element={<AdminAbout />} />
     </Routes>
   </BrowserRouter>,
 );

@@ -21,6 +21,7 @@ interface Admin {
   startTime: Timestamp;
   endTime: Timestamp;
   content: string;
+  postId: string;
 }
 const UserPost: React.FC = observer(() => {
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
@@ -93,9 +94,9 @@ const UserPost: React.FC = observer(() => {
           position: position,
           image: imageUrl,
           id: appStore.currentUserEmail,
+          postId: docRef.id,
         });
       }
-
       console.log("貼文已添加到 Firestore");
       alert("已發布貼文！");
     } catch (error) {

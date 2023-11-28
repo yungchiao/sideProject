@@ -1,5 +1,11 @@
 import { Button, Input, Textarea } from "@nextui-org/react";
-import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  Timestamp,
+  collection,
+  doc,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
@@ -22,8 +28,8 @@ interface ActivityType {
   content: string;
   hashtags: { [key: string]: string };
   position: string;
-  startTime: Date;
-  endTime: Date;
+  startTime: Timestamp;
+  endTime: Timestamp;
   images: string;
 }
 
@@ -61,16 +67,14 @@ const Admin: React.FC = observer(() => {
     setImageUpload(activity.imagesFile);
     setPosition(activity.position);
     setHashtags(activity.hashtags);
-    console.log([activity.startTime, activity.endTime]);
   };
 
-  const formatDateRange = (start: Date | null, end: Date | null) => {
-    if (start && end) {
+  const formatDateRange = (start: any, end: any) => {
+    if (start instanceof Date && end instanceof Date) {
       const startFormatted = start.toLocaleDateString();
       const endFormatted = end.toLocaleDateString();
       return `${startFormatted}-${endFormatted}`;
     }
-
     return "請選擇日期與時間";
   };
 
@@ -247,11 +251,23 @@ const Admin: React.FC = observer(() => {
             <p className="text-white">新增</p>
           </Button>
         </div>
-        <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
-          <p className="text-white">
-            <Link to="/adminchat">又要跟客戶聊聊</Link>
-          </p>
-        </button>
+        <div className="flex gap-2">
+          <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
+            <p className="text-white">
+              <Link to="/adminchat">客戶聊聊</Link>
+            </p>
+          </button>
+          <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
+            <p className="text-white">
+              <Link to="/checkout">訂單總覽</Link>
+            </p>
+          </button>
+          <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
+            <p className="text-white">
+              <Link to="/adminabout">更新團隊資訊</Link>
+            </p>
+          </button>
+        </div>
       </div>
       <div className="ml-4 mt-2 max-h-screen w-2/5 overflow-scroll border p-10">
         <Form onActivitySelect={handleSelectedActivity} />

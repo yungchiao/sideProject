@@ -11,6 +11,7 @@ import {
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
+import Detail from "../../components/Home/Detail";
 const Calendar: React.FC = observer(() => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
 
@@ -112,46 +113,20 @@ const Calendar: React.FC = observer(() => {
     }
   };
   return (
-    <div className="w-200 mt-40">
+    <div className="w-600 mt-10 flex justify-between">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
         events={events}
         eventClick={(admin) => handleEventClick(admin)}
       />
-
       {isDetailOpen && selectedAdmin && (
-        <div className="detail-container  border">
-          <h3>{selectedAdmin.name}</h3>
-          <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
-          <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
-          <p>{selectedAdmin.position}</p>
-          <p>{selectedAdmin.price}</p>
-          <img src={selectedAdmin.images} className="h-auto w-60" />
-          {selectedAdmin.hashtags &&
-            Array.isArray(selectedAdmin.hashtags) &&
-            selectedAdmin.hashtags.map((hashtag: string, index: number) => (
-              <p key={index}>#{hashtag}</p>
-            ))}
-          <p>{selectedAdmin.content}</p>
-          <button
-            onClick={() => {
-              if (quantity === 0) return;
-              setQuantity(quantity - 1);
-            }}
-          >
-            -
-          </button>
-          {quantity}
-          <button
-            onClick={() => {
-              setQuantity(quantity + 1);
-            }}
-          >
-            +
-          </button>
-          <button onClick={handleSignUp}>確定報名</button>
-        </div>
+        <Detail
+          selectedAdmin={selectedAdmin}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          handleSignUp={handleSignUp}
+        />
       )}
     </div>
   );

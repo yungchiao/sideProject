@@ -1,7 +1,7 @@
+import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { appStore } from "../../AppStore";
-
 interface FormProps {
   onActivitySelect: (activity: ActivityType) => void;
 }
@@ -14,8 +14,8 @@ interface ActivityType {
   content: string;
   hashtags: {};
   position: string;
-  startTime: Date;
-  endTime: Date;
+  startTime: Timestamp;
+  endTime: Timestamp;
   images: string;
 }
 

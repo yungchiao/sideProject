@@ -81,7 +81,6 @@ const UserPage: React.FC = observer(() => {
       const NameData = {
         name: userName,
       };
-
       const userEmail = auth.currentUser?.email;
       if (!userEmail) {
         throw new Error("找不到該用戶！");
@@ -101,7 +100,7 @@ const UserPage: React.FC = observer(() => {
           <div className=" relative">
             <div className=" flex items-center justify-center gap-2">
               <Input
-                className=" my-4 flex w-40 justify-center"
+                className="my-4 flex w-40 justify-center"
                 value={userName}
                 onChange={nameChange}
               />
@@ -259,6 +258,11 @@ const UserPage: React.FC = observer(() => {
             </Card>
           </Tab>
         </Tabs>
+      </div>
+      <div className="my-4 flex justify-center">
+        <Button onClick={appStore.logout}>
+          <p className="mx-auto flex">登出</p>
+        </Button>
       </div>
     </div>
   );

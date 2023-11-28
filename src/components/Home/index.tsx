@@ -1,10 +1,20 @@
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+} from "@nextui-org/react";
 import "firebase/firestore";
 import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
+import Calendar from "../../pages/Calendar";
+import Detail from "./Detail";
 
 const Home: React.FC = observer(() => {
+  const { isModalOpen, toggleModal } = appStore;
   interface Admin {
     id: string;
     name: string;
@@ -33,18 +43,13 @@ const Home: React.FC = observer(() => {
     endTime: Timestamp;
   }
 
-  const [isDetailOpen, setDetailOpen] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
   const [quantity, setQuantity] = useState(0);
   const [likeItems, setLikeItems] = useState<LikeItem[]>([]);
 
-  const toggleDetail = () => {
-    setDetailOpen(!isDetailOpen);
-  };
-
   const handleAdminClick = (admin: any) => {
     setSelectedAdmin(admin);
-    toggleDetail();
+    toggleModal();
   };
 
   useEffect(() => {
@@ -83,50 +88,46 @@ const Home: React.FC = observer(() => {
     }
   };
 
-  const handleAddToLike = () => {
-    if (selectedAdmin) {
-      const likeItem: LikeItem = {
-        id: selectedAdmin.id,
-        name: selectedAdmin.name,
-        images: selectedAdmin.images,
-        position: selectedAdmin.position,
-        price: selectedAdmin.price,
-        startTime: selectedAdmin.startTime,
-        endTime: selectedAdmin.endTime,
-      };
-      const userEmail = appStore.currentUserEmail;
-      if (userEmail) {
-        appStore.newLike(userEmail, likeItem);
-        alert("收藏成功！");
-      } else {
-        alert("用戶未登入");
-      }
+  const handleAddToLike = (admin: Admin) => {
+    const likeItem: LikeItem = {
+      id: admin.id,
+      name: admin.name,
+      images: admin.images,
+      position: admin.position,
+      price: admin.price,
+      startTime: admin.startTime,
+      endTime: admin.endTime,
+    };
+    const userEmail = appStore.currentUserEmail;
+    if (userEmail) {
+      appStore.newLike(userEmail, likeItem);
+      alert("加入收藏成功！");
+    } else {
+      alert("用戶未登入");
     }
   };
 
-  function deleteItem(itemId: string) {
-    const itemToDelete = likeItems.find((item) => item.id === itemId);
-
-    if (itemToDelete && appStore.currentUserEmail) {
-      const newLikeItems = likeItems.filter((item) => item.id !== itemId);
+  function deleteItem(admin: Admin) {
+    if (appStore.currentUserEmail) {
+      const newLikeItems = likeItems.filter((item) => item.id !== admin.id);
       setLikeItems(newLikeItems);
 
-      appStore.deleteFromLike(appStore.currentUserEmail, itemId);
+      appStore.deleteFromLike(appStore.currentUserEmail, admin.id);
       window.alert("取消收藏");
     }
   }
 
-  const handleIconClick = (adminId: string) => {
-    const updatedAdmins = appStore.admins.map((admin) => {
-      if (admin.id === adminId) {
-        if (admin.isLiked) {
-          deleteItem(admin.id);
+  const handleIconClick = (admin: Admin) => {
+    const updatedAdmins = appStore.admins.map((a) => {
+      if (a.id === admin.id) {
+        if (a.isLiked) {
+          deleteItem(admin);
         } else {
-          handleAddToLike();
+          handleAddToLike(admin);
         }
-        return { ...admin, isLiked: !admin.isLiked };
+        return { ...a, isLiked: !a.isLiked };
       }
-      return admin;
+      return a;
     });
 
     appStore.setAdmins(updatedAdmins);
@@ -141,11 +142,12 @@ const Home: React.FC = observer(() => {
         >
           <h3
             onClick={() => handleAdminClick(admin)}
-            className="cursor-pointer"
+            className="inline-block cursor-pointer"
           >
             {admin.name}
           </h3>
-          <p>
+          <br />
+          <p className="inline-block ">
             {admin.startTime?.toDate()?.toLocaleString()}-
             {admin.endTime?.toDate()?.toLocaleString()}
           </p>
@@ -165,8 +167,8 @@ const Home: React.FC = observer(() => {
             strokeWidth="0.8"
             stroke="currentColor"
             className="absolute right-5 top-5 h-8 w-8 cursor-pointer"
-            fill={admin.isLiked ? "red" : "none"}
-            onClick={() => handleIconClick(admin.id)}
+            fill={admin.isLiked ? "red" : "transparent"}
+            onClick={() => handleIconClick(admin)}
           >
             <path
               strokeLinecap="round"
@@ -176,39 +178,39 @@ const Home: React.FC = observer(() => {
           </svg>
         </div>
       ))}
-      {isDetailOpen && selectedAdmin && (
-        <div className="detail-container  border">
-          <h3>{selectedAdmin.name}</h3>
-          <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
-          <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
-          <p>{selectedAdmin.position}</p>
-          <p>{selectedAdmin.price}</p>
-          <img src={selectedAdmin.images} className="h-auto w-60" />
-          {selectedAdmin.hashtags &&
-            Array.isArray(selectedAdmin.hashtags) &&
-            selectedAdmin.hashtags.map((hashtag: string, index: number) => (
-              <p key={index}>#{hashtag}</p>
-            ))}
-          <p>{selectedAdmin.content}</p>
-          <button
-            onClick={() => {
-              if (quantity === 0) return;
-              setQuantity(quantity - 1);
-            }}
-          >
-            -
-          </button>
-          {quantity}
-          <button
-            onClick={() => {
-              setQuantity(quantity + 1);
-            }}
-          >
-            +
-          </button>
-          <button onClick={handleSignUp}>確定報名</button>
+
+      <Modal
+        isOpen={isModalOpen}
+        onOpenChange={toggleModal}
+        className="fixed left-1/2 top-1/2 w-4/5 -translate-x-1/2 -translate-y-1/2 transform border bg-white shadow-lg"
+      >
+        <ModalContent>
+          <ModalBody>
+            {selectedAdmin && (
+              <Detail
+                selectedAdmin={selectedAdmin}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                handleSignUp={handleSignUp}
+              />
+            )}
+          </ModalBody>
+          <ModalFooter className="flex justify-center">
+            <Button
+              className="mb-4 bg-stone-800"
+              variant="light"
+              onPress={toggleModal}
+            >
+              <p className=" text-white">確定</p>
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <div className="mb-10 flex w-full justify-center ">
+        <div className="">
+          <Calendar />
         </div>
-      )}
+      </div>
     </div>
   );
 });

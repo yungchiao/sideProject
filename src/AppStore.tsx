@@ -63,7 +63,14 @@ interface NewUser {
   id: string;
   name: string;
 }
-
+interface About {
+  history: string;
+  activities: string;
+  attendants: string;
+  images: string[];
+  image: string;
+  subsidy: string;
+}
 export interface UserFollow {
   id: string;
   userName: string;
@@ -91,9 +98,13 @@ class AppStore {
   cart: any[] = [];
   searchResults: UserFollow[] = [];
   followingList: string[] = [];
+  aboutInfos: any[] = [];
   chats: any[] = [];
+  allUsersCart: any[] = [];
   currentUserEmail = null;
   currentAdminId = null;
+  aboutDocId = null;
+
   constructor() {
     this.app = initializeApp(this.config);
     this.db = getFirestore(this.app);
@@ -215,7 +226,6 @@ class AppStore {
         if (!userDoc.exists()) {
           throw new Error("用戶不存在");
         }
-
         const newCartItems = userDoc
           .data()
           .cartItems.map((item: any) =>
@@ -290,7 +300,6 @@ class AppStore {
   fetchUserData = async (userId: string) => {
     const db = getFirestore();
     const userRef = doc(db, "user", userId);
-
     try {
       const userSnap = await getDoc(userRef);
       if (userSnap.exists()) {
@@ -317,7 +326,63 @@ class AppStore {
 
     this.userActivities = posts;
   };
+  setAboutDocId(docId: any) {
+    this.aboutDocId = docId;
+  }
+  async fetchAboutId() {
+    const aboutCollection = collection(appStore.db, "about");
+    const querySnapshot = await getDocs(aboutCollection);
+    const docId = querySnapshot.docs[0]?.id;
+    this.setAboutDocId(docId);
+  }
+  setAbout = (newAboutInfos: About[]) => {
+    this.aboutInfos = newAboutInfos;
+  };
+  fetchAbout = async () => {
+    const db = getFirestore();
+    const docRef = doc(db, "about", "2bzODuaQdvKzAcFh0Abw");
 
+    try {
+      const docSnapshot = await getDoc(docRef);
+      if (docSnapshot.exists()) {
+        const aboutData: About = {
+          history: docSnapshot.data().history || "",
+          activities: docSnapshot.data().activities || "",
+          attendants: docSnapshot.data().attendants || "",
+          images: docSnapshot.data().images || [],
+          image: docSnapshot.data().image || "",
+
+          subsidy: docSnapshot.data().subsidy || "",
+        };
+        this.setAbout([aboutData]);
+        return aboutData;
+      } else {
+        console.log("找不到文檔");
+      }
+    } catch (error) {
+      console.error("獲取團隊資訊失敗", error);
+    }
+  };
+
+  fetchAllUsersData = async () => {
+    const db = getFirestore();
+    const userCollectionRef = collection(db, "user");
+
+    try {
+      const querySnapshot = await getDocs(userCollectionRef);
+      const usersData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      this.setAllUsersData(usersData);
+    } catch (error) {
+      console.error("獲取購物車資訊失敗", error);
+    }
+  };
+
+  setAllUsersData = (data: any) => {
+    this.allUsersCart = data;
+  };
   fetchCart = async (email: any) => {
     const db = getFirestore();
     const userRef = doc(db, "user", email);
@@ -494,6 +559,17 @@ class AppStore {
       );
     });
   }
+
+  isModalOpen = false;
+  toggleModal = () => {
+    this.isModalOpen = !this.isModalOpen;
+  };
+  openModal = () => {
+    this.isModalOpen = true;
+  };
+  closeModal = () => {
+    this.isModalOpen = false;
+  };
 }
 
 export const appStore = new AppStore();

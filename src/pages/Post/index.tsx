@@ -1,32 +1,17 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { UserFollow, appStore } from "../../AppStore";
-import UserProfile from "./UserProfile";
+import { appStore } from "../../AppStore";
 import UserSearch from "./UserSearch";
-interface UserProfileProps {
-  user: UserFollow;
-}
 
-const Activity: React.FC<UserProfileProps> = observer(() => {
+const Activity: React.FC = observer(() => {
   useEffect(() => {
     appStore.fetchActivities();
   }, []);
-  const renderUserProfile = () => {
-    if (appStore.newUser) {
-      const userFollow: UserFollow = {
-        id: appStore.newUser.id,
-        userName: appStore.newUser.name,
-        userEmail: appStore.newUser.email,
-      };
-      return <UserProfile user={userFollow} />;
-    }
-    return null;
-  };
+
   return (
     <div className="mt-28">
       <UserSearch />
-      <div>{renderUserProfile()}</div>
 
       <div className="relative">
         <div className="fixed bottom-8 right-8 z-50 h-10 w-10 cursor-pointer rounded-full bg-stone-700">
@@ -38,7 +23,7 @@ const Activity: React.FC<UserProfileProps> = observer(() => {
 
       {appStore.activities.map((activity) => (
         <div
-          key={activity.id}
+          key={activity.postId}
           className="mx-auto mt-4 w-3/4 rounded-lg border p-4"
         >
           <h3>{activity.name}</h3>

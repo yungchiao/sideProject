@@ -1,24 +1,86 @@
 import {
+  Button,
   Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/react";
+import { Timestamp } from "firebase/firestore";
+import Fuse from "fuse.js";
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import Detail from "../Home/Detail.tsx";
 import { SearchIcon } from "./SearchIcon.tsx";
 
 const Header: React.FC = observer(() => {
+  const { isModalOpen, toggleModal } = appStore;
+  interface Admin {
+    id: string;
+    name: string;
+    position: string;
+    price: number;
+    images: string;
+    hashtags: [];
+    startTime: Timestamp;
+    endTime: Timestamp;
+    content: string;
+    isLiked?: boolean;
+  }
+  interface CartItem {
+    name: string;
+    quantity: number;
+    price: number;
+    id: string;
+  }
   useEffect(() => {
     const userId = appStore.currentUserEmail;
-
     if (userId) {
       appStore.fetchUserData(userId);
     }
+    appStore.fetchAdmin();
   }, [appStore.currentUserEmail]);
+  const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
+  const [quantity, setQuantity] = useState(0);
+  const [query, setQuery] = useState("");
+  const fuse = new Fuse(appStore.admins, {
+    keys: ["name", "position"],
+  });
+
+  const results = fuse.search(query);
+  function handleOnSearch(event: React.ChangeEvent<HTMLInputElement>) {
+    const { value } = event.currentTarget;
+    setQuery(value);
+  }
+  const handleSignUp = () => {
+    if (selectedAdmin && quantity > 0) {
+      const cartItem: CartItem = {
+        name: selectedAdmin.name,
+        quantity: quantity,
+        price: selectedAdmin.price,
+        id: selectedAdmin.id,
+      };
+      const userEmail = appStore.currentUserEmail;
+      if (userEmail) {
+        appStore.newCart(userEmail, cartItem);
+        alert("加入訂單成功！");
+      } else {
+        alert("用戶未登入");
+      }
+    } else {
+      alert("請選擇數量");
+    }
+  };
+  const handleAdminClick = (admin: any) => {
+    setSelectedAdmin(admin);
+    toggleModal();
+  };
   return (
     <Navbar isBordered className="fixed top-0  z-20 border-b-2 bg-white p-6">
       <NavbarContent justify="start">
@@ -38,10 +100,34 @@ const Header: React.FC = observer(() => {
               社群
             </Link>
           </NavbarItem>
+          <NavbarItem isActive>
+            <Link to="/about" aria-current="page" color="secondary">
+              關於
+            </Link>
+          </NavbarItem>
         </NavbarContent>
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
+        <div>
+          {query && (
+            <ul className="search-results">
+              {results.length > 0 ? (
+                results.map((result) => (
+                  <li
+                    key={result.item.id}
+                    onClick={() => handleAdminClick(result.item)}
+                    className="cursor-pointer"
+                  >
+                    {result.item.name}
+                  </li>
+                ))
+              ) : (
+                <li>查無活動</li>
+              )}
+            </ul>
+          )}
+        </div>
         <Input
           classNames={{
             base: "max-w-full sm:max-w-[10rem] h-10",
@@ -54,7 +140,10 @@ const Header: React.FC = observer(() => {
           size="sm"
           startContent={<SearchIcon size={18} />}
           type="search"
+          value={query}
+          onChange={handleOnSearch}
         />
+
         <NavbarItem className="list-none">
           <Link color="foreground" to="/chat">
             <svg
@@ -100,6 +189,33 @@ const Header: React.FC = observer(() => {
           )}
         </Link>
       </NavbarContent>
+      <Modal
+        isOpen={isModalOpen}
+        onOpenChange={toggleModal}
+        className="fixed left-1/2 top-1/2 w-4/5 -translate-x-1/2 -translate-y-1/2 transform border bg-white shadow-lg"
+      >
+        <ModalContent>
+          <ModalBody>
+            {selectedAdmin && (
+              <Detail
+                selectedAdmin={selectedAdmin}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                handleSignUp={handleSignUp}
+              />
+            )}
+          </ModalBody>
+          <ModalFooter className="flex justify-center">
+            <Button
+              className="mb-4 bg-stone-800"
+              variant="light"
+              onPress={toggleModal}
+            >
+              <p className=" text-white">確定</p>
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Navbar>
   );
 });

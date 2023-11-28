@@ -5,6 +5,8 @@ import { UserFollow, appStore } from "../../AppStore";
 
 interface UserProfileProps {
   user: UserFollow;
+  isVisible: boolean;
+  toggleVisibility: (email: string) => void;
 }
 
 const UserProfile: React.FC<
