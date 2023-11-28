@@ -20,7 +20,11 @@ import Detail from "../Home/Detail.tsx";
 import { SearchIcon } from "./SearchIcon.tsx";
 
 const Header: React.FC = observer(() => {
-  const { isModalOpen, toggleModal } = appStore;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  // const openModal = () => setIsModalOpen(true);
+  // const closeModal = () => setIsModalOpen(false);
   interface Admin {
     id: string;
     name: string;
@@ -46,7 +50,9 @@ const Header: React.FC = observer(() => {
     }
     appStore.fetchAdmin();
   }, [appStore.currentUserEmail]);
-  const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
+  const [headerSelectedAdmin, setHeaderSelectedAdmin] = useState<Admin | null>(
+    null,
+  );
   const [quantity, setQuantity] = useState(0);
   const [query, setQuery] = useState("");
   const fuse = new Fuse(appStore.admins, {
@@ -59,12 +65,12 @@ const Header: React.FC = observer(() => {
     setQuery(value);
   }
   const handleSignUp = () => {
-    if (selectedAdmin && quantity > 0) {
+    if (headerSelectedAdmin && quantity > 0) {
       const cartItem: CartItem = {
-        name: selectedAdmin.name,
+        name: headerSelectedAdmin.name,
         quantity: quantity,
-        price: selectedAdmin.price,
-        id: selectedAdmin.id,
+        price: headerSelectedAdmin.price,
+        id: headerSelectedAdmin.id,
       };
       const userEmail = appStore.currentUserEmail;
       if (userEmail) {
@@ -78,9 +84,10 @@ const Header: React.FC = observer(() => {
     }
   };
   const handleAdminClick = (admin: any) => {
-    setSelectedAdmin(admin);
+    setHeaderSelectedAdmin(admin);
     toggleModal();
   };
+
   return (
     <Navbar isBordered className="fixed top-0  z-20 border-b-2 bg-white p-6">
       <NavbarContent justify="start">
@@ -196,9 +203,9 @@ const Header: React.FC = observer(() => {
       >
         <ModalContent>
           <ModalBody>
-            {selectedAdmin && (
+            {headerSelectedAdmin && (
               <Detail
-                selectedAdmin={selectedAdmin}
+                selectedAdmin={headerSelectedAdmin}
                 quantity={quantity}
                 setQuantity={setQuantity}
                 handleSignUp={handleSignUp}

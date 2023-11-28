@@ -14,7 +14,10 @@ import Calendar from "../../pages/Calendar";
 import Detail from "./Detail";
 
 const Home: React.FC = observer(() => {
-  const { isModalOpen, toggleModal } = appStore;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
   interface Admin {
     id: string;
     name: string;
@@ -207,9 +210,7 @@ const Home: React.FC = observer(() => {
         </ModalContent>
       </Modal>
       <div className="mb-10 flex w-full justify-center ">
-        <div className="">
-          <Calendar />
-        </div>
+        <Calendar />
       </div>
     </div>
   );
