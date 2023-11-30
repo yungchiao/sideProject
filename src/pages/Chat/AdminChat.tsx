@@ -82,7 +82,7 @@ const AdminChat = observer(() => {
   };
 
   return (
-    <div className="mx-20 mt-28 flex justify-between rounded-md border p-4">
+    <div className="mx-20 mb-40 mt-28 flex justify-between rounded-md border p-4">
       <div className="w-1/3">
         {chats.map((chat) => (
           <button

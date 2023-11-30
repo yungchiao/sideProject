@@ -10,7 +10,7 @@ const Activity: React.FC = observer(() => {
   }, []);
 
   return (
-    <div className="mt-28">
+    <div className="mb-40 mt-28">
       <UserSearch />
 
       <div className="relative">

@@ -14,7 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
-// import Map from "../../components/Map";
+import Map from "../../components/Map";
 import Form from "./Form";
 export const storage = getStorage(appStore.app);
 
@@ -28,10 +28,12 @@ interface ActivityType {
   price: number;
   content: string;
   hashtags: { [key: string]: string };
-  position: string;
+  latitude: string;
+  longitude: string;
   startTime: Timestamp;
   endTime: Timestamp;
   images: string;
+  place: string;
 }
 
 const Admin: React.FC = observer(() => {
@@ -42,7 +44,11 @@ const Admin: React.FC = observer(() => {
   const [startDate, endDate] = dateRange;
   const [items, setItems] = useState<number>(1);
   const [price, setPrice] = useState<string>("");
-  const [position, setPosition] = useState<string>("");
+  const [place, setPlace] = useState<string>("");
+  const [position, setPosition] = useState<{
+    latitude: string | null;
+    longitude: string | null;
+  }>({ latitude: null, longitude: null });
   const [hashtags, setHashtags] = useState<Hashtag>({});
   const [activityName, setActivityName] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -66,8 +72,12 @@ const Admin: React.FC = observer(() => {
     setPrice(activity.price.toString());
     setContent(activity.content);
     setImageUpload(activity.imagesFile);
-    setPosition(activity.position);
     setHashtags(activity.hashtags);
+    setPlace(activity.place);
+    setPosition({
+      latitude: activity.latitude || "",
+      longitude: activity.longitude || "",
+    });
   };
 
   const formatDateRange = (start: any, end: any) => {
@@ -95,8 +105,8 @@ const Admin: React.FC = observer(() => {
     setHashtags({ ...hashtags, [index]: event.target.value });
   };
 
-  const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPosition(event.target.value);
+  const handlePositionChange = (newPosition: any) => {
+    setPosition(newPosition);
   };
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,6 +115,10 @@ const Admin: React.FC = observer(() => {
 
   const handleContent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContent(event.target.value);
+  };
+
+  const handlePlaceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPlace(event.target.value);
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,9 +150,11 @@ const Admin: React.FC = observer(() => {
         endTime: endDate,
         hashtags: Object.values(hashtags),
         content: content,
-        position: position,
+        latitude: position.latitude || "0",
+        longitude: position.longitude || "0",
         images: imageUrlToSave,
         price: price,
+        place: place,
       };
 
       if (selectedActivity) {
@@ -157,13 +173,13 @@ const Admin: React.FC = observer(() => {
       console.error("活動處理失敗", error);
     }
   };
+
   const addAmount = () => {
     setItems((prevItems) => prevItems + 1);
   };
-
   const variant = "underlined";
   return (
-    <div className="m-auto mt-28 flex w-full  p-10">
+    <div className="m-auto mb-20 mt-28 flex  w-full p-10">
       <div className="m-auto mt-2 max-h-screen w-3/5 overflow-scroll border p-10">
         <Input
           label="Activity Name"
@@ -210,7 +226,6 @@ const Admin: React.FC = observer(() => {
         >
           <p className="text-stone-800">more #hashtag</p>
         </Button>
-        {/* <Map /> */}
         <div className="grid w-full grid-cols-12 gap-4">
           <Input
             key={variant}
@@ -218,9 +233,20 @@ const Admin: React.FC = observer(() => {
             labelPlacement="outside"
             placeholder="輸入地點"
             className="col-span-12 mb-6 md:col-span-6 md:mb-4"
-            onChange={handlePositionChange}
-            value={position}
+            onChange={handlePlaceChange}
+            value={place}
           />
+        </div>
+        <Map onPositionChange={handlePositionChange} />
+        <div className="grid w-full grid-cols-12 gap-4">
+          <div className="my-4">
+            <p className=" mb-2 text-xs">
+              Latitude: {position.latitude?.toString()}
+            </p>
+            <p className="text-xs">
+              Longitude: {position.longitude?.toString()}
+            </p>
+          </div>
         </div>
         <div className="block">
           <input type="file" className="mb-4 " onChange={handleImageChange} />

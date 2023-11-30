@@ -8,7 +8,7 @@ const About: React.FC = observer(() => {
   }, []);
 
   return (
-    <div className="mt-28">
+    <div className="mb-40 mt-28">
       {appStore.allUsersCart.map((user, userIndex) => {
         if (!user.cartItems || user.cartItems.length === 0) {
           return null;

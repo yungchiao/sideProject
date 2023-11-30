@@ -46,7 +46,8 @@ interface FirebaseConfig {
 interface Admin {
   id: string;
   name: string;
-  position: string;
+  latitude: string;
+  longitude: string;
   price: number;
   images: string;
   hashtags: [];
@@ -54,6 +55,7 @@ interface Admin {
   endTime: Timestamp;
   content: string;
   isLiked?: boolean;
+  place: string;
 }
 interface NewUser {
   avatar: string;

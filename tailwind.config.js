@@ -2,7 +2,6 @@
 // eslint-disable-next-line no-undef
 const { nextui } = require("@nextui-org/theme");
 export default {
-
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",

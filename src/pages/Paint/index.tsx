@@ -171,8 +171,8 @@ const Paint: React.FC = observer(() => {
           </Button>
         </div>
       </div>
-      <div ref={sketchRef} className="flex justify-center"></div>
-      <div className="mt-4 flex justify-center gap-2">
+      <div ref={sketchRef} className=" mb-10 flex justify-center"></div>
+      <div className="mb-40 mt-4 flex justify-center gap-2">
         <Button onClick={saveDrawing}>下載作品</Button>
         <Button onClick={saveAndUploadDrawing}>設定為頭貼</Button>
       </div>

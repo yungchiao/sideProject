@@ -129,6 +129,7 @@ const AdminAbout: React.FC = observer(() => {
         />
       </div>
       <div className="flex items-center justify-center gap-4">
+        <p>舉辦過</p>
         <Input
           className="my-4 flex w-40 justify-center"
           value={activities}
@@ -137,6 +138,7 @@ const AdminAbout: React.FC = observer(() => {
         <p>個活動</p>
       </div>
       <div className="flex items-center justify-center gap-4">
+        <p>累積</p>
         <Input
           className="my-4 flex w-40 justify-center"
           value={attendants}
@@ -145,6 +147,7 @@ const AdminAbout: React.FC = observer(() => {
         <p>位參加者</p>
       </div>
       <div className="flex items-center justify-center gap-4">
+        <p>獲得</p>
         <Input
           className="my-4 flex w-40 justify-center"
           value={subsidy}

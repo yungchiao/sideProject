@@ -14,7 +14,6 @@ import { appStore } from "../../AppStore";
 import Detail from "../../components/Home/Detail";
 const Calendar: React.FC = observer(() => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-
   interface CalendarEvent {
     title: string;
     start: Date;
@@ -78,9 +77,6 @@ const Calendar: React.FC = observer(() => {
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
   const [quantity, setQuantity] = useState(0);
 
-  const toggleDetail = () => {
-    setDetailOpen(!isDetailOpen);
-  };
   const handleEventClick = (clickInfo: any) => {
     const eventName = clickInfo.event.title;
     const selectedEventAdmin = appStore.admins.find(
@@ -89,10 +85,11 @@ const Calendar: React.FC = observer(() => {
 
     if (selectedEventAdmin) {
       setSelectedAdmin(selectedEventAdmin);
-      toggleDetail();
+      setDetailOpen(true);
     } else {
       console.error("找不到該活動");
       setSelectedAdmin(null);
+      setDetailOpen(false);
     }
   };
 

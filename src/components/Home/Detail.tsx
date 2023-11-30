@@ -3,7 +3,7 @@ import React from "react";
 interface Admin {
   id: string;
   name: string;
-  position: string;
+  place: string;
   price: number;
   images: string;
   hashtags: [];
@@ -11,6 +11,8 @@ interface Admin {
   endTime: Timestamp;
   content: string;
   isLiked?: boolean;
+  latitude: string;
+  longitude: string;
 }
 interface DetailProps {
   selectedAdmin: Admin;
@@ -18,7 +20,9 @@ interface DetailProps {
   setQuantity: (quantity: number) => void;
   handleSignUp: () => void;
 }
-
+const getGoogleMapsLink = (latitude: any, longitude: any) => {
+  return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+};
 const Detail: React.FC<DetailProps> = ({
   selectedAdmin,
   quantity,
@@ -30,7 +34,22 @@ const Detail: React.FC<DetailProps> = ({
       <h3>{selectedAdmin.name}</h3>
       <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
       <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
-      <p>{selectedAdmin.position}</p>
+      <p>
+        {selectedAdmin.latitude && selectedAdmin.longitude ? (
+          <a
+            href={getGoogleMapsLink(
+              selectedAdmin.latitude,
+              selectedAdmin.longitude,
+            )}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {selectedAdmin.place}
+          </a>
+        ) : (
+          <span>{selectedAdmin.place}</span>
+        )}
+      </p>
       <p>{selectedAdmin.price}</p>
       <img src={selectedAdmin.images} className="h-auto w-60" />
       {selectedAdmin.hashtags &&

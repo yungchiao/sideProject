@@ -13,10 +13,12 @@ interface ActivityType {
   price: number;
   content: string;
   hashtags: {};
-  position: string;
+  latitude: string;
+  longitude: string;
   startTime: Timestamp;
   endTime: Timestamp;
   images: string;
+  place: string;
 }
 
 const Form: React.FC<FormProps> = ({ onActivitySelect }) => {
