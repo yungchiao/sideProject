@@ -33,7 +33,7 @@ const GoogleMap: React.FC = observer(() => {
       zoom: 7,
     });
     const customIconUrl = "/footprints.png";
-    const iconSize = new google.maps.Size(40, 40);
+    const iconSize = new google.maps.Size(30, 30);
     cartItems.forEach((cart) => {
       const marker = new google.maps.Marker({
         position: new google.maps.LatLng(

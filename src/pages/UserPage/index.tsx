@@ -260,8 +260,11 @@ const UserPage: React.FC = observer(() => {
           </Tab>
         </Tabs>
       </div>
+      <div className="mb-10 flex justify-center">
+        <h1 className="text-4xl">{userName} の 足跡</h1>
+      </div>
       <GoogleMap />
-      <div className="my-4 flex justify-center">
+      <div className="my-4 mt-10 flex  justify-center">
         <Button onClick={appStore.logout}>
           <p className="mx-auto flex">登出</p>
         </Button>

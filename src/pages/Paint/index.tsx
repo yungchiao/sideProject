@@ -13,6 +13,7 @@ const Paint: React.FC = observer(() => {
   const [color, setColor] = useState<string>("black");
   const [isEraser, setIsEraser] = useState<boolean>(false);
   const [p5Instance, setP5Instance] = useState<p5 | null>(null);
+  const [history, setHistory] = useState<number[][]>([]);
 
   useEffect(() => {
     const sketch = (p: p5) => {
@@ -46,13 +47,6 @@ const Paint: React.FC = observer(() => {
         );
       };
 
-      const drawLine = (x0: number, y0: number, x1: number, y1: number) => {
-        const strokeColor = isEraser ? p.color(255, 255, 255) : p.color(color);
-        p.stroke(strokeColor);
-        p.strokeWeight(isEraser ? 10 : 2);
-        p.line(x0, y0, x1, y1);
-      };
-
       p.mouseDragged = () => {
         drawLine(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
       };
@@ -66,24 +60,46 @@ const Paint: React.FC = observer(() => {
       setP5Instance(new p5(sketch, sketchRef.current));
     }
   }, []);
+  const saveCanvasState = () => {
+    if (p5Instance) {
+      p5Instance.loadPixels();
+      const currentState = p5Instance.pixels.slice();
+      setHistory((prevHistory) => [...prevHistory, currentState]);
+    }
+  };
 
+  const undoLastAction = () => {
+    setHistory((prevHistory) => {
+      if (prevHistory.length > 0) {
+        const lastState = prevHistory[prevHistory.length - 1];
+
+        if (p5Instance) {
+          p5Instance.loadPixels();
+          for (let i = 0; i < lastState.length; i++) {
+            p5Instance.pixels[i] = lastState[i];
+          }
+          p5Instance.updatePixels();
+
+          return prevHistory.slice(0, -1);
+        }
+      }
+      return prevHistory;
+    });
+  };
+  const drawLine = (x0: number, y0: number, x1: number, y1: number) => {
+    if (p5Instance) {
+      const strokeColor = isEraser
+        ? p5Instance.color(255, 255, 255)
+        : p5Instance.color(color);
+      p5Instance.stroke(strokeColor);
+      p5Instance.strokeWeight(isEraser ? 10 : 2);
+      p5Instance.line(x0, y0, x1, y1);
+    }
+  };
   useEffect(() => {
     if (p5Instance) {
-      p5Instance.mouseDragged = () => {
-        const strokeColor = isEraser
-          ? p5Instance.color(255)
-          : p5Instance.color(color);
-        p5Instance.stroke(strokeColor);
-        p5Instance.strokeWeight(isEraser ? 6 : 2);
-        p5Instance.line(
-          p5Instance.pmouseX,
-          p5Instance.pmouseY,
-          p5Instance.mouseX,
-          p5Instance.mouseY,
-        );
-      };
-
       p5Instance.mousePressed = () => {
+        saveCanvasState();
         const strokeColor = isEraser
           ? p5Instance.color(255)
           : p5Instance.color(color);
@@ -91,8 +107,18 @@ const Paint: React.FC = observer(() => {
         p5Instance.strokeWeight(isEraser ? 10 : 2);
         p5Instance.point(p5Instance.mouseX, p5Instance.mouseY);
       };
+
+      p5Instance.mouseDragged = () => {
+        drawLine(
+          p5Instance.pmouseX,
+          p5Instance.pmouseY,
+          p5Instance.mouseX,
+          p5Instance.mouseY,
+        );
+      };
     }
-  }, [color, isEraser, p5Instance]);
+  }, [color, isEraser, p5Instance, drawLine]);
+
   const saveDrawing = () => {
     if (p5Instance) {
       p5Instance.saveCanvas("myDrawing", "png");
@@ -131,11 +157,24 @@ const Paint: React.FC = observer(() => {
     await uploadBytes(storageRef, file);
     return getDownloadURL(storageRef);
   };
+  const imageList = [
+    { src: "/bear2.png", alt: "Image 1" },
+    { src: "/bear3.png", alt: "Image 2" },
+  ];
+
+  const selectImageAsBackground = (imageSrc: any) => {
+    if (p5Instance) {
+      p5Instance.loadImage(imageSrc, (img) => {
+        p5Instance.clear(0, 0, 0, 0);
+        p5Instance.background(img);
+      });
+    }
+  };
 
   return (
     <>
       <div className="m-auto mb-10 mt-28 w-3/4 border border-stone-800 p-4">
-        <div className="flex justify-center ">
+        <div className="flex justify-center gap-2">
           {isEraser ? (
             <Button
               className="mb-4 border border-stone-800 bg-white"
@@ -155,6 +194,22 @@ const Paint: React.FC = observer(() => {
               </p>
             </Button>
           )}
+          <Button onClick={undoLastAction}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+              />
+            </svg>
+          </Button>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Button color="default" onClick={() => setColor("black")}>
@@ -172,6 +227,19 @@ const Paint: React.FC = observer(() => {
         </div>
       </div>
       <div ref={sketchRef} className=" mb-10 flex justify-center"></div>
+      <div className="image-selection flex justify-center gap-4">
+        {imageList.map((img, index) => (
+          <div className="h-30 flex w-20  overflow-hidden border p-1">
+            <img
+              key={index}
+              src={img.src}
+              alt={img.alt}
+              className="h-auto w-full"
+              onClick={() => selectImageAsBackground(img.src)}
+            />
+          </div>
+        ))}
+      </div>
       <div className="mb-40 mt-4 flex justify-center gap-2">
         <Button onClick={saveDrawing}>下載作品</Button>
         <Button onClick={saveAndUploadDrawing}>設定為頭貼</Button>
