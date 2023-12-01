@@ -10,7 +10,7 @@ import { getStorage } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { appStore } from "../../AppStore";
-
+import emailjs from "@emailjs/browser";
 const app = initializeApp(appStore.config);
 const db = getFirestore(app);
 export const storage = getStorage(app);
@@ -64,6 +64,7 @@ const Profile: React.FC = observer(() => {
         await appStore.addUser(user.uid, email, name, new File([], ""));
       }
       alert("註冊成功!");
+      emailjs.send();
       console.log("註冊成功：", user);
     } catch (error) {
       alert("註冊失敗!");
