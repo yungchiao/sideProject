@@ -67,7 +67,7 @@ const Chat = observer(() => {
     <div className="mx-20 mb-40 mt-28 rounded-md border p-4">
       <div>
         {appStore.chats.map((chat) => (
-          <div key={chat.id}>
+          <div key={chat.id} className="flex">
             {chat.messages.map((msg: any, index: any) => (
               <p key={index}>{msg.text}</p>
             ))}
@@ -77,7 +77,7 @@ const Chat = observer(() => {
           <p
             className={`mb-4 w-fit rounded-md border p-2 ${
               message.sender === "client"
-                ? "bg-gray-100 text-stone-800 "
+                ? "flex justify-end bg-gray-100 text-stone-800"
                 : "bg-gray-600 text-white"
             }`}
             key={index}

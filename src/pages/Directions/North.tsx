@@ -11,11 +11,9 @@ import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
-import Calendar from "../../pages/Calendar";
-import Carousal from "./Carousel";
-import Detail from "./Detail";
+import Detail from "../../components/Home/Detail";
 
-const Home: React.FC = observer(() => {
+const North: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -62,7 +60,7 @@ const Home: React.FC = observer(() => {
   };
 
   useEffect(() => {
-    appStore.fetchAdmin();
+    appStore.fetchNorthAdmin();
 
     const userEmail = appStore.currentUserEmail;
     if (userEmail) {
@@ -146,12 +144,6 @@ const Home: React.FC = observer(() => {
   };
   return (
     <div className="  mb-40 mt-28 px-10">
-      {/* <div className="mb-10 h-60 w-full items-center bg-zinc-200">
-        <h1 className="flex justify-center">我是Hero Header</h1>
-      </div> */}
-      <div className="mb-10 flex h-auto  justify-center">
-        <Carousal />
-      </div>
       <div className="  mb-20 grid  grid-cols-2 gap-4 md:grid-cols-3">
         {appStore.admins.map((admin: Admin) => (
           <Card
@@ -255,11 +247,9 @@ const Home: React.FC = observer(() => {
             </ModalBody>
           </ModalContent>
         </Modal>
-        <div className="mb-10 flex w-full justify-center gap-4"></div>
       </div>
-      <Calendar />
     </div>
   );
 });
 
-export default Home;
+export default North;

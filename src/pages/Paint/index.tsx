@@ -31,7 +31,7 @@ const Paint: React.FC = observer(() => {
       };
 
       p.setup = () => {
-        const canvas = p.createCanvas(700, 500);
+        const canvas = p.createCanvas(500, 500);
         canvasRef.current = canvas.elt;
         if (bg) {
           p.image(bg, 0, 0, p.width, p.height);
@@ -60,6 +60,7 @@ const Paint: React.FC = observer(() => {
       setP5Instance(new p5(sketch, sketchRef.current));
     }
   }, []);
+
   const saveCanvasState = () => {
     if (p5Instance) {
       p5Instance.loadPixels();
@@ -72,20 +73,19 @@ const Paint: React.FC = observer(() => {
     setHistory((prevHistory) => {
       if (prevHistory.length > 0) {
         const lastState = prevHistory[prevHistory.length - 1];
-
         if (p5Instance) {
           p5Instance.loadPixels();
           for (let i = 0; i < lastState.length; i++) {
             p5Instance.pixels[i] = lastState[i];
           }
           p5Instance.updatePixels();
-
           return prevHistory.slice(0, -1);
         }
       }
       return prevHistory;
     });
   };
+
   const drawLine = (x0: number, y0: number, x1: number, y1: number) => {
     if (p5Instance) {
       const strokeColor = isEraser
@@ -158,8 +158,9 @@ const Paint: React.FC = observer(() => {
     return getDownloadURL(storageRef);
   };
   const imageList = [
-    { src: "/bear2.png", alt: "Image 1" },
-    { src: "/bear3.png", alt: "Image 2" },
+    { src: "/bear.jpg", alt: "臺灣黑熊", name: "臺灣黑熊" },
+    { src: "/bird.jpg", alt: "臺灣藍鵲", name: "臺灣藍鵲" },
+    { src: "/deer.jpg", alt: "梅花鹿", name: "梅花鹿" },
   ];
 
   const selectImageAsBackground = (imageSrc: any) => {
@@ -229,14 +230,17 @@ const Paint: React.FC = observer(() => {
       <div ref={sketchRef} className=" mb-10 flex justify-center"></div>
       <div className="image-selection flex justify-center gap-4">
         {imageList.map((img, index) => (
-          <div className="h-30 flex w-20  overflow-hidden border p-1">
-            <img
-              key={index}
-              src={img.src}
-              alt={img.alt}
-              className="h-auto w-full"
-              onClick={() => selectImageAsBackground(img.src)}
-            />
+          <div className="mb-3">
+            <div className="h-30 flex w-20  overflow-hidden border p-1">
+              <img
+                key={index}
+                src={img.src}
+                alt={img.alt}
+                className="h-auto w-full"
+                onClick={() => selectImageAsBackground(img.src)}
+              />
+            </div>
+            <p className="mt-3 flex justify-center text-xs">{img.name}</p>
           </div>
         ))}
       </div>

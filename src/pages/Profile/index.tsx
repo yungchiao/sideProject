@@ -1,3 +1,4 @@
+import emailjs from "@emailjs/browser";
 import { Button, Card, Input, Link, Tab, Tabs } from "@nextui-org/react";
 import { initializeApp } from "firebase/app";
 import {
@@ -10,7 +11,6 @@ import { getStorage } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { appStore } from "../../AppStore";
-import emailjs from "@emailjs/browser";
 const app = initializeApp(appStore.config);
 const db = getFirestore(app);
 export const storage = getStorage(app);
@@ -49,6 +49,10 @@ const Profile: React.FC = observer(() => {
     }
   };
 
+  const SERVED_ID = "service_um0snro";
+  const TEMPLETE_ID = "template_7jpstzp";
+  const PUBLIC_KEY = "KGd5mgGXtzBQFKCyN";
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
   const handleRegister = async (email: string, password: string) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -64,7 +68,20 @@ const Profile: React.FC = observer(() => {
         await appStore.addUser(user.uid, email, name, new File([], ""));
       }
       alert("註冊成功!");
-      emailjs.send();
+      emailjs.send(
+        SERVED_ID,
+        TEMPLETE_ID,
+        {
+          from_name: "Gravity Team 地新引力",
+          to_name: name,
+          from_email: form.email,
+          to_email: email,
+          message:
+            "歡迎加入地新引力的世界，一起幫助逐漸消逝的傳統文化與精神再度復活，讓我們一起征服宇宙吧！",
+          test: "Gravity Team 地新引力",
+        },
+        PUBLIC_KEY,
+      );
       console.log("註冊成功：", user);
     } catch (error) {
       alert("註冊失敗!");

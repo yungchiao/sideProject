@@ -56,6 +56,7 @@ interface Admin {
   content: string;
   isLiked?: boolean;
   place: string;
+  direction: string;
 }
 interface NewUser {
   avatar: string;
@@ -315,6 +316,7 @@ class AppStore {
       this.activities = updatedActivities;
     });
   };
+
   fetchUserData = async (userId: string) => {
     const db = getFirestore();
     const userRef = doc(db, "user", userId);
@@ -453,7 +455,50 @@ class AppStore {
       this.admins = updatedAdmins;
     });
   };
-
+  fetchNorthAdmin = async () => {
+    const db = getFirestore();
+    const querySnapshot = await getDocs(
+      query(collection(db, "admin"), where("direction", "==", "north")),
+    );
+    const northAdmins = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    this.admins = northAdmins;
+  };
+  fetchCenterAdmin = async () => {
+    const db = getFirestore();
+    const querySnapshot = await getDocs(
+      query(collection(db, "admin"), where("direction", "==", "center")),
+    );
+    const centerAdmins = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    this.admins = centerAdmins;
+  };
+  fetchSouthAdmin = async () => {
+    const db = getFirestore();
+    const querySnapshot = await getDocs(
+      query(collection(db, "admin"), where("direction", "==", "south")),
+    );
+    const southAdmins = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    this.admins = southAdmins;
+  };
+  fetchEastAdmin = async () => {
+    const db = getFirestore();
+    const querySnapshot = await getDocs(
+      query(collection(db, "admin"), where("direction", "==", "east")),
+    );
+    const eastAdmins = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    this.admins = eastAdmins;
+  };
   deleteAdmin = async (id: any) => {
     try {
       await deleteDoc(doc(this.db, "admin", id));

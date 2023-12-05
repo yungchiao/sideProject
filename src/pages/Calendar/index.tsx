@@ -66,6 +66,9 @@ const Calendar: React.FC = observer(() => {
     startTime: Timestamp;
     endTime: Timestamp;
     content: string;
+    place: string;
+    longitude: string;
+    latitude: string;
   }
   interface CartItem {
     name: string;
@@ -163,13 +166,15 @@ const Calendar: React.FC = observer(() => {
           handleSignUp={handleSignUp}
         />
       )}
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-        initialView="dayGridMonth"
-        initialDate={getClosestEventDate()}
-        events={events}
-        eventClick={(admin) => handleEventClick(admin)}
-      />
+      <div className="calendar-bg">
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          initialDate={getClosestEventDate()}
+          events={events}
+          eventClick={(admin) => handleEventClick(admin)}
+        />
+      </div>
     </div>
   );
 });

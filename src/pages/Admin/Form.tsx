@@ -19,6 +19,7 @@ interface ActivityType {
   endTime: Timestamp;
   images: string;
   place: string;
+  direction: string;
 }
 
 const Form: React.FC<FormProps> = ({ onActivitySelect }) => {

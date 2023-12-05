@@ -34,6 +34,7 @@ interface ActivityType {
   endTime: Timestamp;
   images: string;
   place: string;
+  direction: string;
 }
 
 const Admin: React.FC = observer(() => {
@@ -45,6 +46,7 @@ const Admin: React.FC = observer(() => {
   const [items, setItems] = useState<number>(1);
   const [price, setPrice] = useState<string>("");
   const [place, setPlace] = useState<string>("");
+  const [direction, setDirection] = useState<string>("");
   const [position, setPosition] = useState<{
     latitude: string | null;
     longitude: string | null;
@@ -74,6 +76,7 @@ const Admin: React.FC = observer(() => {
     setImageUpload(activity.imagesFile);
     setHashtags(activity.hashtags);
     setPlace(activity.place);
+    setDirection(activity.direction);
     setPosition({
       latitude: activity.latitude || "",
       longitude: activity.longitude || "",
@@ -120,7 +123,11 @@ const Admin: React.FC = observer(() => {
   const handlePlaceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPlace(event.target.value);
   };
-
+  const handleDirectionChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setDirection(event.target.value);
+  };
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const newImageFile = event.target.files[0];
@@ -155,6 +162,7 @@ const Admin: React.FC = observer(() => {
         images: imageUrlToSave,
         price: price,
         place: place,
+        direction: direction,
       };
 
       if (selectedActivity) {
@@ -248,6 +256,11 @@ const Admin: React.FC = observer(() => {
             </p>
           </div>
         </div>
+        <Input
+          label="Activity direction"
+          value={direction}
+          onChange={(e) => setDirection(e.target.value)}
+        />
         <div className="block">
           <input type="file" className="mb-4 " onChange={handleImageChange} />
           <Button className="mb-4 border border-stone-800 bg-white">

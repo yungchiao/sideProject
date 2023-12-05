@@ -28,7 +28,7 @@ const Header: React.FC = observer(() => {
   interface Admin {
     id: string;
     name: string;
-    position: string;
+    place: string;
     price: number;
     images: string;
     hashtags: [];
@@ -36,6 +36,8 @@ const Header: React.FC = observer(() => {
     endTime: Timestamp;
     content: string;
     isLiked?: boolean;
+    latitude: string;
+    longitude: string;
   }
   interface CartItem {
     name: string;
@@ -89,11 +91,13 @@ const Header: React.FC = observer(() => {
   };
 
   return (
-    <Navbar isBordered className="fixed top-0  z-20 border-b-2 bg-white p-6">
+    <Navbar isBordered className="fixed top-0  z-50 border-b-2 bg-white p-6">
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
           <Link color="foreground" to="/">
-            ICON
+            <div className="h-10 w-10 overflow-hidden">
+              <img src="/gravity-logo.png" />
+            </div>
           </Link>
         </NavbarBrand>
         <NavbarContent className="hidden gap-3 sm:flex">

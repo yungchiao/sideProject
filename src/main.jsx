@@ -12,6 +12,10 @@ import AdminAbout from "./pages/Admin/AdminAbout";
 import Checkout from "./pages/Admin/Checkout";
 import Chat from "./pages/Chat";
 import AdminChat from "./pages/Chat/AdminChat";
+import Center from "./pages/Directions/Center";
+import East from "./pages/Directions/East";
+import North from "./pages/Directions/North";
+import South from "./pages/Directions/South";
 import Paint from "./pages/Paint";
 import Post from "./pages/Post";
 import UserPost from "./pages/Post/UserPost";
@@ -34,6 +38,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="checkout" element={<Checkout />} />
       <Route path="adminchat" element={<AdminChat />} />
       <Route path="adminabout" element={<AdminAbout />} />
+      <Route path="north" element={<North />} />
+      <Route path="south" element={<South />} />
+      <Route path="east" element={<East />} />
+      <Route path="center" element={<Center />} />
     </Routes>
     <Footer />
   </BrowserRouter>,
