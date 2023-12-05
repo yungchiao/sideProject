@@ -123,11 +123,7 @@ const Admin: React.FC = observer(() => {
   const handlePlaceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPlace(event.target.value);
   };
-  const handleDirectionChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setDirection(event.target.value);
-  };
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const newImageFile = event.target.files[0];
