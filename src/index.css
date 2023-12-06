@@ -4,3 +4,40 @@
 .calendar-bg {
   @apply relative flex min-w-0 flex-col break-words rounded-2xl border-0 bg-white bg-clip-border p-3 text-sm shadow-xl;
 }
+
+html {
+  @apply bg-stone-100;
+}
+.active-tab {
+  background-color: #f3f4f6;
+}
+
+body {
+  @apply bg-stone-100;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.slide-in {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+.slide-out {
+  animation: slideOut 0.5s ease-out forwards;
+}

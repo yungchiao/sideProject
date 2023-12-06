@@ -10,9 +10,12 @@ export default {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'trash': "url('./src/pages/Admin/trash.png')",
-      }
+      backgroundColor: theme => ({
+        ...theme('colors'),
+        'bg': '#ececec',
+        'secondary': '#6c6c6c',
+
+      })
     }
   },
   darkMode: "class",

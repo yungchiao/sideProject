@@ -143,12 +143,12 @@ const North: React.FC = observer(() => {
     return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   };
   return (
-    <div className="  mb-40 mt-28 px-10">
+    <div className="  px-10 pb-40 pt-28">
       <div className="  mb-20 grid  grid-cols-2 gap-4 md:grid-cols-3">
         {appStore.admins.map((admin: Admin) => (
           <Card
             key={admin.id}
-            className=" relative mx-auto  w-full  rounded-lg border p-4"
+            className=" relative mx-auto  w-full  rounded-lg border bg-white p-4"
           >
             <CardBody className="overflow-visible p-0 ">
               <h3

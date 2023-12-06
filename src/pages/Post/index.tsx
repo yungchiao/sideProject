@@ -10,7 +10,7 @@ const Activity: React.FC = observer(() => {
   }, []);
 
   return (
-    <div className="mb-40 mt-28">
+    <div className="pb-40 pt-28">
       <UserSearch />
 
       <div className="relative">
@@ -24,7 +24,7 @@ const Activity: React.FC = observer(() => {
       {appStore.activities.map((activity) => (
         <div
           key={activity.postId}
-          className="mx-auto mt-4 w-3/4 rounded-lg border p-4"
+          className="mx-auto mt-4 w-3/4 rounded-lg border bg-white p-4"
         >
           <div className="mb-4 flex items-center gap-2 border-b-2 px-2 pb-2">
             <img src={activity.avatar} className="h-10 w-10 rounded-full" />

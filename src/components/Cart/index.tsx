@@ -60,7 +60,7 @@ const Cart: React.FC = observer(() => {
       {cartItems.map((item, index) => (
         <div
           key={index}
-          className="mx-auto mb-4 flex  w-3/4 justify-between rounded-md border p-2 align-middle leading-none"
+          className="mx-auto mb-4 flex  w-3/4 justify-between rounded-md border bg-white p-2 align-middle leading-none"
         >
           <p className=" py-2">{item.name}</p>
           <p className=" py-2">數量:</p>

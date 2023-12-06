@@ -92,7 +92,7 @@ const Paint: React.FC = observer(() => {
         ? p5Instance.color(255, 255, 255)
         : p5Instance.color(color);
       p5Instance.stroke(strokeColor);
-      p5Instance.strokeWeight(isEraser ? 10 : 2);
+      p5Instance.strokeWeight(isEraser ? 10 : 5);
       p5Instance.line(x0, y0, x1, y1);
     }
   };
@@ -174,7 +174,7 @@ const Paint: React.FC = observer(() => {
 
   return (
     <>
-      <div className="m-auto mb-10 mt-28 w-3/4 border border-stone-800 p-4">
+      <div className="m-auto mb-10 w-3/4 p-4 pt-28">
         <div className="flex justify-center gap-2">
           {isEraser ? (
             <Button
@@ -244,7 +244,7 @@ const Paint: React.FC = observer(() => {
           </div>
         ))}
       </div>
-      <div className="mb-40 mt-4 flex justify-center gap-2">
+      <div className="mt-4 flex justify-center gap-2 pb-40">
         <Button onClick={saveDrawing}>下載作品</Button>
         <Button onClick={saveAndUploadDrawing}>設定為頭貼</Button>
       </div>

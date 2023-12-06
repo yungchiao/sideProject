@@ -157,7 +157,7 @@ const Calendar: React.FC = observer(() => {
   };
 
   return (
-    <div className="mt-10 flex w-full justify-center">
+    <div className="mt-10 flex w-full justify-center gap-6">
       {isDetailOpen && selectedAdmin && (
         <Detail
           selectedAdmin={selectedAdmin}

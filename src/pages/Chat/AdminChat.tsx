@@ -82,7 +82,7 @@ const AdminChat = observer(() => {
   };
 
   return (
-    <div className="mx-20 mb-40 mt-28 flex justify-between rounded-md border p-4">
+    <div className="mx-20 flex justify-between rounded-md border p-4 pb-40 pt-28">
       <div className="w-1/3">
         {chats.map((chat) => (
           <button
@@ -105,7 +105,7 @@ const AdminChat = observer(() => {
             className={`mb-4 w-fit rounded-md border p-2 ${
               message.sender === "admin"
                 ? "flex justify-end bg-gray-600 text-white"
-                : "bg-gray-100 text-stone-800"
+                : "bg-white text-stone-800"
             }`}
             key={index}
           >

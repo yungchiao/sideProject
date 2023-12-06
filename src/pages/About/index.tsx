@@ -7,10 +7,13 @@ const About: React.FC = observer(() => {
   }, []);
 
   return (
-    <div>
-      <h1 className="mt-28 flex justify-center text-3xl">地新引力的故事</h1>
+    <div className="pb-40">
+      <h1 className=" flex justify-center pt-28 text-3xl">地新引力的故事</h1>
       {appStore.aboutInfos.map((about, index) => (
-        <div key={index} className="mx-auto mt-6 w-3/4 rounded-lg border p-4">
+        <div
+          key={index}
+          className="mx-auto mt-6 w-3/4 rounded-lg border bg-white p-4"
+        >
           <h3>{about.history}</h3>
           <div className="mt-8 flex justify-evenly gap-8">
             <div className="grid justify-items-center ">
@@ -69,7 +72,7 @@ const About: React.FC = observer(() => {
               <p>萬元補助</p>
             </div>
           </div>
-          <div className="mt-8  flex justify-center gap-3 rounded-md">
+          <div className="  mt-8 flex justify-center gap-3 rounded-md">
             {about.images.map((image: any, imgIndex: any) => (
               <img
                 key={imgIndex}

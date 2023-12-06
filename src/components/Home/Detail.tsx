@@ -30,7 +30,7 @@ const Detail: React.FC<DetailProps> = ({
   handleSignUp,
 }) => {
   return (
-    <div className="detail-container z-40 mt-4  rounded-md  p-4">
+    <div className="detail-container z-40 mt-4  rounded-md  bg-white p-4">
       <div className="flex gap-8">
         <div className="h-60 w-60 overflow-hidden rounded-md">
           <img src={selectedAdmin.images} className="h-auto w-full" />

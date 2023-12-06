@@ -37,11 +37,11 @@ const Like: React.FC = observer(() => {
     }
   }
   return (
-    <div className="mx-auto mt-4 w-4/5  rounded-lg p-4">
+    <div className="mx-auto mt-4 w-4/5  rounded-lg  p-4">
       {likeItems.map((item, index) => (
         <div
           key={index}
-          className="mb-4 flex items-center justify-between rounded-md border p-4"
+          className="mb-4 flex items-center justify-between rounded-md border bg-white p-4"
         >
           <p>{item.name}</p>
           <p>{item.position}</p>

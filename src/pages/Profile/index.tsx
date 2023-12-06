@@ -90,7 +90,7 @@ const Profile: React.FC = observer(() => {
   };
 
   return (
-    <div className="mt-28 ">
+    <div className="bg-white pt-28">
       <div className="my-50% flex max-h-screen justify-center ">
         <Card className=" w-[340px] ">
           <div>

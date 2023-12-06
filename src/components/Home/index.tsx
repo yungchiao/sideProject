@@ -145,7 +145,7 @@ const Home: React.FC = observer(() => {
     return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   };
   return (
-    <div className="  mb-40 mt-28 px-10">
+    <div className="  px-10 pb-40  pt-28">
       {/* <div className="mb-10 h-60 w-full items-center bg-zinc-200">
         <h1 className="flex justify-center">我是Hero Header</h1>
       </div> */}
@@ -156,7 +156,7 @@ const Home: React.FC = observer(() => {
         {appStore.admins.map((admin: Admin) => (
           <Card
             key={admin.id}
-            className=" relative mx-auto  w-full  rounded-lg border p-4"
+            className=" relative mx-auto  w-full rounded-lg border bg-white p-4"
           >
             <CardBody className="overflow-visible p-0 ">
               <h3
@@ -255,7 +255,6 @@ const Home: React.FC = observer(() => {
             </ModalBody>
           </ModalContent>
         </Modal>
-        <div className="mb-10 flex w-full justify-center gap-4"></div>
       </div>
       <Calendar />
     </div>

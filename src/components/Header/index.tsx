@@ -21,10 +21,7 @@ import { SearchIcon } from "./SearchIcon.tsx";
 
 const Header: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const toggleModal = () => setIsModalOpen(!isModalOpen);
-  // const openModal = () => setIsModalOpen(true);
-  // const closeModal = () => setIsModalOpen(false);
   interface Admin {
     id: string;
     name: string;
@@ -118,7 +115,6 @@ const Header: React.FC = observer(() => {
           </NavbarItem>
         </NavbarContent>
       </NavbarContent>
-
       <NavbarContent as="div" className="items-center" justify="end">
         <div>
           {query && (
