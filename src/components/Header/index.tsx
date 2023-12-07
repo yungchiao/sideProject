@@ -55,7 +55,7 @@ const Header: React.FC = observer(() => {
   const [quantity, setQuantity] = useState(0);
   const [query, setQuery] = useState("");
   const fuse = new Fuse(appStore.admins, {
-    keys: ["name", "position"],
+    keys: ["name", "position", "direction"],
   });
 
   const results = fuse.search(query);

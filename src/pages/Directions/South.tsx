@@ -144,11 +144,11 @@ const North: React.FC = observer(() => {
   };
   return (
     <div className="  px-10 pb-40 pt-28">
-      <div className="  mb-20 grid  grid-cols-2 gap-4 md:grid-cols-3">
+      <div className="  grid grid-cols-2  gap-4 pb-20 md:grid-cols-3">
         {appStore.admins.map((admin: Admin) => (
           <Card
             key={admin.id}
-            className=" relative mx-auto  w-full  rounded-lg border bg-white p-4"
+            className=" relative mx-auto w-full rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
           >
             <CardBody className="overflow-visible p-0 ">
               <h3

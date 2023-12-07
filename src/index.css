@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 .calendar-bg {
-  @apply relative flex min-w-0 flex-col break-words rounded-2xl border-0 bg-white bg-clip-border p-3 text-sm shadow-xl;
+  @apply relative flex h-full w-1/2 min-w-0 flex-col break-words rounded-2xl border-0 bg-white bg-clip-border p-3 text-sm shadow-xl;
 }
 
 html {
@@ -40,4 +40,52 @@ body {
 
 .slide-out {
   animation: slideOut 0.5s ease-out forwards;
+}
+
+@layer base {
+  html {
+    font-family: "Josefin Sans", "Montserrat", sans-serif;
+  }
+}
+
+.carousel-container {
+  width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.carousel-image {
+  width: 100%;
+  object-fit: cover;
+}
+
+.fc-event {
+  --fc-event-bg-color: #81b35d;
+  --fc-event-border-color: #81b35d;
+  cursor: pointer;
+}
+
+.fc-event:hover {
+  --fc-event-bg-color: #699748;
+}
+
+.fc-prev-button,
+.fc-next-button {
+  --fc-button-bg-color: #98816a;
+  --fc-button-border-color: none;
+  --fc-button-hover-bg-color: #76624f;
+  --fc-button-hover-border-color: none;
+}
+.fc-daygrid-day-frame,
+.fc-scrollgrid-sync-inner {
+  --fc-today-bg-color: red;
+}
+
+.fc-today-button {
+  --fc-button-bg-color: #dac040;
+  --fc-button-border-color: #dac040;
+  --fc-button-hover-bg-color: rgb(205, 154, 60);
+  --fc-button-hover-border-color: none;
 }

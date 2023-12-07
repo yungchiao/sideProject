@@ -69,7 +69,6 @@ const North: React.FC = observer(() => {
           const isLiked = likedItems.some((item: any) => item.id === admin.id);
           return { ...admin, isLiked };
         });
-
         appStore.setAdmins(updatedAdmins);
       });
     }
@@ -148,9 +147,9 @@ const North: React.FC = observer(() => {
         {appStore.admins.map((admin: Admin) => (
           <Card
             key={admin.id}
-            className=" relative mx-auto  w-full  rounded-lg border bg-white p-4"
+            className=" relative mx-auto w-full rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
           >
-            <CardBody className="overflow-visible p-0 ">
+            <CardBody className="overflow-visible p-0">
               <h3
                 onClick={() => handleAdminClick(admin)}
                 className="inline-block cursor-pointer font-bold"

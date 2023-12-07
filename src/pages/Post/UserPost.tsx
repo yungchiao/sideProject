@@ -109,7 +109,7 @@ const UserPost: React.FC = observer(() => {
 
   const variant = "underlined";
   return (
-    <div className=" m-auto mb-40 mt-28 w-3/4 border p-10">
+    <div className=" m-auto w-3/4  p-10 pb-40 pt-28">
       <Select
         aria-label="Select Activity Name"
         label={activityName ? "" : "選擇活動名稱"}

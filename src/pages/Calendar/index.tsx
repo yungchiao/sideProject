@@ -2,11 +2,12 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import { Modal, ModalBody, ModalContent } from "@nextui-org/react";
 import {
+  Timestamp,
   collection,
   getDocs,
   getFirestore,
-  Timestamp,
 } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
@@ -20,6 +21,7 @@ const Calendar: React.FC = observer(() => {
     end: Date;
     allDay: boolean;
   }
+
   const fetchEvents = async () => {
     const db = getFirestore();
     const eventsCollection = collection(db, "admin");
@@ -46,16 +48,21 @@ const Calendar: React.FC = observer(() => {
 
     setEvents(eventsData);
   };
+  useEffect(() => {
+    const fetchAdminsAndEvents = async () => {
+      await appStore.fetchAdmin();
+      await fetchEvents();
+    };
+
+    fetchAdminsAndEvents();
+  }, []);
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
-  useEffect(() => {
-    appStore.fetchAdmin();
-  }, []);
-  useEffect(() => {
-    setClosestEventAsSelected();
-  }, [events]);
+    if (appStore.admins.length > 0 && events.length > 0) {
+      setClosestEventAsSelected();
+    }
+  }, [appStore.admins, events]);
+
   interface Admin {
     id: string;
     name: string;
@@ -76,10 +83,12 @@ const Calendar: React.FC = observer(() => {
     price: number;
     id: string;
   }
-  const [isDetailOpen, setDetailOpen] = useState(false);
+
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
   const [quantity, setQuantity] = useState(0);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const [showPartialInfo, setShowPartialInfo] = useState(false);
   const handleEventClick = (clickInfo: any) => {
     const eventName = clickInfo.event.title;
     const selectedEventAdmin = appStore.admins.find(
@@ -88,11 +97,12 @@ const Calendar: React.FC = observer(() => {
 
     if (selectedEventAdmin) {
       setSelectedAdmin(selectedEventAdmin);
-      setDetailOpen(true);
+      setShowPartialInfo(true);
+      setIsModalOpen(false);
     } else {
       console.error("找不到該活動");
       setSelectedAdmin(null);
-      setDetailOpen(false);
+      setShowPartialInfo(false);
     }
   };
 
@@ -151,20 +161,61 @@ const Calendar: React.FC = observer(() => {
       );
       if (selectedEventAdmin) {
         setSelectedAdmin(selectedEventAdmin);
-        setDetailOpen(true);
+        setShowPartialInfo(true);
+      } else {
+        setSelectedAdmin(null);
+        setShowPartialInfo(false);
       }
     }
   };
 
   return (
-    <div className="mt-10 flex w-full justify-center gap-6">
-      {isDetailOpen && selectedAdmin && (
-        <Detail
-          selectedAdmin={selectedAdmin}
-          quantity={quantity}
-          setQuantity={setQuantity}
-          handleSignUp={handleSignUp}
-        />
+    <div className="mt-10 flex h-full w-full items-center justify-center gap-12">
+      {showPartialInfo && selectedAdmin && (
+        <div>
+          <h1 className="mb-10 flex justify-center border-b-large pb-5 text-3xl">
+            EVENT 這是什麼活動呢？
+          </h1>
+
+          <div className="flex gap-5" onClick={() => setIsModalOpen(true)}>
+            <div className="grid content-between">
+              <div>
+                <h3 className="mb-2 font-bold">{selectedAdmin.name}</h3>
+                <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
+                <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
+              </div>
+              <div className="flex h-8 w-auto cursor-pointer justify-center rounded-full border-2 border-stone-600 bg-white ">
+                <p className="leading-8">點擊查看詳情</p>
+              </div>
+            </div>
+            <div className="h-40 w-60 overflow-hidden rounded-lg">
+              <img
+                src={selectedAdmin.images}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+      {isModalOpen && selectedAdmin && (
+        <Modal
+          isOpen={isModalOpen}
+          onOpenChange={toggleModal}
+          className="fixed left-1/2 top-1/2 w-4/5 -translate-x-1/2 -translate-y-1/2 transform gap-4 border bg-white shadow-lg"
+        >
+          <ModalContent>
+            <ModalBody>
+              {selectedAdmin && (
+                <Detail
+                  selectedAdmin={selectedAdmin}
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  handleSignUp={handleSignUp}
+                />
+              )}
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       )}
       <div className="calendar-bg">
         <FullCalendar

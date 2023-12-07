@@ -10,12 +10,23 @@ export default {
   ],
   theme: {
     extend: {
-      backgroundColor: theme => ({
-        ...theme('colors'),
-        'bg': '#ececec',
-        'secondary': '#6c6c6c',
-
-      })
+      colors: {
+        green: "#81b35d",
+        yellow: "#dac040",
+        brown: "#98816a",
+      }, translate: {
+        '8': '8px',
+        '12': '12px',
+        '20': '20px',
+        '40': '40px',
+        '50': '50px',
+        '100': '100px',
+        '200': '200px',
+        '250': '250px',
+        '300': '300px',
+        '320': '320px',
+        '400': '400px',
+      },
     }
   },
   darkMode: "class",

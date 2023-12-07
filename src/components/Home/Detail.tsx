@@ -82,7 +82,7 @@ const Detail: React.FC<DetailProps> = ({
           <div className="mt-4 flex items-center gap-4">
             <p className="">
               活動價格：NT${" "}
-              <span className="mb-4 text-2xl font-bold text-yellow-600">
+              <span className="text-brown mb-4 text-2xl font-bold">
                 {selectedAdmin.price}
               </span>{" "}
               元
@@ -94,7 +94,7 @@ const Detail: React.FC<DetailProps> = ({
         {selectedAdmin.hashtags &&
           Array.isArray(selectedAdmin.hashtags) &&
           selectedAdmin.hashtags.map((hashtag: any, index: any) => (
-            <div className="flex h-8 w-auto items-center rounded-full bg-yellow-500 p-2">
+            <div className="bg-green flex h-8 w-auto items-center rounded-full p-2">
               <p key={index} className="text-white">
                 # {hashtag}
               </p>

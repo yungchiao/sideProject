@@ -148,7 +148,7 @@ const North: React.FC = observer(() => {
         {appStore.admins.map((admin: Admin) => (
           <Card
             key={admin.id}
-            className=" relative mx-auto  w-full  rounded-lg border bg-white p-4"
+            className="relative mx-auto w-full rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
           >
             <CardBody className="overflow-visible p-0 ">
               <h3

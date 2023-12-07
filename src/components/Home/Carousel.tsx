@@ -38,7 +38,7 @@ const Carousal: React.FC = () => {
   }, []);
 
   return (
-    <div className=" flex h-auto w-full cursor-pointer items-center justify-between gap-6">
+    <div className=" carousel-container flex h-auto w-full cursor-pointer items-center justify-between gap-6">
       <button className="" onClick={handlePrev}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -61,7 +61,7 @@ const Carousal: React.FC = () => {
             key={image}
             src={image}
             alt="Campaign Image"
-            className={`w-full object-cover transition-transform duration-500 ease-in-out ${
+            className={`carousel-image ${
               index === activeCampaignIndex ? "slide-in" : "slide-out"
             }`}
             style={{
