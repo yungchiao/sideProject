@@ -43,7 +43,7 @@ const UserPage: React.FC = observer(() => {
   const [isDetailFollowing, setDetailFollowing] = useState(false);
   const [isChangeAvatar, setChangeAvatar] = useState(false);
   const [imageUpload, setImageUpload] = useState<File | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState(appStore.newUser?.avatar);
+  const [avatarUrl, setAvatarUrl] = useState("/bear.jpg");
   const [userName, setUserName] = useState<string>("");
   const toggleOpenFollower = () => {
     setDetailFollower(!isDetailFollower);
@@ -100,7 +100,7 @@ const UserPage: React.FC = observer(() => {
   };
 
   return (
-    <div className="pb-40 pt-28">
+    <div className="pb-10 pt-28">
       {appStore.newUser ? (
         <>
           <div className="mx-auto mt-4  flex  flex-wrap justify-center text-center">
@@ -108,7 +108,7 @@ const UserPage: React.FC = observer(() => {
               <div className=" flex items-center justify-center gap-2">
                 <Input
                   className="my-4 flex w-40 justify-center"
-                  value={userName}
+                  value={userName ? userName : "某位探險家"}
                   onChange={nameChange}
                 />
                 <Button onClick={handleSubmit}>完成</Button>
@@ -118,7 +118,7 @@ const UserPage: React.FC = observer(() => {
               </p>
               <div className="relative">
                 <img
-                  src={avatarUrl}
+                  src={avatarUrl ? avatarUrl : "/bear.jpg"}
                   alt="Avatar"
                   className="relative mx-auto mt-4 flex h-40 w-40 rounded-full"
                 />

@@ -197,26 +197,28 @@ const Calendar: React.FC = observer(() => {
           </div>
         </div>
       )}
+      {isModalOpen && (
+        <div className="background-cover" onClick={toggleModal}></div>
+      )}
       {isModalOpen && selectedAdmin && (
         <Modal
           isOpen={isModalOpen}
           onOpenChange={toggleModal}
-          className="fixed left-1/2 top-1/2 w-4/5 -translate-x-1/2 -translate-y-1/2 transform gap-4 border bg-white shadow-lg"
+          className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
         >
           <ModalContent>
             <ModalBody>
-              {selectedAdmin && (
-                <Detail
-                  selectedAdmin={selectedAdmin}
-                  quantity={quantity}
-                  setQuantity={setQuantity}
-                  handleSignUp={handleSignUp}
-                />
-              )}
+              <Detail
+                selectedAdmin={selectedAdmin}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                handleSignUp={handleSignUp}
+              />
             </ModalBody>
           </ModalContent>
         </Modal>
       )}
+
       <div className="calendar-bg">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

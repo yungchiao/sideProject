@@ -42,7 +42,7 @@ const UserSearch: React.FC = observer(() => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <button onClick={handleSearch} className="ml-2">
-          搜尋帳號
+          搜尋完整帳號
         </button>
       </div>
 

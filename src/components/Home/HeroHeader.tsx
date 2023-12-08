@@ -1,8 +1,8 @@
-// import { appStore } from "../../AppStore";
 import { Button } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Link } from "react-router-dom";
+import { appStore } from "../../AppStore";
 
 const HeroHeader: React.FC = observer(() => {
   return (
@@ -18,17 +18,21 @@ const HeroHeader: React.FC = observer(() => {
             </div>
             <h1 className="mb-10 text-8xl">GRAVITY</h1>
             <h1 className="text-5xl tracking-widest">地新引力</h1>
-            <div className="mt-10">
-              <Button>
-                <Link color="foreground" to="/profile">
-                  登入
-                </Link>
-              </Button>
-            </div>
+            {appStore.currentUserEmail ? (
+              <div className="none"></div>
+            ) : (
+              <div className="mt-10">
+                <Button>
+                  <Link color="foreground" to="/profile">
+                    登入
+                  </Link>
+                </Button>
+              </div>
+            )}
             <div className="mx-auto mt-10 flex h-60 w-full rounded-md border-2 border-dashed border-stone-400"></div>
           </div>
         </div>
-        <div className="w-2/3 border-b-3 border-stone-100  bg-white py-4 pl-3">
+        <div className="w-2/3  bg-white  ">
           <img src="/hero-header.png" className="w-full" />
         </div>
       </div>

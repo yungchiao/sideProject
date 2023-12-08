@@ -162,7 +162,7 @@ const North: React.FC = observer(() => {
                 <div className=" mt-[320px]  flex justify-center">
                   <h3
                     onClick={() => handleAdminClick(admin)}
-                    className="text-brown inline-block cursor-pointer text-lg font-bold"
+                    className="inline-block cursor-pointer text-lg font-bold text-brown"
                   >
                     {admin.name}
                   </h3>
@@ -192,7 +192,7 @@ const North: React.FC = observer(() => {
                       d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
                     />
                   </svg>
-                  <p className="text-brown flex justify-center text-center font-bold">
+                  <p className="flex justify-center text-center font-bold text-brown">
                     {admin.latitude && admin.longitude ? (
                       <a
                         href={getGoogleMapsLink(
@@ -212,7 +212,7 @@ const North: React.FC = observer(() => {
                 <div className="my-4 flex justify-center">
                   <p>
                     活動費用：NT${" "}
-                    <span className="text-green text-xl font-bold">
+                    <span className="text-xl font-bold text-green">
                       {admin.price}
                     </span>{" "}
                     元
@@ -234,7 +234,7 @@ const North: React.FC = observer(() => {
                 </div>
               </CardBody>
             </Card>
-            <div className="bg-yellow  absolute right-[-12px] top-[-12px]  flex h-12 w-12  rounded-full ">
+            <div className="absolute  right-[-12px] top-[-12px] flex  h-12 w-12 rounded-full  bg-yellow ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
@@ -254,10 +254,14 @@ const North: React.FC = observer(() => {
           </div>
         ))}
 
+        {isModalOpen && (
+          <div className="background-cover" onClick={toggleModal}></div>
+        )}
+
         <Modal
           isOpen={isModalOpen}
           onOpenChange={toggleModal}
-          className="fixed left-1/2 top-1/2 w-4/5 -translate-x-1/2 -translate-y-1/2 transform gap-4 border bg-white shadow-lg"
+          className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
         >
           <ModalContent>
             <ModalBody>

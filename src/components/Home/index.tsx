@@ -144,6 +144,7 @@ const Home: React.FC = observer(() => {
   const getGoogleMapsLink = (latitude: any, longitude: any) => {
     return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   };
+
   return (
     <div className="pb-10 pt-20">
       <div className="">
@@ -264,6 +265,10 @@ const Home: React.FC = observer(() => {
             </div>
           </div>
         ))}
+
+        {isModalOpen && (
+          <div className="background-cover" onClick={toggleModal}></div>
+        )}
 
         <Modal
           isOpen={isModalOpen}

@@ -169,7 +169,11 @@ const Header: React.FC = observer(() => {
             <div>
               <img
                 className="h-10 w-10 rounded-full"
-                src={appStore.newUser.avatar}
+                src={
+                  appStore.newUser.avatar
+                    ? appStore.newUser.avatar
+                    : "/bear.jpg"
+                }
                 alt="Avatar"
               />
             </div>

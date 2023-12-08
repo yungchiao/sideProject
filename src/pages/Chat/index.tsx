@@ -1,7 +1,8 @@
 import { Button, Input } from "@nextui-org/react";
 import { doc, onSnapshot, runTransaction } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 interface Chat {
   id: string;
@@ -28,7 +29,11 @@ const Chat = observer(() => {
       }
     });
   }, []);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [currentMessages]);
   const sendMessage = async () => {
     if (message.trim() && appStore.currentUserEmail) {
       try {
@@ -64,41 +69,72 @@ const Chat = observer(() => {
   };
 
   return (
-    <div className="mx-20   p-4 pb-40 pt-28">
-      <div className="rounded-md border p-4">
-        {appStore.chats.map((chat) => (
-          <div key={chat.id} className="flex">
-            {chat.messages.map((msg: any, index: any) => (
-              <p key={index}>{msg.text}</p>
+    <>
+      {appStore.currentUserEmail ? (
+        <div className="mx-20   p-4 pb-2 pt-28">
+          <div className="h-[450px] overflow-scroll rounded-md border p-4">
+            {appStore.chats.map((chat) => (
+              <div key={chat.id} className="flex flex-col">
+                {chat.messages.map((msg: any, index: any) => (
+                  <p
+                    key={index}
+                    className={`mb-4 w-fit rounded-md border p-2 ${
+                      msg.sender === "client"
+                        ? "ml-auto bg-white text-stone-800"
+                        : "mr-auto bg-gray-600 text-white"
+                    }`}
+                  >
+                    {msg.text}
+                  </p>
+                ))}
+              </div>
             ))}
+            {currentMessages.map((message, index) => (
+              <p
+                key={index}
+                className={`mb-4 w-fit rounded-md border p-2 ${
+                  message.sender === "client"
+                    ? "ml-auto bg-white text-stone-800"
+                    : "mr-auto bg-gray-600 text-white"
+                }`}
+              >
+                {message.text}
+              </p>
+            ))}
+            <div ref={messagesEndRef} />
           </div>
-        ))}
-        {currentMessages.map((message, index) => (
-          <p
-            className={`mb-4 w-fit rounded-md border p-2 ${
-              message.sender === "client"
-                ? "flex justify-end bg-white text-stone-800"
-                : "bg-gray-600 text-white"
-            }`}
-            key={index}
-          >
-            {message.text}
-          </p>
-        ))}
-        <div className="my-6 flex w-full flex-wrap items-center gap-4 md:mb-0 md:flex-nowrap">
-          <Input
-            type="email"
-            variant="bordered"
-            placeholder="輸入訊息"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <Button className=" bg-stone-800 text-white" onClick={sendMessage}>
-            傳送
-          </Button>
+
+          <div className="my-6 flex w-full flex-wrap items-center gap-4 md:mb-0 md:flex-nowrap">
+            <Input
+              type="email"
+              variant="bordered"
+              placeholder="輸入訊息"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.repeat) {
+                  e.preventDefault();
+                  sendMessage();
+                  setMessage("");
+                }
+              }}
+            />
+            <Button className="bg-stone-800 text-white" onClick={sendMessage}>
+              傳送
+            </Button>
+          </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <div className="mx-40  mt-80  flex justify-center rounded-md border p-4 text-center">
+          <div className="block h-3/4">
+            <h1 className="mb-4 text-3xl">登入後開始聊聊</h1>
+            <Button>
+              <Link to="/profile">登入</Link>
+            </Button>
+          </div>
+        </div>
+      )}
+    </>
   );
 });
 

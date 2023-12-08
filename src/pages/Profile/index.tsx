@@ -9,12 +9,21 @@ import {
 import { collection, doc, getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { observer } from "mobx-react-lite";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { appStore } from "../../AppStore";
+
 const app = initializeApp(appStore.config);
 const db = getFirestore(app);
 export const storage = getStorage(app);
 const Profile: React.FC = observer(() => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (appStore.currentUserEmail) {
+      navigate("/");
+    }
+  }, [appStore.currentUserEmail, navigate]);
+
   const [selected, setSelected] = useState("login");
   const auth = getAuth();
   const [email, setEmail] = useState<string>("");
