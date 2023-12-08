@@ -184,7 +184,7 @@ const Calendar: React.FC = observer(() => {
                 <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
                 <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
               </div>
-              <div className="flex h-8 w-auto cursor-pointer justify-center rounded-full border-2 border-stone-600 bg-white ">
+              <div className="flex h-8 w-auto cursor-pointer justify-center rounded-full border-2 border-stone-600 bg-white transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
                 <p className="leading-8">點擊查看詳情</p>
               </div>
             </div>

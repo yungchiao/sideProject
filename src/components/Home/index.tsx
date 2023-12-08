@@ -144,10 +144,7 @@ const Home: React.FC = observer(() => {
     return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   };
   return (
-    <div className="   pb-40  pt-28">
-      {/* <div className="mb-10 h-60 w-full items-center bg-zinc-200">
-        <h1 className="flex justify-center">我是Hero Header</h1>
-      </div> */}
+    <div className="pb-40  pt-28">
       <div className="mb-30 flex h-auto  justify-center px-10">
         <Carousal />
       </div>
@@ -170,7 +167,7 @@ const Home: React.FC = observer(() => {
                 <div className=" mt-[320px]  flex justify-center">
                   <h3
                     onClick={() => handleAdminClick(admin)}
-                    className="text-brown inline-block cursor-pointer text-lg font-bold"
+                    className="inline-block cursor-pointer text-lg font-bold text-brown"
                   >
                     {admin.name}
                   </h3>
@@ -200,7 +197,7 @@ const Home: React.FC = observer(() => {
                       d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
                     />
                   </svg>
-                  <p className="text-brown flex justify-center text-center font-bold">
+                  <p className="flex justify-center text-center font-bold text-brown">
                     {admin.latitude && admin.longitude ? (
                       <a
                         href={getGoogleMapsLink(
@@ -220,7 +217,7 @@ const Home: React.FC = observer(() => {
                 <div className="my-4 flex justify-center">
                   <p>
                     活動費用：NT${" "}
-                    <span className="text-green text-xl font-bold">
+                    <span className="text-xl font-bold text-green">
                       {admin.price}
                     </span>{" "}
                     元
@@ -242,7 +239,7 @@ const Home: React.FC = observer(() => {
                 </div>
               </CardBody>
             </Card>
-            <div className="bg-yellow  absolute right-[-12px] top-[-12px]  flex h-12 w-12  rounded-full ">
+            <div className="absolute  right-[-12px] top-[-12px] flex  h-12 w-12 rounded-full  bg-yellow ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
