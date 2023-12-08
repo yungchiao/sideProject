@@ -89,3 +89,12 @@ body {
   --fc-button-hover-bg-color: rgb(205, 154, 60);
   --fc-button-hover-border-color: none;
 }
+
+.header-shadow {
+  box-shadow: 10px 10px 5px gray;
+}
+
+.hashtag {
+  border: 1px solid #1c1917;
+  background-color: white;
+}

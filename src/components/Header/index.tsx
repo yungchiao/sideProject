@@ -98,11 +98,6 @@ const Header: React.FC = observer(() => {
           </Link>
         </NavbarBrand>
         <NavbarContent className="hidden gap-3 sm:flex">
-          <NavbarItem>
-            <Link color="foreground" to="/profile">
-              登入
-            </Link>
-          </NavbarItem>
           <NavbarItem isActive>
             <Link to="/post" aria-current="page" color="secondary">
               社群

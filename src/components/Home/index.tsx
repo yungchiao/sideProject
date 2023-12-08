@@ -13,6 +13,7 @@ import { appStore } from "../../AppStore";
 import Calendar from "../../pages/Calendar";
 import Carousal from "./Carousel";
 import Detail from "./Detail";
+import HeroHeader from "./HeroHeader";
 
 const Home: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -144,18 +145,23 @@ const Home: React.FC = observer(() => {
     return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   };
   return (
-    <div className="pb-40  pt-28">
-      <div className="mb-30 flex h-auto  justify-center px-10">
-        <Carousal />
+    <div className="pb-10 pt-20">
+      <div className="">
+        <HeroHeader />
       </div>
-      <div className="mt-10   grid  grid-cols-2 gap-8 bg-stone-200 px-20 pb-6 pt-20 md:grid-cols-3">
+      <div className="bg-white py-10">
+        <div className="mb-30 tranition mx-auto flex h-auto w-3/4 justify-center px-10  duration-300 hover:scale-105">
+          <Carousal />
+        </div>
+      </div>
+      <div className="grid  grid-cols-2 gap-8 bg-stone-200 px-20 pb-6 pt-20 md:grid-cols-3">
         {appStore.admins.map((admin: Admin) => (
           <div className="relative">
             <Card
               key={admin.id}
               className="relative mx-auto w-full rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
             >
-              <CardBody className="  flex overflow-visible p-0">
+              <CardBody className="flex overflow-visible p-0">
                 <div className="absolute left-1/2 top-[-100px] -translate-x-1/2 transform">
                   <div className="mx-auto flex h-[400px] w-[400px] justify-center overflow-hidden rounded-full">
                     <img
@@ -227,10 +233,10 @@ const Home: React.FC = observer(() => {
                   {admin.hashtags &&
                     Array.isArray(admin.hashtags) &&
                     admin.hashtags.map((hashtag: string, index: number) => (
-                      <div className="inline-block h-8 w-auto items-center rounded-full border-1 border-stone-900 bg-white p-2">
+                      <div className="hashtag flex h-8 w-auto items-center  rounded-full p-4">
                         <p
                           key={index}
-                          className=" whitespace-nowrap leading-4 text-stone-800"
+                          className="  whitespace-nowrap text-stone-800"
                         >
                           #{hashtag}
                         </p>
@@ -262,7 +268,7 @@ const Home: React.FC = observer(() => {
         <Modal
           isOpen={isModalOpen}
           onOpenChange={toggleModal}
-          className="fixed left-1/2 top-1/2 w-4/5 -translate-x-1/2 -translate-y-1/2 transform gap-4 border bg-white shadow-lg"
+          className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
         >
           <ModalContent>
             <ModalBody>

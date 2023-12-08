@@ -174,7 +174,7 @@ const Paint: React.FC = observer(() => {
 
   return (
     <>
-      <div className="m-auto mb-10 w-3/4 p-4 pt-28">
+      <div className="m-auto mb-5 w-3/4 p-4 pt-28">
         <div className="flex justify-center gap-2">
           {isEraser ? (
             <Button
@@ -212,7 +212,7 @@ const Paint: React.FC = observer(() => {
             </svg>
           </Button>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-4 border-b-2 pb-9">
           <Button color="default" onClick={() => setColor("black")}>
             黑色
           </Button>
@@ -227,7 +227,7 @@ const Paint: React.FC = observer(() => {
           </Button>
         </div>
       </div>
-      <div ref={sketchRef} className=" mb-10 flex justify-center"></div>
+      <div ref={sketchRef} className="mb-10 flex justify-center"></div>
       <div className="image-selection flex justify-center gap-4">
         {imageList.map((img, index) => (
           <div className="mb-3">
@@ -244,7 +244,7 @@ const Paint: React.FC = observer(() => {
           </div>
         ))}
       </div>
-      <div className="mt-4 flex justify-center gap-2 pb-40">
+      <div className="mt-4 flex justify-center gap-2 pb-10">
         <Button onClick={saveDrawing}>下載作品</Button>
         <Button onClick={saveAndUploadDrawing}>設定為頭貼</Button>
       </div>
