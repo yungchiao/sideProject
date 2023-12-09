@@ -235,29 +235,42 @@ const UserPage: React.FC = observer(() => {
                 className={activeTab === "post" ? "active-tab" : ""}
                 onClick={() => handleTabChange("post")}
               >
-                <Card>
-                  <CardBody>
-                    {appStore.userActivities.map((activity, index) => (
-                      <div
-                        key={`${activity.name}-${activity.startTime}-${index}`}
-                        className="mx-auto mt-6 w-3/4 rounded-lg border bg-white p-4"
-                      >
-                        <h3>{activity.name}</h3>
-                        <p>{activity.startTime?.toDate()?.toLocaleString()}</p>
-                        <p>{activity.endTime?.toDate()?.toLocaleString()}</p>
-                        <img src={activity.image} className="h-auto w-60" />
-                        <p>{activity.weather}</p>
-                        <p>{activity.position}</p>
-                        {activity.hashtags.map(
-                          (hashtag: string, index: number) => (
-                            <p key={index}>#{hashtag}</p>
-                          ),
-                        )}
-                        <p>{activity.content}</p>
-                      </div>
-                    ))}
-                  </CardBody>
-                </Card>
+                {appStore.userActivities.length > 0 ? (
+                  <Card>
+                    <CardBody>
+                      {appStore.userActivities.map((activity, index) => (
+                        <div
+                          key={`${activity.name}-${activity.startTime}-${index}`}
+                          className="mx-auto mt-6 w-3/4 rounded-lg border bg-white p-4"
+                        >
+                          <h3>{activity.name}</h3>
+                          <p>
+                            {activity.startTime?.toDate()?.toLocaleString()}
+                          </p>
+                          <p>{activity.endTime?.toDate()?.toLocaleString()}</p>
+                          <img src={activity.image} className="h-auto w-60" />
+                          <p>{activity.weather}</p>
+                          <p>{activity.position}</p>
+                          {activity.hashtags.map(
+                            (hashtag: string, index: number) => (
+                              <p key={index}>#{hashtag}</p>
+                            ),
+                          )}
+                          <p>{activity.content}</p>
+                        </div>
+                      ))}
+                    </CardBody>
+                  </Card>
+                ) : (
+                  <div className="mx-40    justify-center rounded-md border p-4 text-center">
+                    <h1 className="mb-4  items-center text-xl">
+                      尚未分享文章!
+                    </h1>
+                    <Button>
+                      <Link to="/post">前往社群</Link>
+                    </Button>
+                  </div>
+                )}
               </Tab>
               <Tab
                 key="ticket"

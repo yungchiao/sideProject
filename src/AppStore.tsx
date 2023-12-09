@@ -107,6 +107,8 @@ class AppStore {
   currentUserEmail = null;
   currentAdminId = null;
   aboutDocId = null;
+  isAdmin = false;
+  isLoggedIn = false;
 
   constructor() {
     this.app = initializeApp(this.config);
@@ -116,7 +118,12 @@ class AppStore {
     makeAutoObservable(this);
     this.setupAuthListener();
   }
-
+  setIsAdmin(isAdmin: any) {
+    this.isAdmin = isAdmin;
+  }
+  setIsLoggedIn(value: any) {
+    this.isLoggedIn = value;
+  }
   setupAuthListener(): void {
     onAuthStateChanged(this.auth, async (user: User | null) => {
       if (user) {
@@ -257,6 +264,24 @@ class AppStore {
       console.error("更新購物車失敗", error);
     }
   };
+  async addCheckoutItem(email: any, cartItems: any) {
+    const userRef = doc(this.db, "user", email);
+
+    try {
+      await runTransaction(this.db, async (transaction) => {
+        const userDoc = await transaction.get(userRef);
+        if (!userDoc.exists()) {
+          throw new Error("用戶不存在");
+        }
+        const existingCheckoutItems = userDoc.data().checkout || [];
+        const updatedCheckoutItems = [...existingCheckoutItems, ...cartItems];
+        transaction.update(userRef, { checkout: updatedCheckoutItems });
+      });
+      console.log("訂單加入成功！");
+    } catch (error) {
+      console.error("訂單加入失敗", error);
+    }
+  }
 
   newUser: NewUser | null = null;
   addUser = async (
@@ -302,6 +327,7 @@ class AppStore {
     signOut(auth).then(() => {
       this.newUser = null;
     });
+    appStore.setIsLoggedIn(false);
     alert("登出成功！");
   }
   fetchActivities = async () => {

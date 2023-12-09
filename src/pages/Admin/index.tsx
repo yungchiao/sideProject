@@ -100,7 +100,6 @@ const Admin: React.FC = observer(() => {
     await uploadBytes(imageRef, imageUpload);
     return getDownloadURL(imageRef);
   };
-
   const handleHashtagChange = (
     index: number,
     event: React.ChangeEvent<HTMLInputElement>,
@@ -183,132 +182,147 @@ const Admin: React.FC = observer(() => {
   };
   const variant = "underlined";
   return (
-    <div className="m-auto mb-20 mt-28 flex  w-full p-10">
-      <div className="m-auto mt-2 max-h-screen w-3/5 overflow-scroll border p-10">
-        <Input
-          label="Activity Name"
-          value={activityName}
-          onChange={(e) => setActivityName(e.target.value)}
-        />
-        <div className="mt-4 ">
-          <Input
-            label="Price"
-            onChange={handlePriceChange}
-            value={price.toString()}
-          />
-        </div>
-        <div className="mt-4">
-          <p>{formatDateRange(startDate, endDate)}</p>
-          <DatePicker
-            selectsRange={true}
-            startDate={startDate}
-            endDate={endDate}
-            onChange={handleDateChange}
-            className="z-20 mb-4 w-60 cursor-pointer rounded-lg bg-stone-800 text-center text-gray-100"
-          />
-        </div>
-
-        {Array.from({ length: items }, (_, i) => (
-          <Input
-            type="url"
-            className="mb-4 w-40"
-            placeholder="hashtag"
-            labelPlacement="outside"
-            value={hashtags[i] || ""}
-            startContent={
-              <div className="pointer-events-none flex items-center">
-                <span className="text-small text-default-400">#</span>
+    <>
+      {appStore.currentUserEmail === "imadmin@gmail.com" ? (
+        <>
+          {" "}
+          <div className="m-auto mb-20 mt-28 flex  w-full p-10">
+            <div className="m-auto mt-2 max-h-screen w-3/5 overflow-scroll border p-10">
+              <Input
+                label="Activity Name"
+                value={activityName}
+                onChange={(e) => setActivityName(e.target.value)}
+              />
+              <div className="mt-4 ">
+                <Input
+                  label="Price"
+                  onChange={handlePriceChange}
+                  value={price.toString()}
+                />
               </div>
-            }
-            key={i}
-            onChange={(e) => handleHashtagChange(i, e)}
-          />
-        ))}
-        <Button
-          className="mb-4 border border-stone-800 bg-white"
-          onClick={addAmount}
-        >
-          <p className="text-stone-800">more #hashtag</p>
-        </Button>
-        <div className="grid w-full grid-cols-12 gap-4">
-          <Input
-            key={variant}
-            variant={variant}
-            labelPlacement="outside"
-            placeholder="輸入地點"
-            className="col-span-12 mb-6 md:col-span-6 md:mb-4"
-            onChange={handlePlaceChange}
-            value={place}
-          />
-        </div>
-        <Map onPositionChange={handlePositionChange} />
-        <div className="grid w-full grid-cols-12 gap-4">
-          <div className="my-4">
-            <p className=" mb-2 text-xs">
-              Latitude: {position.latitude?.toString()}
-            </p>
-            <p className="text-xs">
-              Longitude: {position.longitude?.toString()}
-            </p>
+              <div className="mt-4">
+                <p>{formatDateRange(startDate, endDate)}</p>
+                <DatePicker
+                  selectsRange={true}
+                  startDate={startDate}
+                  endDate={endDate}
+                  onChange={handleDateChange}
+                  className="z-20 mb-4 w-60 cursor-pointer rounded-lg bg-stone-800 text-center text-gray-100"
+                />
+              </div>
+
+              {Array.from({ length: items }, (_, i) => (
+                <Input
+                  type="url"
+                  className="mb-4 w-40"
+                  placeholder="hashtag"
+                  labelPlacement="outside"
+                  value={hashtags[i] || ""}
+                  startContent={
+                    <div className="pointer-events-none flex items-center">
+                      <span className="text-small text-default-400">#</span>
+                    </div>
+                  }
+                  key={i}
+                  onChange={(e) => handleHashtagChange(i, e)}
+                />
+              ))}
+              <Button
+                className="mb-4 border border-stone-800 bg-white"
+                onClick={addAmount}
+              >
+                <p className="text-stone-800">more #hashtag</p>
+              </Button>
+              <div className="grid w-full grid-cols-12 gap-4">
+                <Input
+                  key={variant}
+                  variant={variant}
+                  labelPlacement="outside"
+                  placeholder="輸入地點"
+                  className="col-span-12 mb-6 md:col-span-6 md:mb-4"
+                  onChange={handlePlaceChange}
+                  value={place}
+                />
+              </div>
+              <Map onPositionChange={handlePositionChange} />
+              <div className="grid w-full grid-cols-12 gap-4">
+                <div className="my-4">
+                  <p className=" mb-2 text-xs">
+                    Latitude: {position.latitude?.toString()}
+                  </p>
+                  <p className="text-xs">
+                    Longitude: {position.longitude?.toString()}
+                  </p>
+                </div>
+              </div>
+              <Input
+                label="Activity direction"
+                value={direction}
+                onChange={(e) => setDirection(e.target.value)}
+              />
+              <div className="block">
+                <input
+                  type="file"
+                  className="mb-4 "
+                  onChange={handleImageChange}
+                />
+                <Button className="mb-4 border border-stone-800 bg-white">
+                  <p className=" text-stone-800">上傳檔案</p>
+                </Button>
+                {currentImageUrl && (
+                  <img
+                    src={currentImageUrl}
+                    alt="Current Activity"
+                    className="mb-2 h-auto w-24"
+                  />
+                )}
+              </div>
+              <Textarea
+                variant="bordered"
+                placeholder="Enter your description"
+                disableAnimation
+                disableAutosize
+                value={content}
+                onChange={handleContent}
+                classNames={{
+                  base: "w-4/5 ",
+                  input: "resize-y min-h-[134px]",
+                }}
+              />
+              <div className="mx-auto mt-10 flex items-center justify-center">
+                <Button onClick={handleSubmit} className="bg-stone-800">
+                  <p className="text-white">新增</p>
+                </Button>
+              </div>
+              <div className="flex gap-2">
+                <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
+                  <p className="text-white">
+                    <Link to="/adminchat">客戶聊聊</Link>
+                  </p>
+                </button>
+                <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
+                  <p className="text-white">
+                    <Link to="/checkout">訂單總覽</Link>
+                  </p>
+                </button>
+                <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
+                  <p className="text-white">
+                    <Link to="/adminabout">團隊資訊</Link>
+                  </p>
+                </button>
+              </div>
+            </div>
+            <div className="ml-4 mt-2 max-h-screen w-2/5 overflow-scroll border p-10">
+              <Form onActivitySelect={handleSelectedActivity} />
+            </div>
           </div>
+        </>
+      ) : (
+        <div className="flex h-[650px] items-center justify-center pt-28">
+          只有 Admin 身份可進入此頁面。
         </div>
-        <Input
-          label="Activity direction"
-          value={direction}
-          onChange={(e) => setDirection(e.target.value)}
-        />
-        <div className="block">
-          <input type="file" className="mb-4 " onChange={handleImageChange} />
-          <Button className="mb-4 border border-stone-800 bg-white">
-            <p className=" text-stone-800">上傳檔案</p>
-          </Button>
-          {currentImageUrl && (
-            <img
-              src={currentImageUrl}
-              alt="Current Activity"
-              className="mb-2 h-auto w-24"
-            />
-          )}
-        </div>
-        <Textarea
-          variant="bordered"
-          placeholder="Enter your description"
-          disableAnimation
-          disableAutosize
-          value={content}
-          onChange={handleContent}
-          classNames={{
-            base: "w-4/5 ",
-            input: "resize-y min-h-[134px]",
-          }}
-        />
-        <div className="mx-auto mt-10 flex items-center justify-center">
-          <Button onClick={handleSubmit} className="bg-stone-800">
-            <p className="text-white">新增</p>
-          </Button>
-        </div>
-        <div className="flex gap-2">
-          <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
-            <p className="text-white">
-              <Link to="/adminchat">客戶聊聊</Link>
-            </p>
-          </button>
-          <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
-            <p className="text-white">
-              <Link to="/checkout">訂單總覽</Link>
-            </p>
-          </button>
-          <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
-            <p className="text-white">
-              <Link to="/adminabout">團隊資訊</Link>
-            </p>
-          </button>
-        </div>
-      </div>
-      <div className="ml-4 mt-2 max-h-screen w-2/5 overflow-scroll border p-10">
-        <Form onActivitySelect={handleSelectedActivity} />
-      </div>
-    </div>
+      )}
+    </>
   );
 });
 

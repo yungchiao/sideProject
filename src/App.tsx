@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { appStore } from "./AppStore";
-
 import Home from "./components/Home";
 import "./index.css";
 const App: React.FC = observer(() => {
