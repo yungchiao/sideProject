@@ -152,8 +152,8 @@ const Cart: React.FC = observer(() => {
   return (
     <div className="mt-4 ">
       {checkoutItems.length > 0 && (
-        <div className=" border-b-2 pb-4">
-          <h2 className="mb-4 flex justify-center text-xl font-bold">
+        <div className="border-b-2 pb-4">
+          <h2 className="mb-4 flex justify-center p-4 text-xl font-bold">
             已結帳的商品
           </h2>
           {checkoutItems.map((item, index) => (
@@ -229,8 +229,8 @@ const Cart: React.FC = observer(() => {
           </div>
         </>
       ) : (
-        <div className="mx-40    justify-center rounded-md border p-4 text-center">
-          <h1 className="mb-4  items-center text-xl">尚未加入訂單!</h1>
+        <div className="mx-40  my-6  justify-center rounded-md border p-4 text-center">
+          <h1 className="mb-4  items-center text-xl">目前購物車為空!</h1>
           <Button>
             <Link to="/">回首頁逛逛</Link>
           </Button>

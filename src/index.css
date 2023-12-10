@@ -8,9 +8,6 @@
 html {
   @apply bg-stone-100;
 }
-.active-tab {
-  background-color: #f3f4f6;
-}
 
 body {
   @apply bg-stone-100;

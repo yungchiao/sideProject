@@ -10,7 +10,7 @@ const About: React.FC = observer(() => {
   return (
     <div className="mb-40 mt-28">
       {appStore.allUsersCart.map((user, userIndex) => {
-        if (!user.cartItems || user.cartItems.length === 0) {
+        if (!user.checkout || user.checkout.length === 0) {
           return null;
         }
 
@@ -21,7 +21,7 @@ const About: React.FC = observer(() => {
               <h2> {user.name}</h2>
             </div>
             <div>
-              {user.cartItems.map((item: any, itemIndex: any) => (
+              {user.checkout.map((item: any, itemIndex: any) => (
                 <div key={itemIndex}>
                   <div className="my-3 flex-grow border-t border-gray-200"></div>
                   <p>活動名稱: {item.name}</p>

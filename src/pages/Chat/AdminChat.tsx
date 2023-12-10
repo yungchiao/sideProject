@@ -6,7 +6,7 @@ import {
   runTransaction,
 } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { appStore } from "../../AppStore";
 
 interface Chat {
@@ -52,6 +52,11 @@ const AdminChat = observer(() => {
       });
     }
   }, [selectedChatId]);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [currentMessages]);
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "" && selectedChatId) {
       const chatRef = doc(appStore.db, "adminChat", selectedChatId);
@@ -99,20 +104,20 @@ const AdminChat = observer(() => {
           </button>
         ))}
       </div>
-      <div className="w-2/3 rounded-md border p-4">
+      <div className="h-[650px] w-2/3 overflow-scroll rounded-md border p-4">
         {currentMessages.map((message, index) => (
           <p
             className={`mb-4 w-fit rounded-md border p-2 ${
               message.sender === "admin"
-                ? "flex justify-end bg-gray-600 text-white"
-                : "bg-white text-stone-800"
+                ? "ml-auto bg-white text-stone-800"
+                : "mr-auto bg-gray-600 text-white"
             }`}
             key={index}
           >
             {message.text}
           </p>
         ))}
-
+        <div ref={messagesEndRef} />
         <div className="my-6 flex  items-center gap-4 md:mb-0 md:flex-nowrap">
           <Input
             type="email"
@@ -120,7 +125,14 @@ const AdminChat = observer(() => {
             placeholder="輸入訊息"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
+              }
+            }}
           />
+
           <Button
             className=" bg-stone-800 text-white"
             onClick={handleSendMessage}

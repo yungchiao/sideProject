@@ -1,27 +1,36 @@
+import { doc, getDoc } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
-interface CartItem {
+interface CheckoutItem {
   name: string;
   quantity: number;
   price: number;
-  id: string;
   latitude: string;
   longitude: string;
 }
 
 const GoogleMap: React.FC = observer(() => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [checkoutItems, setCheckoutItems] = useState<CheckoutItem[]>([]);
   useEffect(() => {
-    const fetchCartData = async () => {
-      const userId = appStore.currentUserEmail;
-      if (userId) {
-        const cartData = await appStore.fetchCart(userId);
-        setCartItems(cartData);
+    const fetchCheckoutData = async () => {
+      if (appStore.currentUserEmail) {
+        const userRef = doc(appStore.db, "user", appStore.currentUserEmail);
+        try {
+          const userDoc = await getDoc(userRef);
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            if (userData.checkout) {
+              setCheckoutItems(userData.checkout);
+            }
+          }
+        } catch (error) {
+          console.error("讀取訂單資料失敗", error);
+        }
       }
     };
 
-    fetchCartData();
+    fetchCheckoutData();
   }, [appStore.currentUserEmail]);
 
   const initMap = () => {
@@ -34,11 +43,11 @@ const GoogleMap: React.FC = observer(() => {
     });
     const customIconUrl = "/footprints.png";
     const iconSize = new google.maps.Size(30, 30);
-    cartItems.forEach((cart) => {
+    checkoutItems.forEach((checkout) => {
       const marker = new google.maps.Marker({
         position: new google.maps.LatLng(
-          parseFloat(cart.latitude),
-          parseFloat(cart.longitude),
+          parseFloat(checkout.latitude),
+          parseFloat(checkout.longitude),
         ),
         map: map,
         icon: {
@@ -48,7 +57,7 @@ const GoogleMap: React.FC = observer(() => {
       });
 
       const infoWindow = new google.maps.InfoWindow({
-        content: `<p>${cart.name}</p>`,
+        content: `<p>${checkout.name}</p>`,
       });
 
       marker.addListener("click", () => {
@@ -72,7 +81,7 @@ const GoogleMap: React.FC = observer(() => {
     };
 
     loadGoogleMapScript();
-  }, [cartItems]);
+  }, [checkoutItems]);
 
   return (
     <div

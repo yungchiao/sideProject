@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Input, Tab, Tabs } from "@nextui-org/react";
+import { Button, Card, CardBody, Input } from "@nextui-org/react";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -95,6 +95,7 @@ const UserPage: React.FC = observer(() => {
     }
   };
   const [activeTab, setActiveTab] = useState("post");
+
   const handleTabChange = (tabKey: any) => {
     setActiveTab(tabKey);
   };
@@ -103,7 +104,7 @@ const UserPage: React.FC = observer(() => {
     <div className="pb-10 pt-28">
       {appStore.newUser ? (
         <>
-          <div className="mx-auto mt-4  flex  flex-wrap justify-center text-center">
+          <div className="mx-auto mt-4  flex  flex-wrap justify-center  text-center">
             <div className=" relative">
               <div className=" flex items-center justify-center gap-2">
                 <Input
@@ -193,7 +194,7 @@ const UserPage: React.FC = observer(() => {
                 </div>
               </div>
 
-              <div className=" mt-6 flex items-center justify-center gap-4">
+              <div className="mt-6 flex items-center justify-center gap-4">
                 <div
                   className=" block cursor-pointer"
                   onClick={handleFollowerClick}
@@ -228,13 +229,34 @@ const UserPage: React.FC = observer(() => {
           </div>
 
           <div className="mx-auto mb-6   rounded-lg  p-4">
-            <Tabs aria-label="Options" className="flex justify-center border">
-              <Tab
-                key="post"
-                title="貼文"
-                className={activeTab === "post" ? "active-tab" : ""}
+            <div className="flex justify-center ">
+              <button
+                className={`px-4 py-2 ${
+                  activeTab === "post" ? "border-b-2 border-yellow" : ""
+                }`}
                 onClick={() => handleTabChange("post")}
               >
+                貼文
+              </button>
+              <button
+                className={`px-4 py-2 ${
+                  activeTab === "ticket" ? "border-b-2 border-yellow" : ""
+                }`}
+                onClick={() => handleTabChange("ticket")}
+              >
+                票券
+              </button>
+              <button
+                className={`px-4 py-2 ${
+                  activeTab === "like" ? "border-b-2 border-yellow" : ""
+                }`}
+                onClick={() => handleTabChange("like")}
+              >
+                收藏
+              </button>
+            </div>
+            {activeTab === "post" && (
+              <div className="p-4">
                 {appStore.userActivities.length > 0 ? (
                   <Card>
                     <CardBody>
@@ -262,7 +284,7 @@ const UserPage: React.FC = observer(() => {
                     </CardBody>
                   </Card>
                 ) : (
-                  <div className="mx-40    justify-center rounded-md border p-4 text-center">
+                  <div className="mx-40  mt-4  justify-center rounded-md border p-4 text-center">
                     <h1 className="mb-4  items-center text-xl">
                       尚未分享文章!
                     </h1>
@@ -271,32 +293,28 @@ const UserPage: React.FC = observer(() => {
                     </Button>
                   </div>
                 )}
-              </Tab>
-              <Tab
-                key="ticket"
-                title="票券"
-                className={activeTab === "ticket" ? "bg-stone-300" : ""}
-                onClick={() => handleTabChange("ticket")}
-              >
+              </div>
+            )}
+
+            {activeTab === "ticket" && (
+              <div>
                 <Card>
                   <CardBody>
                     <Cart />
                   </CardBody>
                 </Card>
-              </Tab>
-              <Tab
-                key="like"
-                title="收藏"
-                className={activeTab === "like" ? "active-tab" : ""}
-                onClick={() => handleTabChange("like")}
-              >
+              </div>
+            )}
+
+            {activeTab === "like" && (
+              <div>
                 <Card>
                   <CardBody>
                     <Like />
                   </CardBody>
                 </Card>
-              </Tab>
-            </Tabs>
+              </div>
+            )}
           </div>
           <div className="mb-10 flex justify-center">
             <h1 className="text-4xl">{userName} の 足跡</h1>
