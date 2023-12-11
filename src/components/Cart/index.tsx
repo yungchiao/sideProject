@@ -148,92 +148,125 @@ const Cart: React.FC = observer(() => {
       console.log("無法發送電子郵件，因為用戶資料不完整。");
     }
   };
+  const [activeTab, setActiveTab] = useState("cart");
 
+  const handleTabChange = (tabKey: any) => {
+    setActiveTab(tabKey);
+  };
   return (
-    <div className="mt-4 ">
-      {checkoutItems.length > 0 && (
-        <div className="border-b-2 pb-4">
-          <h2 className="mb-4 flex justify-center p-4 text-xl font-bold">
-            已結帳的商品
-          </h2>
-          {checkoutItems.map((item, index) => (
-            <div
-              key={index}
-              className="mx-auto mb-4 flex  w-3/4 justify-between rounded-md border bg-white p-2 align-middle leading-none"
-            >
-              <p className=" py-2">{item.name}</p>
-              <p className=" py-2">數量:</p>
-              <button
-                onClick={() => {
-                  changeItemQuantity(index, -1);
-                }}
-                className=" py-2"
-              >
-                -
-              </button>
-              <p className=" py-2">{item.quantity}</p>
-              <button
-                onClick={() => {
-                  changeItemQuantity(index, +1);
-                }}
-              >
-                +
-              </button>
-              <p className=" py-2">價格: NT${item.price}元</p>
-              <p className=" py-2">小計: NT${item.price * item.quantity}元</p>
+    <div className="mt-4">
+      <div className="flex justify-center ">
+        <button
+          className={`mt-4 px-2 py-2 ${
+            activeTab === "cart"
+              ? "tab-border-left h-auto w-auto bg-yellow text-white"
+              : "tab-border-left border-1 border-yellow"
+          }`}
+          onClick={() => handleTabChange("cart")}
+        >
+          <p className="leading-none">購物車</p>
+        </button>
+        <button
+          className={`mt-4 px-2 py-2 ${
+            activeTab === "checkout"
+              ? "tab-border-right h-auto w-auto bg-yellow  text-white"
+              : "tab-border-right border-1 border-yellow"
+          }`}
+          onClick={() => handleTabChange("checkout")}
+        >
+          <p className="leading-none">已結帳</p>
+        </button>
+      </div>
+      {activeTab === "checkout" && (
+        <div className="p-6">
+          {checkoutItems.length > 0 ? (
+            <div>
+              {checkoutItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="mx-auto mb-4 flex w-1/3 min-w-[500px] justify-between rounded-md border bg-white p-2 px-[20px] align-middle leading-none"
+                >
+                  <p className="whitespace-nowrap py-2 ">{item.name}</p>
+                  <p className="whitespace-nowrap py-2">
+                    數量: {item.quantity}
+                  </p>
+                  <p className="whitespace-nowrap py-2">
+                    價格: NT${item.price}元
+                  </p>
+                  <p className="whitespace-nowrap py-2">
+                    小計: NT${item.price * item.quantity}元
+                  </p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
-      {cartItems.length > 0 ? (
-        <>
-          {cartItems.map((item, index) => (
-            <div
-              key={index}
-              className="mx-auto my-4 flex  w-3/4 justify-between rounded-md border bg-white p-2 align-middle leading-none"
-            >
-              <p className=" py-2">{item.name}</p>
-              <p className=" py-2">數量:</p>
-              <button
-                onClick={() => {
-                  changeItemQuantity(index, -1);
-                }}
-                className=" py-2"
-              >
-                -
-              </button>
-              <p className=" py-2">{item.quantity}</p>
-              <button
-                onClick={() => {
-                  changeItemQuantity(index, +1);
-                }}
-              >
-                +
-              </button>
-              <p className=" py-2">價格: NT${item.price}元</p>
-              <p className=" py-2">小計: NT${item.price * item.quantity}元</p>
-              <button onClick={() => deleteItem(index)}>
-                <div className="h-8 w-8 cursor-pointer bg-[url('/trash.png')] bg-contain" />
-              </button>
-            </div>
-          ))}
-          <div className="flex justify-center">
-            <div className=" text-center">
-              <p className="mt-4">總金額：NT$ {subtotal} 元</p>
-              <Button className="mt-8 bg-stone-700">
-                <p className="text-white" onClick={handleCheckOut}>
-                  確認付款
-                </p>
+          ) : (
+            <div className="mx-40  my-6  justify-center rounded-md border p-4 text-center">
+              <h1 className="mb-4  items-center text-xl">尚未購買任何票券</h1>
+              <Button>
+                <Link to="/">回首頁逛逛</Link>
               </Button>
             </div>
-          </div>
-        </>
-      ) : (
-        <div className="mx-40  my-6  justify-center rounded-md border p-4 text-center">
-          <h1 className="mb-4  items-center text-xl">目前購物車為空!</h1>
-          <Button>
-            <Link to="/">回首頁逛逛</Link>
-          </Button>
+          )}
+        </div>
+      )}
+      {activeTab === "cart" && (
+        <div>
+          {cartItems.length > 0 ? (
+            <>
+              {cartItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="mx-auto my-6  flex  w-1/3 min-w-[650px]  justify-between rounded-md border bg-white p-2 px-[20px]  leading-none"
+                >
+                  <p className="whitespace-nowrap py-2">{item.name}</p>
+                  <p className="whitespace-nowrap py-2">數量:</p>
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => {
+                        changeItemQuantity(index, -1);
+                      }}
+                      className="flex h-4 w-4 items-center justify-center rounded-full bg-green py-2"
+                    >
+                      <p className="text-base text-white">-</p>
+                    </button>
+                    <p>{item.quantity}</p>
+                    <button
+                      onClick={() => {
+                        changeItemQuantity(index, +1);
+                      }}
+                      className="flex h-4 w-4 items-center justify-center rounded-full bg-green py-2"
+                    >
+                      <p className="text-base text-white">+</p>
+                    </button>
+                  </div>
+                  <p className=" py-2">價格: NT${item.price}元</p>
+                  <p className=" py-2">
+                    小計: NT${item.price * item.quantity}元
+                  </p>
+                  <button onClick={() => deleteItem(index)}>
+                    <div className="h-8 w-8 cursor-pointer bg-[url('/trash.png')] bg-contain" />
+                  </button>
+                </div>
+              ))}
+              <div className="flex justify-center">
+                <div className=" text-center">
+                  <p className="mt-4">總金額：NT$ {subtotal} 元</p>
+                  <Button className="mt-8 bg-brown">
+                    <p className="text-white" onClick={handleCheckOut}>
+                      確認付款
+                    </p>
+                  </Button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="mx-40  my-6  justify-center rounded-md border p-4 text-center">
+              <h1 className="mb-4  items-center text-xl">目前購物車為空</h1>
+              <Button>
+                <Link to="/">回首頁逛逛</Link>
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

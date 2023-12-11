@@ -14,7 +14,12 @@ export default {
         green: "#81b35d",
         yellow: "#dac040",
         brown: "#98816a",
+        darkGreen: "#699748",
+        darkYellow: "#cd9a3c",
+        darkBrown: "#76624f",
       }, translate: {
+        '2': '2px',
+        '3': '3px',
         '8': '8px',
         '12': '12px',
         '20': '20px',
@@ -28,6 +33,7 @@ export default {
         '400': '400px',
         '550': '550px',
         '650': '650px',
+        '700': '700px',
       },
     }
   },

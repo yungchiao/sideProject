@@ -83,7 +83,7 @@ body {
 .fc-today-button {
   --fc-button-bg-color: #dac040;
   --fc-button-border-color: #dac040;
-  --fc-button-hover-bg-color: rgb(205, 154, 60);
+  --fc-button-hover-bg-color: #cd9a3c;
   --fc-button-hover-border-color: none;
 }
 
@@ -107,4 +107,19 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.h-screen-bg {
+  height: calc(100vh - 80px);
+}
+
+.h-screen-bg-midle {
+  height: calc(100vh - 160px);
+}
+
+.tab-border-left {
+  border-radius: 8px 0px 0px 8px;
+}
+.tab-border-right {
+  border-radius: 0px 8px 8px 0px;
 }

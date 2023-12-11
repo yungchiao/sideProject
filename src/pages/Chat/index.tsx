@@ -71,8 +71,8 @@ const Chat = observer(() => {
   return (
     <>
       {appStore.currentUserEmail ? (
-        <div className="mx-20   p-4 pb-2 pt-28">
-          <div className="h-[550px] overflow-scroll rounded-md border p-4">
+        <div className="h-screen-bg  mx-20 p-10 pt-28">
+          <div className="h-[700px] overflow-scroll rounded-md border p-4">
             {appStore.chats.map((chat) => (
               <div key={chat.id} className="flex flex-col">
                 {chat.messages.map((msg: any, index: any) => (
@@ -104,7 +104,7 @@ const Chat = observer(() => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="my-6 flex w-full flex-wrap items-center gap-4 md:mb-0 md:flex-nowrap">
+          <div className="my-8 flex w-full flex-wrap items-center gap-4 md:mb-0 md:flex-nowrap">
             <Input
               type="email"
               variant="bordered"
@@ -125,8 +125,8 @@ const Chat = observer(() => {
           </div>
         </div>
       ) : (
-        <div className="mx-40  mt-80  flex justify-center rounded-md border p-4 text-center">
-          <div className="block h-3/4">
+        <div className="h-screen-bg  mx-40   flex items-center justify-center   text-center">
+          <div className="block rounded-md border px-40 py-6">
             <h1 className="mb-4 text-3xl">登入後開始聊聊</h1>
             <Button>
               <Link to="/profile">登入</Link>

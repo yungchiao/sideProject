@@ -61,7 +61,7 @@ const Like: React.FC = observer(() => {
                   strokeWidth="0.8"
                   stroke="currentColor"
                   className=" h-8 w-8 cursor-pointer"
-                  fill="gray"
+                  fill="#98816a"
                 >
                   <path
                     strokeLinecap="round"
