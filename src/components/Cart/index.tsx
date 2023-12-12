@@ -225,7 +225,7 @@ const Cart: React.FC = observer(() => {
                       onClick={() => {
                         changeItemQuantity(index, -1);
                       }}
-                      className="flex h-4 w-4 items-center justify-center rounded-full bg-green py-2"
+                      className="flex h-4 w-4 items-center justify-center rounded-full bg-stone-700 py-2"
                     >
                       <p className="text-base text-white">-</p>
                     </button>
@@ -234,7 +234,7 @@ const Cart: React.FC = observer(() => {
                       onClick={() => {
                         changeItemQuantity(index, +1);
                       }}
-                      className="flex h-4 w-4 items-center justify-center rounded-full bg-green py-2"
+                      className="flex h-4 w-4 items-center justify-center rounded-full bg-stone-700 py-2"
                     >
                       <p className="text-base text-white">+</p>
                     </button>

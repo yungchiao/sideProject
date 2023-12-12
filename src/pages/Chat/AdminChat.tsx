@@ -1,7 +1,8 @@
-import { Button, Input, User } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import {
   collection,
   doc,
+  getDoc,
   onSnapshot,
   runTransaction,
 } from "firebase/firestore";
@@ -12,6 +13,7 @@ import { appStore } from "../../AppStore";
 interface Chat {
   id: string;
   userId: string;
+  avatar: string;
 }
 
 interface Message {
@@ -28,12 +30,19 @@ const AdminChat = observer(() => {
 
   useEffect(() => {
     const chatsRef = collection(appStore.db, "adminChat");
-    onSnapshot(chatsRef, (snapshot) => {
-      const loadedChats = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        userId: doc.id,
-      }));
-      setChats(loadedChats);
+    onSnapshot(chatsRef, async (snapshot) => {
+      const chatsWithAvatars = await Promise.all(
+        snapshot.docs.map(async (doc) => {
+          const userId = doc.id;
+          const avatarUrl = await getUserAvatar(userId);
+          return {
+            id: userId,
+            userId: userId,
+            avatar: avatarUrl,
+          };
+        }),
+      );
+      setChats(chatsWithAvatars);
     });
   }, []);
 
@@ -85,40 +94,50 @@ const AdminChat = observer(() => {
       setNewMessage("");
     }
   };
-
+  const getUserAvatar = async (email: any) => {
+    const userRef = doc(appStore.db, "user", email);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      return userSnap.data().avatar;
+    }
+    return "/bear.jpg";
+  };
   return (
-    <div className="mx-20 flex justify-between rounded-md border p-4 pb-40 pt-28">
+    <div className="h-screen-bg mx-20 flex justify-between  p-4 pb-10 pt-28">
       <div className="w-1/3">
         {chats.map((chat) => (
           <button
             key={chat.id}
             onClick={() => selectChat(chat.id)}
-            className="mb-4 flex content-center rounded-md border p-2"
+            className="mb-4 flex w-[300px] content-center items-center gap-4 rounded-md border-1 bg-white p-2"
           >
-            <User
-              name={chat.userId}
-              avatarProps={{
-                src: "https://avatars.githubusercontent.com/u/30373425?v=4",
-              }}
-            />
+            <div className="flex  ">
+              <div className="h-[40px] w-[40px] overflow-hidden rounded-full">
+                <img src={chat.avatar} className="h-full w-full object-cover" />
+              </div>
+            </div>
+            <p>{chat.userId}</p>
           </button>
         ))}
       </div>
-      <div className="h-[650px] w-2/3 overflow-scroll rounded-md border p-4">
-        {currentMessages.map((message, index) => (
-          <p
-            className={`mb-4 w-fit rounded-md border p-2 ${
-              message.sender === "admin"
-                ? "ml-auto bg-white text-stone-800"
-                : "mr-auto bg-gray-600 text-white"
-            }`}
-            key={index}
-          >
-            {message.text}
-          </p>
-        ))}
-        <div ref={messagesEndRef} />
-        <div className="my-6 flex  items-center gap-4 md:mb-0 md:flex-nowrap">
+      <div className=" w-2/3   ">
+        <div className="h-[650px] overflow-scroll rounded-md border p-4">
+          {currentMessages.map((message, index) => (
+            <p
+              className={`mb-4 w-fit rounded-md border p-2 ${
+                message.sender === "admin"
+                  ? "ml-auto bg-white text-stone-800"
+                  : "mr-auto bg-gray-600 text-white"
+              }`}
+              key={index}
+            >
+              {message.text}
+            </p>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <div className="my-6   flex items-center gap-4 md:mb-0 md:flex-nowrap">
           <Input
             type="email"
             variant="bordered"

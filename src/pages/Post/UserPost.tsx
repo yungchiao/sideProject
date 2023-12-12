@@ -2,7 +2,7 @@ import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { Timestamp, collection, doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { v4 } from "uuid";
@@ -23,6 +23,40 @@ interface Admin {
   content: string;
   postId: string;
 }
+interface CustomInputProps {
+  value?: string;
+  onClick?: () => void;
+}
+const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
+  ({ value, onClick }, ref) => (
+    <div
+      className="flex items-center gap-2 border-gray-300 p-2"
+      onClick={onClick}
+    >
+      <input
+        type="text"
+        className="w-[180px] rounded-md border border-stone-500 p-1 outline-none"
+        value={value || ""}
+        ref={ref}
+        readOnly
+      />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.5"
+        stroke="currentColor"
+        className="h-6 w-6 cursor-pointer"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+        />
+      </svg>
+    </div>
+  ),
+);
 const UserPost: React.FC = observer(() => {
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
     null,
@@ -36,6 +70,7 @@ const UserPost: React.FC = observer(() => {
   const [activityName, setActivityName] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
+
   useEffect(() => {
     appStore.fetchAdmin();
   }, []);
@@ -49,7 +84,7 @@ const UserPost: React.FC = observer(() => {
       return `${startFormatted}-${endFormatted}`;
     }
 
-    return "Select Date Range";
+    return "選擇參加活動時間";
   };
   const uploadImage = async (): Promise<string> => {
     if (!imageUpload) throw new Error("No image file provided");
@@ -108,8 +143,9 @@ const UserPost: React.FC = observer(() => {
   };
 
   const variant = "underlined";
+
   return (
-    <div className=" m-auto w-3/4  p-10 pb-40 pt-28">
+    <div className="h-screen-bg m-auto w-3/4  p-10 pb-40 pt-28">
       <Select
         aria-label="Select Activity Name"
         label={activityName ? "" : "選擇活動名稱"}
@@ -127,7 +163,7 @@ const UserPost: React.FC = observer(() => {
           <SelectItem
             key={admin.id}
             value={admin.id}
-            className="bg-stone-800 text-gray-100"
+            className="rounded-none bg-stone-500 text-gray-100"
           >
             {admin.name}
           </SelectItem>
@@ -135,13 +171,16 @@ const UserPost: React.FC = observer(() => {
       </Select>
 
       <div className="mt-4">
-        <p>{formatDateRange(startDate, endDate)}</p>
+        <p className="text-sm text-stone-600">
+          {formatDateRange(startDate, endDate)}
+        </p>
+
         <DatePicker
           selectsRange={true}
           startDate={startDate}
           endDate={endDate}
           onChange={handleDateChange}
-          className="z-20 mb-4 w-60 cursor-pointer rounded-lg bg-stone-800 text-center text-gray-100"
+          customInput={<CustomInput />}
         />
       </div>
       {Array.from({ length: items }).map((_, index) => (
@@ -164,7 +203,7 @@ const UserPost: React.FC = observer(() => {
         className="mb-4 border border-stone-800 bg-white"
         onClick={addAmount}
       >
-        <p className="text-stone-800">more #hashtag</p>
+        <p className="text-stone-800">更多 #hashtag</p>
       </Button>
       <div className="grid w-full grid-cols-12 gap-4">
         <Input
@@ -224,7 +263,7 @@ const UserPost: React.FC = observer(() => {
       </Button>
       <Textarea
         variant="bordered"
-        placeholder="Enter your description"
+        placeholder="輸入你的心得輸入你的心得"
         disableAnimation
         disableAutosize
         classNames={{

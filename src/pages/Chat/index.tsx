@@ -71,8 +71,8 @@ const Chat = observer(() => {
   return (
     <>
       {appStore.currentUserEmail ? (
-        <div className="h-screen-bg  mx-20 p-10 pt-28">
-          <div className="h-[700px] overflow-scroll rounded-md border p-4">
+        <div className="  mx-20 p-10 pt-28">
+          <div className="h-[650px] overflow-scroll rounded-md border p-4">
             {appStore.chats.map((chat) => (
               <div key={chat.id} className="flex flex-col">
                 {chat.messages.map((msg: any, index: any) => (

@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
-import React, { useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
@@ -36,7 +36,40 @@ interface ActivityType {
   place: string;
   direction: string;
 }
-
+interface CustomInputProps {
+  value?: string;
+  onClick?: () => void;
+}
+const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
+  ({ value, onClick }, ref) => (
+    <div
+      className="flex items-center gap-2 border-gray-300 p-2"
+      onClick={onClick}
+    >
+      <input
+        type="text"
+        className="w-[450px] rounded-md border border-stone-500 p-1 outline-none"
+        value={value || ""}
+        ref={ref}
+        readOnly
+      />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth="1.5"
+        stroke="currentColor"
+        className="h-6 w-6 cursor-pointer"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+        />
+      </svg>
+    </div>
+  ),
+);
 const Admin: React.FC = observer(() => {
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
     null,
@@ -60,13 +93,26 @@ const Admin: React.FC = observer(() => {
   const [selectedActivity, setSelectedActivity] = useState<ActivityType | null>(
     null,
   );
+  useEffect(() => {
+    console.log("dateRange value:", dateRange);
+  }, [dateRange]);
+
   const handleDateChange = (dates: [Date | null, Date | null]) => {
-    setDateRange(dates);
+    if (Array.isArray(dates) && dates.length === 2) {
+      setDateRange(dates);
+    } else {
+      console.error("Selected dates are invalid");
+
+      setDateRange([null, null]);
+    }
   };
+
   const handleSelectedActivity = (activity: ActivityType) => {
     const start = activity.startTime.toDate();
     const end = activity.endTime.toDate();
+    console.log("Before updating dateRange:", dateRange);
     setDateRange([start, end]);
+    console.log("After updating dateRange:", dateRange);
     setCurrentImageUrl(activity.images);
     setSelectedImageFile(null);
     setSelectedActivity(activity);
@@ -83,11 +129,19 @@ const Admin: React.FC = observer(() => {
     });
   };
 
-  const formatDateRange = (start: any, end: any) => {
+  const formatDateRange = (start: Date | null, end: Date | null) => {
     if (start instanceof Date && end instanceof Date) {
-      const startFormatted = start.toLocaleDateString();
-      const endFormatted = end.toLocaleDateString();
-      return `${startFormatted}-${endFormatted}`;
+      const options: Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      };
+      const startFormatted = start.toLocaleString("zh-TW", options);
+      const endFormatted = end.toLocaleString("zh-TW", options);
+      return `${startFormatted} - ${endFormatted}`;
     }
     return "請選擇日期與時間";
   };
@@ -186,16 +240,16 @@ const Admin: React.FC = observer(() => {
       {appStore.currentUserEmail === "imadmin@gmail.com" ? (
         <>
           {" "}
-          <div className="m-auto mb-20 mt-28 flex  w-full p-10">
-            <div className="m-auto mt-2 max-h-screen w-3/5 overflow-scroll border p-10">
+          <div className="m-auto flex w-full p-10  pb-20 pt-28">
+            <div className="m-auto mt-2 max-h-screen w-3/5 overflow-scroll rounded-lg border bg-white p-10">
               <Input
-                label="Activity Name"
+                label="活動名稱"
                 value={activityName}
                 onChange={(e) => setActivityName(e.target.value)}
               />
               <div className="mt-4 ">
                 <Input
-                  label="Price"
+                  label="活動價格"
                   onChange={handlePriceChange}
                   value={price.toString()}
                 />
@@ -207,6 +261,11 @@ const Admin: React.FC = observer(() => {
                   startDate={startDate}
                   endDate={endDate}
                   onChange={handleDateChange}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                  customInput={<CustomInput />}
                   className="z-20 mb-4 w-60 cursor-pointer rounded-lg bg-stone-800 text-center text-gray-100"
                 />
               </div>
@@ -256,9 +315,10 @@ const Admin: React.FC = observer(() => {
                 </div>
               </div>
               <Input
-                label="Activity direction"
+                label="活動地區"
                 value={direction}
                 onChange={(e) => setDirection(e.target.value)}
+                className="mb-4"
               />
               <div className="block">
                 <input
@@ -279,7 +339,7 @@ const Admin: React.FC = observer(() => {
               </div>
               <Textarea
                 variant="bordered"
-                placeholder="Enter your description"
+                placeholder="活動描述"
                 disableAnimation
                 disableAutosize
                 value={content}
@@ -312,7 +372,10 @@ const Admin: React.FC = observer(() => {
                 </button>
               </div>
             </div>
-            <div className="ml-4 mt-2 max-h-screen w-2/5 overflow-scroll border p-10">
+            <div className="ml-4 mt-2 max-h-screen w-2/5 overflow-scroll rounded-lg border bg-white p-10">
+              <h1 className="flex justify-center text-xl font-bold text-brown">
+                已上架活動列表
+              </h1>
               <Form onActivitySelect={handleSelectedActivity} />
             </div>
           </div>

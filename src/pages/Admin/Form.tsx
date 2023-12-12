@@ -38,17 +38,19 @@ const Form: React.FC<FormProps> = ({ onActivitySelect }) => {
   return (
     <div>
       {appStore.admins.map((admin) => (
-        <div key={admin.id} className="mx-auto mt-4 rounded-lg border p-2">
+        <div
+          key={admin.id}
+          className="mx-auto mt-4 flex items-center justify-between rounded-lg border p-4 px-10"
+        >
           <h3>{admin.name}</h3>
-          <img src={admin.images} className="h-auto w-40" />
-          <div className="flex">
+          <div className="flex gap-4">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="h-4 w-4 cursor-pointer"
+              className="h-5 w-5 cursor-pointer"
               onClick={() => handleDelete(admin.id)}
             >
               <path
@@ -64,7 +66,7 @@ const Form: React.FC<FormProps> = ({ onActivitySelect }) => {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="h-4 w-4 cursor-pointer"
+              className="h-5 w-5 cursor-pointer"
               onClick={() => handleActivityClick(admin)}
             >
               <path
@@ -73,6 +75,9 @@ const Form: React.FC<FormProps> = ({ onActivitySelect }) => {
                 d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
               />
             </svg>
+          </div>
+          <div className="h-40 w-40 overflow-hidden rounded-md">
+            <img src={admin.images} className="h-full w-full object-cover" />
           </div>
         </div>
       ))}

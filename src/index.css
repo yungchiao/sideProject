@@ -76,10 +76,6 @@ body {
   --fc-button-hover-border-color: none;
 }
 .fc-daygrid-day-frame,
-.fc-scrollgrid-sync-inner {
-  --fc-today-bg-color: red;
-}
-
 .fc-today-button {
   --fc-button-bg-color: #dac040;
   --fc-button-border-color: #dac040;
@@ -122,4 +118,21 @@ body {
 }
 .tab-border-right {
   border-radius: 0px 8px 8px 0px;
+}
+
+.input-button-container {
+  position: relative;
+  max-width: 20rem;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.search-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  border: none;
+  background: transparent;
+  margin-right: 10px;
 }
