@@ -144,9 +144,14 @@ const Home: React.FC = observer(() => {
   const getGoogleMapsLink = (latitude: any, longitude: any) => {
     return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
   };
-
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
-    <div className="pb-10 pt-20">
+    <div className="relative pb-10 pt-20">
       <div className="">
         <HeroHeader />
       </div>
@@ -253,7 +258,7 @@ const Home: React.FC = observer(() => {
                 strokeWidth="0"
                 stroke="currentColor"
                 className=" bottom-0 right-0 h-8 w-8 translate-x-1/4 translate-y-1/3 transform cursor-pointer"
-                fill={admin.isLiked ? "#98816a" : "white"}
+                fill={admin.isLiked ? "#ed4a5a" : "white"}
                 onClick={() => handleIconClick(admin)}
               >
                 <path
@@ -290,6 +295,25 @@ const Home: React.FC = observer(() => {
         </Modal>
       </div>
       <Calendar />
+      <div
+        className=" absolute bottom-20 right-20 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-green shadow-lg transition duration-200 hover:scale-105 hover:bg-darkGreen"
+        onClick={scrollToTop}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="2.5"
+          stroke="white"
+          className="h-6 w-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"
+          />
+        </svg>
+      </div>
     </div>
   );
 });

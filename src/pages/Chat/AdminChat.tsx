@@ -103,7 +103,7 @@ const AdminChat = observer(() => {
     return "/bear.jpg";
   };
   return (
-    <div className="h-screen-bg mx-20 flex justify-between  p-4 pb-10 pt-28">
+    <div className=" mx-20 flex justify-between  p-4 pb-10 pt-28">
       <div className="w-1/3">
         {chats.map((chat) => (
           <button

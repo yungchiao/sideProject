@@ -31,10 +31,15 @@ const Activity: React.FC = observer(() => {
     }
     return "/bear.jpg";
   };
-
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
   return (
-    <div className=" flex  pb-20 pt-20">
-      <div className="fixed left-[-50px] top-[-50px] grid h-[500px] w-[500px] content-center rounded-full bg-stone-400 pl-[60px] pt-20 shadow-md">
+    <div className=" relative flex pb-20 pt-20">
+      <div className="fixed left-[-50px] top-[-50px] grid h-[500px] w-[500px] content-center rounded-full bg-brown pl-[60px] pt-20 shadow-md transition duration-200 hover:scale-105 hover:bg-darkBrown">
         <div className=" flex items-center justify-center gap-2">
           <div className=" flex h-[40px] w-[240px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-stone-800 bg-white py-1">
             <div className="flex">
@@ -162,6 +167,25 @@ const Activity: React.FC = observer(() => {
             </div>
           </div>
         ))}
+      </div>
+      <div
+        className=" absolute bottom-20 right-20 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-green shadow-lg transition duration-200 hover:scale-105 hover:bg-darkGreen"
+        onClick={scrollToTop}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="2.5"
+          stroke="white"
+          className="h-6 w-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"
+          />
+        </svg>
       </div>
     </div>
   );

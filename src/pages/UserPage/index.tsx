@@ -412,8 +412,8 @@ const UserPage: React.FC = observer(() => {
           <GoogleMap />
 
           <div className="my-10  flex  justify-center">
-            <Button onClick={appStore.logout}>
-              <p className="mx-auto flex">登出</p>
+            <Button onClick={appStore.logout} className="bg-green">
+              <p className="mx-auto flex text-white">登出</p>
             </Button>
           </div>
         </>

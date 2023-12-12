@@ -1,10 +1,8 @@
 import {
-  Button,
   Input,
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -86,12 +84,18 @@ const Header: React.FC = observer(() => {
     setHeaderSelectedAdmin(admin);
     toggleModal();
   };
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <Navbar isBordered className="fixed top-0  z-50 border-b-2 bg-white p-6">
       <NavbarContent justify="start">
         <NavbarBrand className="mr-4">
-          <Link color="foreground" to="/">
+          <Link color="foreground" to="/" onClick={scrollToTop}>
             <div className="h-10 w-10 overflow-hidden">
               <img src="/gravity-logo.png" />
             </div>
@@ -134,7 +138,7 @@ const Header: React.FC = observer(() => {
                   <li
                     key={result.item.id}
                     onClick={() => handleAdminClick(result.item)}
-                    className="flex cursor-pointer flex-col"
+                    className="flex cursor-pointer flex-col transition duration-200 hover:text-stone-400"
                   >
                     {result.item.name}
                   </li>
@@ -208,10 +212,13 @@ const Header: React.FC = observer(() => {
           )}
         </Link>
       </NavbarContent>
+      {isModalOpen && (
+        <div className="background-cover" onClick={toggleModal}></div>
+      )}
       <Modal
         isOpen={isModalOpen}
         onOpenChange={toggleModal}
-        className="fixed left-1/2 top-1/2 w-4/5 -translate-x-1/2 -translate-y-1/2 transform border bg-white shadow-lg"
+        className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
       >
         <ModalContent>
           <ModalBody>
@@ -224,15 +231,6 @@ const Header: React.FC = observer(() => {
               />
             )}
           </ModalBody>
-          <ModalFooter className="flex justify-center">
-            <Button
-              className="mb-4 bg-stone-800"
-              variant="light"
-              onPress={toggleModal}
-            >
-              <p className=" text-white">確定</p>
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </Navbar>

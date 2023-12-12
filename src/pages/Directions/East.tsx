@@ -16,7 +16,9 @@ const North: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleModal = () => setIsModalOpen(!isModalOpen);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   interface Admin {
     id: string;
     name: string;

@@ -41,7 +41,7 @@ const GoogleMap: React.FC = observer(() => {
       center: { lat: 23.97565, lng: 120.9738819 },
       zoom: 7,
     });
-    const customIconUrl = "/footprints.png";
+    const userAvatarUrl = appStore.newUser?.avatar || "/bear.jpg";
     const iconSize = new google.maps.Size(30, 30);
     checkoutItems.forEach((checkout) => {
       const marker = new google.maps.Marker({
@@ -51,7 +51,7 @@ const GoogleMap: React.FC = observer(() => {
         ),
         map: map,
         icon: {
-          url: customIconUrl,
+          url: userAvatarUrl,
           scaledSize: iconSize,
         },
       });
@@ -84,15 +84,17 @@ const GoogleMap: React.FC = observer(() => {
   }, [checkoutItems]);
 
   return (
-    <div
-      id="map"
-      style={{
-        width: "73%",
-        height: "400px",
-        display: "flex",
-        margin: "auto",
-      }}
-    />
+    <div className="tranition mx-auto flex w-1/3 overflow-hidden rounded-2xl duration-300 hover:scale-105">
+      <div
+        id="map"
+        style={{
+          width: "100%",
+          height: "500px",
+          display: "flex",
+          margin: "auto",
+        }}
+      />
+    </div>
   );
 });
 declare global {

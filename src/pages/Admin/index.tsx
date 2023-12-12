@@ -97,12 +97,20 @@ const Admin: React.FC = observer(() => {
     console.log("dateRange value:", dateRange);
   }, [dateRange]);
 
-  const handleDateChange = (dates: [Date | null, Date | null]) => {
+  const handleDateChange = (dates: any) => {
     if (Array.isArray(dates) && dates.length === 2) {
-      setDateRange(dates);
+      let [newStart, newEnd] = dates;
+
+      if (!newStart && startDate) {
+        newStart = startDate;
+      }
+      if (!newEnd && endDate) {
+        newEnd = endDate;
+      }
+
+      setDateRange([newStart, newEnd]);
     } else {
       console.error("Selected dates are invalid");
-
       setDateRange([null, null]);
     }
   };
@@ -110,9 +118,7 @@ const Admin: React.FC = observer(() => {
   const handleSelectedActivity = (activity: ActivityType) => {
     const start = activity.startTime.toDate();
     const end = activity.endTime.toDate();
-    console.log("Before updating dateRange:", dateRange);
     setDateRange([start, end]);
-    console.log("After updating dateRange:", dateRange);
     setCurrentImageUrl(activity.images);
     setSelectedImageFile(null);
     setSelectedActivity(activity);
@@ -239,7 +245,7 @@ const Admin: React.FC = observer(() => {
     <>
       {appStore.currentUserEmail === "imadmin@gmail.com" ? (
         <div className="flex">
-          <div className="h-[1200px] w-48 bg-stone-300 px-5 pt-28">
+          <div className="h-[1300px] w-48 bg-stone-300 px-5 pt-28">
             <button className="mt-2 h-10 w-full  border-b-2 border-neutral-100 pb-8 ">
               <p className="text-stone-800 hover:text-neutral-400">
                 <Link to="/checkout">訂單總覽</Link>
@@ -252,7 +258,7 @@ const Admin: React.FC = observer(() => {
             </button>
           </div>
           <div className=" ml-[100px] flex w-4/5 justify-center gap-4 pb-10 pt-28">
-            <div className="mt-2 h-screen w-3/5 overflow-scroll rounded-lg border bg-white p-10">
+            <div className="mt-2 h-screen w-3/5 overflow-auto rounded-lg border bg-white p-10">
               <h1 className="mb-5 flex justify-center text-xl font-bold text-brown">
                 新增活動
               </h1>
@@ -274,12 +280,12 @@ const Admin: React.FC = observer(() => {
                   selectsRange={true}
                   startDate={startDate}
                   endDate={endDate}
-                  onChange={handleDateChange}
                   showTimeSelect
                   timeFormat="HH:mm"
                   timeIntervals={15}
                   dateFormat="MMMM d, yyyy h:mm aa"
                   customInput={<CustomInput />}
+                  onChange={handleDateChange}
                   className="z-20 mb-4 w-60 cursor-pointer rounded-lg bg-stone-800 text-center text-gray-100"
                 />
               </div>
@@ -369,7 +375,7 @@ const Admin: React.FC = observer(() => {
                 </Button>
               </div>
             </div>
-            <div className=" mt-2 max-h-screen w-2/5 overflow-scroll rounded-lg border bg-white p-10">
+            <div className=" mt-2 max-h-screen w-2/5 overflow-auto rounded-lg border bg-white p-10">
               <h1 className="flex justify-center text-xl font-bold text-brown">
                 已上架活動列表
               </h1>
