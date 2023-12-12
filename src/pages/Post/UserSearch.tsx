@@ -27,14 +27,13 @@ const UserSearch: React.FC = observer(() => {
       <div className="input-button-container flex justify-center">
         <Input
           classNames={{
-            base: "max-w-full sm:max-w-[15rem] h-10 w-[240px]",
+            base: "max-w-[full]  h-10 ",
             mainWrapper: "h-full",
             input: "text-small",
             inputWrapper:
               "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
           }}
           placeholder="搜尋完整帳號..."
-          size="sm"
           type="search"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -46,7 +45,7 @@ const UserSearch: React.FC = observer(() => {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="h-6 w-6"
+            className="mr-6 h-6 w-6"
           >
             <path
               strokeLinecap="round"
@@ -58,7 +57,7 @@ const UserSearch: React.FC = observer(() => {
       </div>
 
       {appStore.searchResults.map((user: UserFollow) => (
-        <div key={user.userEmail} className="flex justify-center">
+        <div key={user.userEmail} className="mt-5 block">
           <UserProfile
             user={user}
             isVisible={visibilityMap[user.userEmail]}

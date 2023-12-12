@@ -33,7 +33,6 @@ const UserProfile: React.FC<
     <div>
       {isVisible ? (
         <div className=" mt-2 flex items-center justify-center gap-4">
-          <h3>{user.userName}</h3>
           <p>{user.userEmail}</p>
           <Button
             onClick={handleFollowClick}

@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Input } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -104,11 +104,11 @@ const UserPage: React.FC = observer(() => {
     <div>
       {appStore.newUser ? (
         <>
-          <div className=" mx-auto mt-4  flex  flex-wrap justify-center pt-20 text-center">
+          <div className=" mx-auto mt-4  flex  flex-wrap justify-center pt-28 text-center">
             <div className=" relative">
-              <div className=" flex items-center justify-center gap-2">
-                <Input
-                  className="my-4 flex w-40 justify-center"
+              <div className=" flex items-center justify-end gap-2">
+                <input
+                  className="my-4 flex w-40 justify-center bg-stone-100"
                   value={userName ? userName : "某位探險家"}
                   onChange={nameChange}
                 />

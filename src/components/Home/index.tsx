@@ -150,7 +150,7 @@ const Home: React.FC = observer(() => {
       <div className="">
         <HeroHeader />
       </div>
-      <div className="bg-white py-10">
+      <div className="w-full bg-white bg-[url('/lat.png')] bg-contain bg-no-repeat py-10">
         <div className="mb-30 tranition mx-auto flex h-auto w-3/4 justify-center px-10  duration-300 hover:scale-105">
           <Carousal />
         </div>

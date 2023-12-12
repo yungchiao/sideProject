@@ -58,7 +58,7 @@ const Activity: React.FC = observer(() => {
             <p className="">建立貼文</p>
           </div>
         </div>
-        <div className="mt-4 flex justify-center">
+        <div className="mt-4 grid justify-items-center">
           <UserSearch />
         </div>
       </div>
