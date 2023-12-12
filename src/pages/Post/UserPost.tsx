@@ -119,8 +119,7 @@ const UserPost: React.FC = observer(() => {
         const imageUrl = await getDownloadURL(imageRef);
         const articlesCollection = collection(appStore.db, "activity");
         const docRef = doc(articlesCollection);
-        const avatarUrl =
-          appStore.newUser?.avatar || "http://www.w3.org/2000/svg";
+
         setDoc(docRef, {
           name: activityName,
           startTime: startDate,
@@ -130,7 +129,6 @@ const UserPost: React.FC = observer(() => {
           content: content,
           position: position,
           image: imageUrl,
-          avatar: avatarUrl,
           id: appStore.currentUserEmail,
           postId: docRef.id,
         });

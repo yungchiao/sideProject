@@ -238,10 +238,24 @@ const Admin: React.FC = observer(() => {
   return (
     <>
       {appStore.currentUserEmail === "imadmin@gmail.com" ? (
-        <>
-          {" "}
-          <div className="m-auto flex w-full p-10  pb-20 pt-28">
-            <div className="m-auto mt-2 max-h-screen w-3/5 overflow-scroll rounded-lg border bg-white p-10">
+        <div className="flex">
+          <div className="h-[1200px] w-48 bg-stone-300 px-5 pt-28">
+            <button className="mt-2 h-10 w-full  border-b-2 border-neutral-100 pb-8 ">
+              <p className="text-stone-800 hover:text-neutral-400">
+                <Link to="/checkout">訂單總覽</Link>
+              </p>
+            </button>
+            <button className="mt-4 h-10 w-full  border-b-2 border-neutral-100 pb-8">
+              <p className="text-stone-800 hover:text-neutral-400">
+                <Link to="/adminabout">團隊資訊</Link>
+              </p>
+            </button>
+          </div>
+          <div className=" ml-[100px] flex w-4/5 justify-center gap-4 pb-10 pt-28">
+            <div className="mt-2 h-screen w-3/5 overflow-scroll rounded-lg border bg-white p-10">
+              <h1 className="mb-5 flex justify-center text-xl font-bold text-brown">
+                新增活動
+              </h1>
               <Input
                 label="活動名稱"
                 value={activityName}
@@ -354,32 +368,15 @@ const Admin: React.FC = observer(() => {
                   <p className="text-white">新增</p>
                 </Button>
               </div>
-              <div className="flex gap-2">
-                <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
-                  <p className="text-white">
-                    <Link to="/adminchat">客戶聊聊</Link>
-                  </p>
-                </button>
-                <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
-                  <p className="text-white">
-                    <Link to="/checkout">訂單總覽</Link>
-                  </p>
-                </button>
-                <button className="mt-8 h-10 w-full rounded-md bg-gray-800">
-                  <p className="text-white">
-                    <Link to="/adminabout">團隊資訊</Link>
-                  </p>
-                </button>
-              </div>
             </div>
-            <div className="ml-4 mt-2 max-h-screen w-2/5 overflow-scroll rounded-lg border bg-white p-10">
+            <div className=" mt-2 max-h-screen w-2/5 overflow-scroll rounded-lg border bg-white p-10">
               <h1 className="flex justify-center text-xl font-bold text-brown">
                 已上架活動列表
               </h1>
               <Form onActivitySelect={handleSelectedActivity} />
             </div>
           </div>
-        </>
+        </div>
       ) : (
         <div className="flex h-[650px] items-center justify-center pt-28">
           只有 Admin 身份可進入此頁面。

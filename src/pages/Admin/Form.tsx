@@ -40,7 +40,7 @@ const Form: React.FC<FormProps> = ({ onActivitySelect }) => {
       {appStore.admins.map((admin) => (
         <div
           key={admin.id}
-          className="mx-auto mt-4 flex items-center justify-between rounded-lg border p-4 px-10"
+          className="mx-[auto] mt-4 flex items-center justify-between rounded-lg border p-4 px-5"
         >
           <h3>{admin.name}</h3>
           <div className="flex gap-4">

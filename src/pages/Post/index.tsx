@@ -1,13 +1,36 @@
+import { doc, getDoc } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 import UserSearch from "./UserSearch";
-
 const Activity: React.FC = observer(() => {
+  const [activitiesWithAvatar, setActivitiesWithAvatar] = useState<any[]>([]);
+
   useEffect(() => {
-    appStore.fetchActivities();
+    appStore.fetchActivities().then(() => {
+      updateActivitiesWithAvatars();
+    });
   }, []);
+
+  const updateActivitiesWithAvatars = async () => {
+    const updatedActivities = await Promise.all(
+      appStore.activities.map(async (activity) => {
+        const avatarUrl = await getUserAvatar(activity.id);
+        return { ...activity, avatar: avatarUrl };
+      }),
+    );
+    setActivitiesWithAvatar(updatedActivities);
+  };
+
+  const getUserAvatar = async (email: string) => {
+    const userRef = doc(appStore.db, "user", email);
+    const userSnap = await getDoc(userRef);
+    if (userSnap.exists()) {
+      return userSnap.data().avatar || "/bear.jpg";
+    }
+    return "/bear.jpg";
+  };
 
   return (
     <div className=" flex  pb-20 pt-20">
@@ -40,7 +63,7 @@ const Activity: React.FC = observer(() => {
         </div>
       </div>
       <div className="ml-[550px]  w-2/3 pt-[20px]">
-        {appStore.activities.map((activity) => (
+        {activitiesWithAvatar.map((activity) => (
           <div
             key={activity.postId}
             className="mt-4 w-4/5 rounded-lg border bg-white p-4 px-[20px]"
