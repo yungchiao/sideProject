@@ -1,13 +1,21 @@
 import { Button, Input } from "@nextui-org/react";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface LocationInputProps {
   onPositionChange: (position: { latitude: number; longitude: number }) => void;
+  searchLocation: string;
 }
 
-const LocationInput: React.FC<LocationInputProps> = ({ onPositionChange }) => {
-  const [address, setAddress] = useState("");
+const LocationInput: React.FC<LocationInputProps> = ({
+  onPositionChange,
+  searchLocation,
+}) => {
+  const [address, setAddress] = useState(searchLocation);
+
+  useEffect(() => {
+    setAddress(searchLocation);
+  }, [searchLocation]);
 
   const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(event.target.value);

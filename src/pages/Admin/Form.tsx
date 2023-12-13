@@ -21,20 +21,27 @@ interface ActivityType {
   place: string;
   direction: string;
 }
+interface FormProps {
+  onActivitySelect: (activity: ActivityType) => void;
+  onSearchLocationChange: (location: string) => void;
+}
 
-const Form: React.FC<FormProps> = ({ onActivitySelect }) => {
+const Form: React.FC<FormProps> = ({
+  onActivitySelect,
+  onSearchLocationChange,
+}) => {
   useEffect(() => {
     appStore.fetchAdmin();
   }, []);
 
   const handleActivityClick = (activity: ActivityType) => {
     onActivitySelect(activity);
+    onSearchLocationChange(`${activity.latitude}, ${activity.longitude}`);
   };
 
   const handleDelete = (id: string) => {
     appStore.deleteAdmin(id);
   };
-
   return (
     <div>
       {appStore.admins.map((admin) => (

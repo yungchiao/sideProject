@@ -85,6 +85,7 @@ const Admin: React.FC = observer(() => {
     longitude: string | null;
   }>({ latitude: null, longitude: null });
   const [hashtags, setHashtags] = useState<Hashtag>({});
+  const [searchLocation, setSearchLocation] = useState<string>("");
   const [activityName, setActivityName] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
@@ -128,11 +129,16 @@ const Admin: React.FC = observer(() => {
     setImageUpload(activity.imagesFile);
     setHashtags(activity.hashtags);
     setPlace(activity.place);
+    setPosition({
+      latitude: activity.latitude || "",
+      longitude: activity.longitude || "",
+    });
     setDirection(activity.direction);
     setPosition({
       latitude: activity.latitude || "",
       longitude: activity.longitude || "",
     });
+    setSearchLocation(activity.place || "");
   };
 
   const formatDateRange = (start: Date | null, end: Date | null) => {
@@ -173,6 +179,9 @@ const Admin: React.FC = observer(() => {
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(event.target.value);
+  };
+  const handleSearchLocationChange = (newLocation: any) => {
+    setSearchLocation(newLocation);
   };
 
   const handleContent = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -323,7 +332,10 @@ const Admin: React.FC = observer(() => {
                   value={place}
                 />
               </div>
-              <Map onPositionChange={handlePositionChange} />
+              <Map
+                searchLocation={searchLocation}
+                onPositionChange={handlePositionChange}
+              />
               <div className="grid w-full grid-cols-12 gap-4">
                 <div className="my-4">
                   <p className=" mb-2 text-xs">
@@ -379,7 +391,10 @@ const Admin: React.FC = observer(() => {
               <h1 className="flex justify-center text-xl font-bold text-brown">
                 已上架活動列表
               </h1>
-              <Form onActivitySelect={handleSelectedActivity} />
+              <Form
+                onActivitySelect={handleSelectedActivity}
+                onSearchLocationChange={handleSearchLocationChange}
+              />
             </div>
           </div>
         </div>
