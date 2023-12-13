@@ -240,17 +240,29 @@ const Admin: React.FC = observer(() => {
     <>
       {appStore.currentUserEmail === "imadmin@gmail.com" ? (
         <div className="flex">
-          <div className="h-[1300px] w-48 bg-stone-300 px-5 pt-28">
-            <button className="mt-2 h-10 w-full  border-b-2 border-neutral-100 pb-8 ">
-              <p className="text-stone-800 hover:text-neutral-400">
-                <Link to="/checkout">訂單總覽</Link>
-              </p>
-            </button>
-            <button className="mt-4 h-10 w-full  border-b-2 border-neutral-100 pb-8">
-              <p className="text-stone-800 hover:text-neutral-400">
-                <Link to="/adminabout">團隊資訊</Link>
-              </p>
-            </button>
+          <div className="grid h-[1300px] w-48 content-between bg-stone-300 px-5 pt-28">
+            <div className="">
+              <button className="mt-2 h-10 w-full  border-b-2 border-neutral-100 pb-8 ">
+                <p className="text-stone-800 hover:text-neutral-400">
+                  <Link to="/checkout">訂單總覽</Link>
+                </p>
+              </button>
+              <button className="mt-4 h-10 w-full  border-b-2 border-neutral-100 pb-8">
+                <p className="text-stone-800 hover:text-neutral-400">
+                  <Link to="/adminabout">團隊資訊</Link>
+                </p>
+              </button>
+            </div>
+            <div>
+              <div className="my-10  flex  justify-center">
+                <button
+                  className="mt-2 h-10 w-full  border-b-2 border-neutral-100 pb-8 "
+                  onClick={appStore.logout}
+                >
+                  <p className="text-stone-800 hover:text-neutral-400">登出</p>
+                </button>
+              </div>
+            </div>
           </div>
           <div className=" ml-[100px] flex w-4/5 justify-center gap-4 pb-10 pt-28">
             <div className="mt-2 h-screen w-3/5 overflow-auto rounded-lg border bg-white p-10">
@@ -385,8 +397,10 @@ const Admin: React.FC = observer(() => {
           </div>
         </div>
       ) : (
-        <div className="flex h-[650px] items-center justify-center pt-28">
-          只有 Admin 身份可進入此頁面。
+        <div className="h-screen-bg flex items-center justify-center pt-28">
+          <p className="text-3xl">
+            只有 <span className="text-green">Admin</span> 身份可進入此頁面。
+          </p>
         </div>
       )}
     </>

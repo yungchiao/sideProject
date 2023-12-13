@@ -1,5 +1,6 @@
 import { Button, Input } from "@nextui-org/react";
 import {
+  Timestamp,
   collection,
   doc,
   getDoc,
@@ -18,11 +19,15 @@ interface Chat {
 
 interface Message {
   text: string;
-  createdAt: Date;
+  createdAt: Timestamp;
   sender: string;
+  avatar: string;
 }
 
 const AdminChat = observer(() => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
@@ -48,6 +53,22 @@ const AdminChat = observer(() => {
 
   const selectChat = (chatId: string) => {
     setSelectedChatId(chatId);
+    updateMessagesWithAvatars(chatId);
+  };
+  const updateMessagesWithAvatars = async (currentUserEmail: string) => {
+    const chatRef = doc(appStore.db, "adminChat", currentUserEmail);
+    const docSnap = await getDoc(chatRef);
+    if (docSnap.exists()) {
+      const messagesWithAvatars = await Promise.all(
+        docSnap.data().messages.map(async (message: any) => {
+          const avatarUrl = await getUserAvatar(
+            message.sender === "admin" ? "admin email" : currentUserEmail,
+          );
+          return { ...message, avatar: avatarUrl };
+        }),
+      );
+      setCurrentMessages(messagesWithAvatars);
+    }
   };
   useEffect(() => {
     if (selectedChatId) {
@@ -85,7 +106,6 @@ const AdminChat = observer(() => {
         transaction.set(
           chatRef,
           {
-            currentUserEmail: appStore.currentUserEmail,
             messages: [...currentMessages, newMessageObj],
           },
           { merge: true },
@@ -101,6 +121,16 @@ const AdminChat = observer(() => {
       return userSnap.data().avatar;
     }
     return "/bear.jpg";
+  };
+  const adminAvatar = "/bear-logo.png";
+
+  const formatMessageTime = (timestamp: Timestamp) => {
+    const date = timestamp.toDate();
+    return date.toLocaleString("zh-TW", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
   };
   return (
     <div className=" mx-20 flex justify-between  p-4 pb-10 pt-28">
@@ -121,18 +151,70 @@ const AdminChat = observer(() => {
         ))}
       </div>
       <div className=" w-2/3   ">
-        <div className="h-[650px] overflow-scroll rounded-md border p-4">
+        <div className="h-[750px] overflow-scroll rounded-md border p-4">
           {currentMessages.map((message, index) => (
-            <p
-              className={`mb-4 w-fit rounded-md border p-2 ${
-                message.sender === "admin"
-                  ? "ml-auto bg-white text-stone-800"
-                  : "mr-auto bg-gray-600 text-white"
-              }`}
+            <div
               key={index}
+              className={`mb-4 w-fit rounded-md p-2 ${
+                message.sender === "admin" ? "ml-auto " : "mr-auto "
+              }`}
             >
-              {message.text}
-            </p>
+              {message.sender === "admin" ? (
+                <div className="flex items-center gap-2">
+                  <div className="mt-7 text-xs text-gray-500">
+                    {formatMessageTime(message.createdAt)}
+                  </div>
+                  <p
+                    className={` w-fit rounded-md border p-2 ${
+                      message.sender === "admin"
+                        ? "ml-auto bg-gray-600 text-white"
+                        : "mr-auto  bg-white text-stone-800"
+                    }`}
+                  >
+                    {message.text}
+                  </p>
+
+                  <div>
+                    <img
+                      src={
+                        message.sender === "admin"
+                          ? adminAvatar
+                          : message.avatar
+                      }
+                      alt="Avatar"
+                      className="h-12 w-12 rounded-full border border-stone-300"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <div>
+                    <img
+                      src={
+                        message.sender === "client"
+                          ? message.avatar
+                          : adminAvatar
+                      }
+                      alt="Avatar"
+                      className="h-12 w-12 rounded-full border border-stone-300"
+                    />
+                  </div>
+                  <p
+                    className={` w-fit rounded-md border p-2 ${
+                      message.sender === "client"
+                        ? "ml-auto bg-white text-stone-800"
+                        : "mr-auto bg-gray-600 text-white"
+                    }`}
+                  >
+                    {message.text}
+                  </p>
+
+                  <div className="mt-7 text-xs text-gray-500">
+                    {formatMessageTime(message.createdAt)}
+                  </div>
+                </div>
+              )}
+            </div>
           ))}
           <div ref={messagesEndRef} />
         </div>

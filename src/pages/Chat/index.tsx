@@ -1,9 +1,10 @@
 import { Button, Input } from "@nextui-org/react";
-import { doc, onSnapshot, runTransaction } from "firebase/firestore";
+import { Timestamp, doc, onSnapshot, runTransaction } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+
 interface Chat {
   id: string;
   userId: string;
@@ -11,7 +12,7 @@ interface Chat {
 
 interface Message {
   text: string;
-  createdAt: Date;
+  createdAt: Timestamp;
   sender: string;
 }
 const Chat = observer(() => {
@@ -55,6 +56,7 @@ const Chat = observer(() => {
           transaction.set(
             userRef,
             {
+              currentUserEmail: appStore.currentUserEmail,
               messages: [...currentMessages, newMessage],
             },
             { merge: true },
@@ -66,6 +68,17 @@ const Chat = observer(() => {
         console.error("傳送訊息失敗", error);
       }
     }
+  };
+  const adminAvatar = "/bear-logo.png";
+  const userAvatar = appStore.newUser?.avatar || "/bear.jpg";
+
+  const formatMessageTime = (timestamp: Timestamp) => {
+    const date = timestamp.toDate();
+    return date.toLocaleString("zh-TW", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
   };
 
   return (
@@ -90,16 +103,64 @@ const Chat = observer(() => {
               </div>
             ))}
             {currentMessages.map((message, index) => (
-              <p
+              <div
                 key={index}
-                className={`mb-4 w-fit rounded-md border p-2 ${
-                  message.sender === "client"
-                    ? "ml-auto bg-white text-stone-800"
-                    : "mr-auto bg-gray-600 text-white"
+                className={`mb-4 w-fit rounded-md p-2 ${
+                  message.sender === "client" ? "ml-auto " : "mr-auto "
                 }`}
               >
-                {message.text}
-              </p>
+                {message.sender === "client" ? (
+                  <div className="flex items-center gap-2">
+                    <div className="mt-7 text-xs text-gray-500">
+                      {formatMessageTime(message.createdAt)}
+                    </div>
+                    <p
+                      className={` w-fit rounded-md border p-2 ${
+                        message.sender === "client"
+                          ? "ml-auto bg-white text-stone-800"
+                          : "mr-auto bg-gray-600 text-white"
+                      }`}
+                    >
+                      {message.text}
+                    </p>
+
+                    <div>
+                      <img
+                        src={
+                          message.sender === "client" ? userAvatar : adminAvatar
+                        }
+                        alt="Avatar"
+                        className="h-12 w-12 rounded-full border border-stone-300"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <div>
+                      <img
+                        src={
+                          message.sender === "client" ? userAvatar : adminAvatar
+                        }
+                        alt="Avatar"
+                        className="h-12 w-12 rounded-full border border-stone-300"
+                      />
+                    </div>
+                    <p
+                      className={` w-fit rounded-md border p-2 ${
+                        message.sender === "client"
+                          ? "ml-auto bg-white text-stone-800"
+                          : "mr-auto bg-gray-600 text-white"
+                      }`}
+                    >
+                      {message.text}
+                    </p>
+
+                    <div className="mt-7 text-xs text-gray-500">
+                      {formatMessageTime(message.createdAt)}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
             <div ref={messagesEndRef} />
           </div>

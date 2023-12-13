@@ -42,8 +42,8 @@ const Activity: React.FC = observer(() => {
       <div className="fixed left-[-50px] top-[-50px] grid h-[500px] w-[500px] content-center rounded-full bg-brown pl-[60px] pt-20 shadow-md transition duration-200 hover:scale-105 hover:bg-darkBrown">
         <div className=" flex items-center justify-center gap-2">
           <div className=" flex h-[40px] w-[240px] cursor-pointer items-center justify-center gap-2 rounded-lg   bg-green py-1 transition duration-200 hover:bg-darkGreen">
-            <div className="flex">
-              <Link to="/userpost">
+            <Link to="/userpost">
+              <div className="flex items-center justify-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -58,9 +58,9 @@ const Activity: React.FC = observer(() => {
                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
                   />
                 </svg>
-              </Link>
-            </div>
-            <p className="text-white">建立貼文</p>
+                <p className="text-white">建立貼文</p>
+              </div>
+            </Link>
           </div>
         </div>
         <div className="mt-4 grid justify-items-center">

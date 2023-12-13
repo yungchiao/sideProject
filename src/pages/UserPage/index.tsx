@@ -127,7 +127,7 @@ const UserPage: React.FC = observer(() => {
                   className="relative mx-auto mt-4 flex h-40 w-40 rounded-full"
                 />
                 <button
-                  className="absolute  bottom-5 right-28 h-10 w-10 rounded-full border-1 border-stone-600 bg-white"
+                  className="absolute  bottom-5 right-28 h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow"
                   onClick={handleChangeAvatar}
                 >
                   <svg
@@ -136,7 +136,7 @@ const UserPage: React.FC = observer(() => {
                     viewBox="0 0 24 24"
                     strokeWidth="1"
                     stroke="currentColor"
-                    className="mx-2 flex h-6 w-6 justify-center"
+                    className="hover:strokeWidth mx-2 flex h-6 w-6 justify-center  hover:stroke-white"
                   >
                     <path
                       strokeLinecap="round"
@@ -148,8 +148,10 @@ const UserPage: React.FC = observer(() => {
 
                 <div className="   flex justify-end">
                   {isChangeAvatar && (
-                    <div className="  absolute right-2 top-24 ml-4 h-auto  w-24 justify-center rounded-md bg-stone-200 py-1">
-                      <Link to="/paint">繪製頭貼</Link>
+                    <div className="  absolute right-2 top-24 ml-4 h-auto  w-24 justify-center rounded-md    bg-white py-1">
+                      <Link to="/paint" className="text-brown">
+                        繪製頭貼
+                      </Link>
 
                       <div className="container mx-auto mt-2">
                         <input
@@ -187,7 +189,7 @@ const UserPage: React.FC = observer(() => {
                         />
                         <label
                           htmlFor="file-upload"
-                          className=" cursor-pointer rounded bg-stone-800 px-4 py-2 font-bold text-white "
+                          className=" cursor-pointer rounded bg-brown px-4 py-2 font-bold text-white "
                         >
                           上傳檔案
                         </label>
