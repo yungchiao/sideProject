@@ -83,7 +83,6 @@ const UserPost: React.FC = observer(() => {
       const endFormatted = end.toLocaleDateString();
       return `${startFormatted}-${endFormatted}`;
     }
-
     return "選擇參加活動時間";
   };
   const uploadImage = async (): Promise<string> => {

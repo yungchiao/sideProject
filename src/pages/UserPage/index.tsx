@@ -16,6 +16,9 @@ const UserPage: React.FC = observer(() => {
   appStore.db = getFirestore(appStore.app);
   const auth = getAuth();
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  useEffect(() => {
     const userId = appStore.currentUserEmail;
 
     if (userId) {

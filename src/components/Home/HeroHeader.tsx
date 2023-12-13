@@ -1,10 +1,20 @@
 import { Button } from "@nextui-org/react";
+import { motion } from "framer-motion";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 
 const HeroHeader: React.FC = observer(() => {
+  const cloudVariants = {
+    initial: { x: "100vw" },
+    animate: {
+      x: 0,
+      transition: { type: "spring", stiffness: 20, duration: 4 },
+    },
+    exit: { x: "100vw", transition: { ease: "easeInOut", duration: 1 } },
+  };
+
   return (
     <div>
       <div className="flex ">
@@ -119,7 +129,7 @@ const HeroHeader: React.FC = observer(() => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="0.2"
+                strokeWidth="0.2"
                 stroke="currentColor"
                 className="h-[200px] w-[200px]"
               >
@@ -132,8 +142,19 @@ const HeroHeader: React.FC = observer(() => {
             </div>
           </div>
         </div>
-        <div className="w-2/3  bg-white  ">
-          <img src="/hero-header.png" className="w-full" />
+        <div className="relative  w-2/3  bg-white">
+          <img src="/hero-header-cloud.png" className="w-full" />
+
+          <div className="absolute left-0 top-0 z-20 w-full ">
+            <motion.img
+              src="cloud.png"
+              variants={cloudVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="h-full w-full object-cover"
+            />
+          </div>
         </div>
       </div>
     </div>

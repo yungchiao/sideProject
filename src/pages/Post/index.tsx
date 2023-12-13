@@ -41,7 +41,7 @@ const Activity: React.FC = observer(() => {
     <div className=" relative flex pb-20 pt-20">
       <div className="fixed left-[-50px] top-[-50px] grid h-[500px] w-[500px] content-center rounded-full bg-brown pl-[60px] pt-20 shadow-md transition duration-200 hover:scale-105 hover:bg-darkBrown">
         <div className=" flex items-center justify-center gap-2">
-          <div className=" flex h-[40px] w-[240px] cursor-pointer items-center justify-center gap-2 rounded-lg border border-stone-800 bg-white py-1">
+          <div className=" flex h-[40px] w-[240px] cursor-pointer items-center justify-center gap-2 rounded-lg   bg-green py-1 transition duration-200 hover:bg-darkGreen">
             <div className="flex">
               <Link to="/userpost">
                 <svg
@@ -49,8 +49,8 @@ const Activity: React.FC = observer(() => {
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
-                  stroke="black"
-                  className="h-6 w-6"
+                  stroke="white"
+                  className="h-6 w-6 "
                 >
                   <path
                     strokeLinecap="round"
@@ -60,7 +60,7 @@ const Activity: React.FC = observer(() => {
                 </svg>
               </Link>
             </div>
-            <p className="">建立貼文</p>
+            <p className="text-white">建立貼文</p>
           </div>
         </div>
         <div className="mt-4 grid justify-items-center">

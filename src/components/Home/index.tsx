@@ -7,6 +7,7 @@ import {
 } from "@nextui-org/react";
 import "firebase/firestore";
 import { Timestamp } from "firebase/firestore";
+import { AnimatePresence, motion } from "framer-motion";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
@@ -17,7 +18,7 @@ import HeroHeader from "./HeroHeader";
 
 const Home: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const MotionModal = motion(Modal);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   interface Admin {
@@ -76,6 +77,10 @@ const Home: React.FC = observer(() => {
       });
     }
   }, [appStore.currentUserEmail]);
+  const modalVariants = {
+    hidden: { opacity: 0, scale: 0.8, duration: 4 },
+    visible: { opacity: 1, scale: 1, duration: 4 },
+  };
 
   const handleSignUp = () => {
     if (selectedAdmin && quantity > 0) {
@@ -255,10 +260,10 @@ const Home: React.FC = observer(() => {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                strokeWidth="0"
-                stroke="currentColor"
+                strokeWidth={admin.isLiked ? "0" : "0.8"}
+                stroke="white"
                 className=" bottom-0 right-0 h-8 w-8 translate-x-1/4 translate-y-1/3 transform cursor-pointer"
-                fill={admin.isLiked ? "#ed4a5a" : "white"}
+                fill={admin.isLiked ? "#98816a" : "#dac040"}
                 onClick={() => handleIconClick(admin)}
               >
                 <path
@@ -275,24 +280,32 @@ const Home: React.FC = observer(() => {
           <div className="background-cover" onClick={toggleModal}></div>
         )}
 
-        <Modal
-          isOpen={isModalOpen}
-          onOpenChange={toggleModal}
-          className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
-        >
-          <ModalContent>
-            <ModalBody>
-              {selectedAdmin && (
-                <Detail
-                  selectedAdmin={selectedAdmin}
-                  quantity={quantity}
-                  setQuantity={setQuantity}
-                  handleSignUp={handleSignUp}
-                />
-              )}
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+        <AnimatePresence>
+          {isModalOpen && (
+            <MotionModal
+              isOpen={isModalOpen}
+              onOpenChange={toggleModal}
+              className="fixed left-1/4 top-1/4 w-1/2 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={modalVariants}
+            >
+              <ModalContent>
+                <ModalBody>
+                  {selectedAdmin && (
+                    <Detail
+                      selectedAdmin={selectedAdmin}
+                      quantity={quantity}
+                      setQuantity={setQuantity}
+                      handleSignUp={handleSignUp}
+                    />
+                  )}
+                </ModalBody>
+              </ModalContent>
+            </MotionModal>
+          )}
+        </AnimatePresence>
       </div>
       <Calendar />
       <div

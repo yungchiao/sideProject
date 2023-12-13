@@ -121,9 +121,9 @@ const Detail: React.FC<DetailProps> = ({
                   ))}
               </div>
             </div>
-            <div className="mt-4 flex w-full items-center justify-between gap-2">
-              <div className="flex w-4/5 items-center">
-                請選擇數量：
+            <div className="mt-4 flex w-full items-center justify-between ">
+              <div>請選擇數量：</div>
+              <div className="flex w-3/5 items-center justify-center">
                 <div className=" flex h-10 w-3/4 items-center justify-around rounded-md border">
                   <button
                     onClick={() => setQuantity(Math.max(quantity - 1, 0))}

@@ -98,22 +98,8 @@ const Admin: React.FC = observer(() => {
     console.log("dateRange value:", dateRange);
   }, [dateRange]);
 
-  const handleDateChange = (dates: any) => {
-    if (Array.isArray(dates) && dates.length === 2) {
-      let [newStart, newEnd] = dates;
-
-      if (!newStart && startDate) {
-        newStart = startDate;
-      }
-      if (!newEnd && endDate) {
-        newEnd = endDate;
-      }
-
-      setDateRange([newStart, newEnd]);
-    } else {
-      console.error("Selected dates are invalid");
-      setDateRange([null, null]);
-    }
+  const handleDateChange = (dates: [Date | null, Date | null]) => {
+    setDateRange(dates);
   };
 
   const handleSelectedActivity = (activity: ActivityType) => {

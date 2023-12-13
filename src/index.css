@@ -140,3 +140,10 @@ body {
   background: transparent;
   margin-right: 10px;
 }
+.cloud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  z-index: 10;
+}

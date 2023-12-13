@@ -33,14 +33,16 @@ const UserProfile: React.FC<
     <div>
       {isVisible ? (
         <div className=" mt-2 flex items-center justify-center gap-4">
-          <p>{user.userEmail}</p>
+          <p className="text-white">{user.userEmail}</p>
           <Button
             onClick={handleFollowClick}
-            className="ml-2 border border-stone-800 bg-white"
+            className="ml-2  bg-yellow hover:bg-darkYellow"
           >
-            {isFollowing ? "取消追蹤" : "追蹤"}
+            <p className="text-white">{isFollowing ? "取消追蹤" : "追蹤"}</p>
           </Button>
-          <button onClick={handleHideClick}>x</button>
+          <button onClick={handleHideClick}>
+            <p className="text-white">x</p>
+          </button>
         </div>
       ) : null}
     </div>
