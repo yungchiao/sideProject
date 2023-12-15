@@ -38,11 +38,9 @@ const HeroHeader: React.FC = observer(() => {
               <div className="none"></div>
             ) : (
               <div className="mt-20">
-                <Button className="bg-green">
-                  <Link color="foreground" to="/profile" className="text-white">
-                    登入
-                  </Link>
-                </Button>
+                <Link color="foreground" to="/profile">
+                  <Button className="bg-green text-white">登入</Button>
+                </Link>
               </div>
             )}
             <div className="mx-auto mt-20 flex h-[260px] w-full justify-center rounded-md border-2 border-dashed border-stone-400 transition duration-200 hover:scale-105 hover:shadow-lg">
@@ -124,7 +122,7 @@ const HeroHeader: React.FC = observer(() => {
                 </div>
               </div>
             </div>
-            <div className="transtion mt-20 flex justify-center duration-200 hover:translate-y-300">
+            <div className=" mt-20 flex justify-center ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

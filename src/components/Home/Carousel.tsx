@@ -14,14 +14,14 @@ const Carousal: React.FC = () => {
   const intervalRef = useRef<number | null>(null);
 
   const handlePrev = () => {
-    setSlideDirection("left");
+    setSlideDirection("right");
     setActiveCampaignIndex((prev) =>
       prev === 0 ? localImages.length - 1 : prev - 1,
     );
   };
 
   const handleNext = () => {
-    setSlideDirection("right");
+    setSlideDirection("left");
     setActiveCampaignIndex((prev) =>
       prev === localImages.length - 1 ? 0 : prev + 1,
     );

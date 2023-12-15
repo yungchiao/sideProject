@@ -303,7 +303,7 @@ class AppStore {
 
       const docRef = doc(this.db, "user", email);
       await setDoc(docRef, newUser);
-
+      alert("註冊成功!");
       this.newUser = newUser;
     } catch (error) {
       console.error("加入用戶失敗", error);
@@ -483,7 +483,7 @@ class AppStore {
   fetchNorthAdmin = async () => {
     const db = getFirestore();
     const querySnapshot = await getDocs(
-      query(collection(db, "admin"), where("direction", "==", "north")),
+      query(collection(db, "admin"), where("direction", "==", "北")),
     );
     const northAdmins = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -494,7 +494,7 @@ class AppStore {
   fetchCenterAdmin = async () => {
     const db = getFirestore();
     const querySnapshot = await getDocs(
-      query(collection(db, "admin"), where("direction", "==", "center")),
+      query(collection(db, "admin"), where("direction", "==", "中")),
     );
     const centerAdmins = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -505,7 +505,7 @@ class AppStore {
   fetchSouthAdmin = async () => {
     const db = getFirestore();
     const querySnapshot = await getDocs(
-      query(collection(db, "admin"), where("direction", "==", "south")),
+      query(collection(db, "admin"), where("direction", "==", "南")),
     );
     const southAdmins = querySnapshot.docs.map((doc) => ({
       id: doc.id,
@@ -516,7 +516,7 @@ class AppStore {
   fetchEastAdmin = async () => {
     const db = getFirestore();
     const querySnapshot = await getDocs(
-      query(collection(db, "admin"), where("direction", "==", "east")),
+      query(collection(db, "admin"), where("direction", "==", "東")),
     );
     const eastAdmins = querySnapshot.docs.map((doc) => ({
       id: doc.id,

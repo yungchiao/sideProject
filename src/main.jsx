@@ -9,8 +9,6 @@ import Header from "./components/Header";
 import "./index.css";
 import About from "./pages/About";
 import Admin from "./pages/Admin";
-import AdminAbout from "./pages/Admin/AdminAbout";
-import Checkout from "./pages/Admin/Checkout";
 import Chat from "./pages/Chat";
 import AdminChat from "./pages/Chat/AdminChat";
 import Center from "./pages/Directions/Center";
@@ -36,9 +34,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="cart" element={<Cart />} />
       <Route path="chat" element={<Chat />} />
       <Route path="about" element={<About />} />
-      <Route path="checkout" element={<Checkout />} />
+      {/* <Route path="checkout" element={<Checkout />} /> */}
       <Route path="adminchat" element={<AdminChat />} />
-      <Route path="adminabout" element={<AdminAbout />} />
+      {/* <Route path="adminabout" element={<AdminAbout />} /> */}
       <Route path="north" element={<North />} />
       <Route path="south" element={<South />} />
       <Route path="east" element={<East />} />

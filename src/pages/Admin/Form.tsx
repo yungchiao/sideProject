@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
 interface FormProps {
   onActivitySelect: (activity: ActivityType) => void;
@@ -33,6 +33,8 @@ const Form: React.FC<FormProps> = ({
   useEffect(() => {
     appStore.fetchAdmin();
   }, []);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedAdminId, setSelectedAdminId] = useState<string | null>(null);
 
   const handleActivityClick = (activity: ActivityType) => {
     onActivitySelect(activity);
@@ -40,7 +42,21 @@ const Form: React.FC<FormProps> = ({
   };
 
   const handleDelete = (id: string) => {
-    appStore.deleteAdmin(id);
+    setSelectedAdminId(id);
+
+    setShowConfirmModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedAdminId) {
+      appStore.deleteAdmin(selectedAdminId);
+      setSelectedAdminId(null);
+    }
+    setShowConfirmModal(false);
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirmModal(false);
   };
   return (
     <div>
@@ -88,6 +104,27 @@ const Form: React.FC<FormProps> = ({
           </div>
         </div>
       ))}
+      {showConfirmModal && (
+        <div className="fixed left-1/2 top-1/2 grid h-[300px] w-1/4 -translate-x-1/2 -translate-y-1/2 transform place-content-center gap-6 rounded-lg border border-b-[20px] border-brown bg-white p-4 shadow-lg">
+          <div className=" flex justify-center">
+            <p>確定要刪除嗎？</p>
+          </div>
+          <div className=" flex justify-center gap-4">
+            <button
+              onClick={handleConfirmDelete}
+              className="whitespace-nowrap rounded-lg bg-green px-4 py-2 text-white transition duration-200 hover:bg-darkGreen"
+            >
+              確定
+            </button>
+            <button
+              onClick={handleCancelDelete}
+              className="whitespace-nowrap rounded-lg bg-yellow px-4 py-2 text-white transition duration-200 hover:bg-darkYellow"
+            >
+              取消
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

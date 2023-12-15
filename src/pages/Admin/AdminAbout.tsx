@@ -114,7 +114,7 @@ const AdminAbout: React.FC = observer(() => {
   };
 
   return (
-    <div className="h-screen-bg">
+    <div className="h-screen-bg w-4/5">
       <h1 className=" flex justify-center pb-4 pt-28 text-3xl">
         地新引力的故事
       </h1>

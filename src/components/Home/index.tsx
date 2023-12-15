@@ -172,7 +172,7 @@ const Home: React.FC = observer(() => {
               className="relative mx-auto w-full rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
             >
               <CardBody className="flex overflow-visible p-0">
-                <div className="absolute left-1/2 top-[-145px] -translate-x-1/2 transform">
+                <div className="absolute left-1/2 top-[-155px] -translate-x-1/2 transform">
                   <div className="mx-auto flex h-[500px] w-[500px] justify-center overflow-hidden rounded-full">
                     <img
                       src={admin.images}
@@ -189,9 +189,12 @@ const Home: React.FC = observer(() => {
                   </h3>
                 </div>
                 <br />
-                <p className="  mb-4 flex justify-center">
-                  {admin.startTime?.toDate()?.toLocaleString()}-
-                  {admin.endTime?.toDate()?.toLocaleString()}
+                <p className=" flex justify-center">
+                  {admin.startTime?.toDate()?.toLocaleString()}{" "}
+                </p>
+                <p className="my-1   flex justify-center">|</p>
+                <p className="mb-4   flex justify-center">
+                  {admin.endTime?.toDate()?.toLocaleString()}{" "}
                 </p>
                 <div className="mx-4 my-2 flex w-auto justify-center rounded-full border-2 p-2">
                   <svg
@@ -239,7 +242,7 @@ const Home: React.FC = observer(() => {
                     元
                   </p>
                 </div>{" "}
-                <div className="mx-4 mb-8 mt-4 flex gap-2">
+                <div className="mx-4 mb-4 mt-2 flex justify-center gap-2">
                   {admin.hashtags &&
                     Array.isArray(admin.hashtags) &&
                     admin.hashtags.map((hashtag: string, index: number) => (

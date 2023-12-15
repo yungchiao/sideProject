@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 
 interface Chat {
@@ -133,116 +134,138 @@ const AdminChat = observer(() => {
     });
   };
   return (
-    <div className=" mx-20 flex justify-between  p-4 pb-10 pt-28">
-      <div className="w-1/3">
-        {chats.map((chat) => (
-          <button
-            key={chat.id}
-            onClick={() => selectChat(chat.id)}
-            className="mb-4 flex w-[300px] content-center items-center gap-4 rounded-md border-1 bg-white p-2"
-          >
-            <div className="flex  ">
-              <div className="h-[40px] w-[40px] overflow-hidden rounded-full">
-                <img src={chat.avatar} className="h-full w-full object-cover" />
+    <>
+      {appStore.currentUserEmail === "imadmin@gmail.com" ? (
+        <>
+          <div className=" mx-20 flex justify-between  p-4 pb-10 pt-28">
+            <div className="w-1/3">
+              {chats.map((chat) => (
+                <button
+                  key={chat.id}
+                  onClick={() => selectChat(chat.id)}
+                  className="mb-4 flex w-[300px] content-center items-center gap-4 rounded-md border-1 bg-white p-2"
+                >
+                  <div className="flex  ">
+                    <div className="h-[40px] w-[40px] overflow-hidden rounded-full">
+                      <img
+                        src={chat.avatar}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  </div>
+                  <p>{chat.userId}</p>
+                </button>
+              ))}
+            </div>
+            <div className=" w-2/3   ">
+              <div className="h-[750px] overflow-scroll rounded-md border p-4">
+                {currentMessages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`mb-4 w-fit rounded-md p-2 ${
+                      message.sender === "admin" ? "ml-auto " : "mr-auto "
+                    }`}
+                  >
+                    {message.sender === "admin" ? (
+                      <div className="flex items-center gap-2">
+                        <div className="mt-7 text-xs text-gray-500">
+                          {formatMessageTime(message.createdAt)}
+                        </div>
+                        <p
+                          className={` w-fit rounded-md border p-2 ${
+                            message.sender === "admin"
+                              ? "ml-auto bg-gray-600 text-white"
+                              : "mr-auto  bg-white text-stone-800"
+                          }`}
+                        >
+                          {message.text}
+                        </p>
+
+                        <div>
+                          <img
+                            src={
+                              message.sender === "admin"
+                                ? adminAvatar
+                                : message.avatar
+                            }
+                            alt="Avatar"
+                            className="h-12 w-12 rounded-full border border-stone-300"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <div>
+                          <img
+                            src={
+                              message.sender === "client"
+                                ? message.avatar
+                                : adminAvatar
+                            }
+                            alt="Avatar"
+                            className="h-12 w-12 rounded-full border border-stone-300"
+                          />
+                        </div>
+                        <p
+                          className={` w-fit rounded-md border p-2 ${
+                            message.sender === "client"
+                              ? "ml-auto bg-white text-stone-800"
+                              : "mr-auto bg-gray-600 text-white"
+                          }`}
+                        >
+                          {message.text}
+                        </p>
+
+                        <div className="mt-7 text-xs text-gray-500">
+                          {formatMessageTime(message.createdAt)}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
+              </div>
+
+              <div className="my-6   flex items-center gap-4 md:mb-0 md:flex-nowrap">
+                <Input
+                  type="email"
+                  variant="bordered"
+                  placeholder="輸入訊息"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                />
+
+                <Button
+                  className=" bg-stone-800 text-white"
+                  onClick={handleSendMessage}
+                >
+                  傳送
+                </Button>
               </div>
             </div>
-            <p>{chat.userId}</p>
-          </button>
-        ))}
-      </div>
-      <div className=" w-2/3   ">
-        <div className="h-[750px] overflow-scroll rounded-md border p-4">
-          {currentMessages.map((message, index) => (
-            <div
-              key={index}
-              className={`mb-4 w-fit rounded-md p-2 ${
-                message.sender === "admin" ? "ml-auto " : "mr-auto "
-              }`}
-            >
-              {message.sender === "admin" ? (
-                <div className="flex items-center gap-2">
-                  <div className="mt-7 text-xs text-gray-500">
-                    {formatMessageTime(message.createdAt)}
-                  </div>
-                  <p
-                    className={` w-fit rounded-md border p-2 ${
-                      message.sender === "admin"
-                        ? "ml-auto bg-gray-600 text-white"
-                        : "mr-auto  bg-white text-stone-800"
-                    }`}
-                  >
-                    {message.text}
-                  </p>
-
-                  <div>
-                    <img
-                      src={
-                        message.sender === "admin"
-                          ? adminAvatar
-                          : message.avatar
-                      }
-                      alt="Avatar"
-                      className="h-12 w-12 rounded-full border border-stone-300"
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <div>
-                    <img
-                      src={
-                        message.sender === "client"
-                          ? message.avatar
-                          : adminAvatar
-                      }
-                      alt="Avatar"
-                      className="h-12 w-12 rounded-full border border-stone-300"
-                    />
-                  </div>
-                  <p
-                    className={` w-fit rounded-md border p-2 ${
-                      message.sender === "client"
-                        ? "ml-auto bg-white text-stone-800"
-                        : "mr-auto bg-gray-600 text-white"
-                    }`}
-                  >
-                    {message.text}
-                  </p>
-
-                  <div className="mt-7 text-xs text-gray-500">
-                    {formatMessageTime(message.createdAt)}
-                  </div>
-                </div>
-              )}
+          </div>
+        </>
+      ) : (
+        <div className="h-screen-bg  flex items-center justify-center pt-28">
+          <div className="  rounded-md border px-40 py-6">
+            <p className="text-3xl">
+              只有 <span className="text-green">Admin</span> 身份可進入此頁面。
+            </p>
+            <div className="mt-4 flex justify-center">
+              <Button>
+                <Link to="/profile">以Admin身份登入</Link>
+              </Button>
             </div>
-          ))}
-          <div ref={messagesEndRef} />
+          </div>
         </div>
-
-        <div className="my-6   flex items-center gap-4 md:mb-0 md:flex-nowrap">
-          <Input
-            type="email"
-            variant="bordered"
-            placeholder="輸入訊息"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSendMessage();
-              }
-            }}
-          />
-
-          <Button
-            className=" bg-stone-800 text-white"
-            onClick={handleSendMessage}
-          >
-            傳送
-          </Button>
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 });
 

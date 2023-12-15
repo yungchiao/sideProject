@@ -124,7 +124,7 @@ const UserPage: React.FC = observer(() => {
                 <img
                   src={avatarUrl ? avatarUrl : "/bear.jpg"}
                   alt="Avatar"
-                  className="relative mx-auto mt-4 flex h-40 w-40 rounded-full"
+                  className="relative mx-auto mt-4 flex h-40 w-40 rounded-full object-cover"
                 />
                 <button
                   className="absolute  bottom-5 right-28 h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow"
@@ -426,9 +426,9 @@ const UserPage: React.FC = observer(() => {
         <div className="h-screen-bg  mx-40   flex items-center justify-center   text-center">
           <div className="block rounded-md border px-40 py-6">
             <h1 className="mb-4 text-3xl">登入後查看更多</h1>
-            <Button>
-              <Link to="/profile">登入</Link>
-            </Button>
+            <Link to="/profile">
+              <Button>登入</Button>
+            </Link>
           </div>
         </div>
       )}
