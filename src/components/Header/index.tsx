@@ -103,12 +103,20 @@ const Header: React.FC = observer(() => {
         </NavbarBrand>
         <NavbarContent className="hidden gap-3 sm:flex">
           <NavbarItem isActive>
-            <Link to="/post" aria-current="page" color="secondary">
+            <Link
+              to="/post"
+              aria-current="page"
+              className="text-brown transition duration-200 hover:text-darkBrown"
+            >
               社群
             </Link>
           </NavbarItem>
           <NavbarItem isActive>
-            <Link to="/about" aria-current="page" color="secondary">
+            <Link
+              to="/about"
+              aria-current="page"
+              className="text-brown transition duration-200 hover:text-darkBrown"
+            >
               關於
             </Link>
           </NavbarItem>
@@ -163,7 +171,7 @@ const Header: React.FC = observer(() => {
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
-              stroke="currentColor"
+              stroke="#98816a"
               className="ml-1 h-8 w-8"
             >
               <path

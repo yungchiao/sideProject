@@ -1,4 +1,6 @@
 import { Button, Input, Textarea } from "@nextui-org/react";
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
 import {
   Timestamp,
   collection,
@@ -8,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
@@ -71,11 +73,12 @@ const CustomInput = forwardRef<HTMLInputElement, CustomInputProps>(
   ),
 );
 const Admin: React.FC = observer(() => {
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
-  const [startDate, endDate] = dateRange;
+  const [startDate, setStartDate] = useState(
+    setHours(setMinutes(new Date(), 30), 24),
+  );
+  const [endDate, setEndDate] = useState(
+    setHours(setMinutes(new Date(), 30), 24),
+  );
   const [items, setItems] = useState<number>(1);
   const [price, setPrice] = useState<string>("");
   const [place, setPlace] = useState<string>("");
@@ -94,18 +97,11 @@ const Admin: React.FC = observer(() => {
   const [selectedActivity, setSelectedActivity] = useState<ActivityType | null>(
     null,
   );
-  useEffect(() => {
-    console.log("dateRange value:", dateRange);
-  }, [dateRange]);
-
-  const handleDateChange = (dates: [Date | null, Date | null]) => {
-    setDateRange(dates);
-  };
-
   const handleSelectedActivity = (activity: ActivityType) => {
     const start = activity.startTime.toDate();
     const end = activity.endTime.toDate();
-    setDateRange([start, end]);
+    setStartDate(start);
+    setEndDate(end);
     setCurrentImageUrl(activity.images);
     setSelectedImageFile(null);
     setSelectedActivity(activity);
@@ -129,16 +125,8 @@ const Admin: React.FC = observer(() => {
 
   const formatDateRange = (start: Date | null, end: Date | null) => {
     if (start instanceof Date && end instanceof Date) {
-      const options: Intl.DateTimeFormatOptions = {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      };
-      const startFormatted = start.toLocaleString("zh-TW", options);
-      const endFormatted = end.toLocaleString("zh-TW", options);
+      const startFormatted = start.toLocaleString("zh-TW");
+      const endFormatted = end.toLocaleString("zh-TW");
       return `${startFormatted} - ${endFormatted}`;
     }
     return "請選擇日期與時間";
@@ -284,16 +272,23 @@ const Admin: React.FC = observer(() => {
               <div className="mt-4">
                 <p>{formatDateRange(startDate, endDate)}</p>
                 <DatePicker
-                  selectsRange={true}
-                  startDate={startDate}
-                  endDate={endDate}
+                  selected={startDate}
+                  onChange={(date) => date && setStartDate(date)}
                   showTimeSelect
-                  timeFormat="HH:mm"
-                  timeIntervals={15}
+                  selectsStart
+                  minTime={setHours(setMinutes(new Date(), 0), 24)}
+                  maxTime={setHours(setMinutes(new Date(), 59), 23)}
                   dateFormat="MMMM d, yyyy h:mm aa"
-                  customInput={<CustomInput />}
-                  onChange={handleDateChange}
-                  className="z-20 mb-4 w-60 cursor-pointer rounded-lg bg-stone-800 text-center text-gray-100"
+                />
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date) => date && setEndDate(date)}
+                  showTimeSelect
+                  selectsEnd
+                  minDate={startDate}
+                  minTime={setHours(setMinutes(new Date(), 0), 24)}
+                  maxTime={setHours(setMinutes(new Date(), 59), 23)}
+                  dateFormat="MMMM d, yyyy h:mm aa"
                 />
               </div>
 

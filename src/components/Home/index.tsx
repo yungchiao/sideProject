@@ -7,7 +7,7 @@ import {
 } from "@nextui-org/react";
 import "firebase/firestore";
 import { Timestamp } from "firebase/firestore";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
@@ -18,7 +18,6 @@ import HeroHeader from "./HeroHeader";
 
 const Home: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const MotionModal = motion(Modal);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   interface Admin {
@@ -165,7 +164,7 @@ const Home: React.FC = observer(() => {
           <Carousal />
         </div>
       </div>
-      <div className="grid  grid-cols-2 gap-8 bg-stone-200 px-20 pb-6 pt-20 md:grid-cols-3">
+      <div className="grid grid-cols-2 gap-8 bg-stone-200 px-20 py-20   md:grid-cols-4">
         {appStore.admins.map((admin: Admin) => (
           <div className="relative">
             <Card
@@ -173,15 +172,15 @@ const Home: React.FC = observer(() => {
               className="relative mx-auto w-full rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
             >
               <CardBody className="flex overflow-visible p-0">
-                <div className="absolute left-1/2 top-[-100px] -translate-x-1/2 transform">
-                  <div className="mx-auto flex h-[400px] w-[400px] justify-center overflow-hidden rounded-full">
+                <div className="absolute left-1/2 top-[-145px] -translate-x-1/2 transform">
+                  <div className="mx-auto flex h-[500px] w-[500px] justify-center overflow-hidden rounded-full">
                     <img
                       src={admin.images}
                       className="h-full w-full object-cover"
                     />
                   </div>
                 </div>
-                <div className=" mt-[320px]  flex justify-center">
+                <div className=" mt-[380px]  flex justify-center">
                   <h3
                     onClick={() => handleAdminClick(admin)}
                     className="inline-block cursor-pointer text-lg font-bold text-brown"
@@ -190,11 +189,11 @@ const Home: React.FC = observer(() => {
                   </h3>
                 </div>
                 <br />
-                <p className=" mb-4 flex justify-center text-sm">
+                <p className="  mb-4 flex justify-center">
                   {admin.startTime?.toDate()?.toLocaleString()}-
                   {admin.endTime?.toDate()?.toLocaleString()}
                 </p>
-                <div className="my-2 flex w-auto justify-center rounded-full border-2 p-2">
+                <div className="mx-4 my-2 flex w-auto justify-center rounded-full border-2 p-2">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -240,14 +239,14 @@ const Home: React.FC = observer(() => {
                     元
                   </p>
                 </div>{" "}
-                <div className="mb-8 mt-4 flex gap-4">
+                <div className="mx-4 mb-8 mt-4 flex gap-2">
                   {admin.hashtags &&
                     Array.isArray(admin.hashtags) &&
                     admin.hashtags.map((hashtag: string, index: number) => (
-                      <div className="hashtag flex h-8 w-auto items-center  rounded-full p-4">
+                      <div className="hashtag flex h-8 w-auto items-center  rounded-full p-2">
                         <p
                           key={index}
-                          className="  whitespace-nowrap text-stone-800"
+                          className="whitespace-nowrap  text-sm text-stone-800"
                         >
                           #{hashtag}
                         </p>
@@ -282,14 +281,10 @@ const Home: React.FC = observer(() => {
 
         <AnimatePresence>
           {isModalOpen && (
-            <MotionModal
+            <Modal
               isOpen={isModalOpen}
               onOpenChange={toggleModal}
-              className="fixed left-1/4 top-1/4 w-1/2 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={modalVariants}
+              className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
             >
               <ModalContent>
                 <ModalBody>
@@ -303,11 +298,13 @@ const Home: React.FC = observer(() => {
                   )}
                 </ModalBody>
               </ModalContent>
-            </MotionModal>
+            </Modal>
           )}
         </AnimatePresence>
       </div>
-      <Calendar />
+      <div className="py-10">
+        <Calendar />
+      </div>
       <div
         className=" absolute bottom-20 right-20 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-green shadow-lg transition duration-200 hover:scale-105 hover:bg-darkGreen"
         onClick={scrollToTop}

@@ -170,7 +170,7 @@ const Calendar: React.FC = observer(() => {
   };
 
   return (
-    <div className="mt-10 flex h-full w-full items-center justify-center gap-12">
+    <div className="mt-10 flex h-full w-full items-center justify-center gap-20">
       {showPartialInfo && selectedAdmin && (
         <div>
           <h1 className="mb-10 flex justify-center border-b-large pb-5 text-3xl">

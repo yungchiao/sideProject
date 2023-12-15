@@ -8,7 +8,6 @@ import {
 } from "firebase/auth";
 import {
   Firestore,
-  Timestamp,
   collection,
   deleteDoc,
   doc,
@@ -51,8 +50,8 @@ interface Admin {
   price: number;
   images: string;
   hashtags: [];
-  startTime: Timestamp;
-  endTime: Timestamp;
+  startTime: Date;
+  endTime: Date;
   content: string;
   isLiked?: boolean;
   place: string;

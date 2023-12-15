@@ -147,3 +147,15 @@ body {
   width: 100px;
   z-index: 10;
 }
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 400px;
+}
+
+.fc-event-time {
+  display: none;
+}

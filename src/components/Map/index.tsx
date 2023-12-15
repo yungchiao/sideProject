@@ -1,6 +1,6 @@
 import { Button, Input } from "@nextui-org/react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface LocationInputProps {
   onPositionChange: (position: { latitude: number; longitude: number }) => void;
