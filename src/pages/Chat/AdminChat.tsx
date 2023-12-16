@@ -22,6 +22,7 @@ interface Message {
   text: string;
   createdAt: Timestamp;
   sender: string;
+
   avatar: string;
 }
 
@@ -91,30 +92,35 @@ const AdminChat = observer(() => {
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "" && selectedChatId) {
       const chatRef = doc(appStore.db, "adminChat", selectedChatId);
+
+      let senderAvatar = adminAvatar;
+      if (appStore.currentUserEmail && selectedChatId !== "admin email") {
+        senderAvatar = await getUserAvatar(appStore.currentUserEmail);
+      }
+
+      const newMessageObj = {
+        text: newMessage,
+        createdAt: new Date(),
+        sender: "admin",
+        avatar: senderAvatar,
+      };
+
       await runTransaction(appStore.db, async (transaction) => {
         const chatDoc = await transaction.get(chatRef);
-        const newMessageObj = {
-          text: newMessage,
-          createdAt: new Date(),
-          sender: "admin",
-        };
-
-        let currentMessages = [];
-        if (chatDoc.exists()) {
-          currentMessages = chatDoc.data().messages || [];
-        }
-
+        let existingMessages = chatDoc.exists()
+          ? chatDoc.data().messages || []
+          : [];
         transaction.set(
           chatRef,
-          {
-            messages: [...currentMessages, newMessageObj],
-          },
+          { messages: [...existingMessages, newMessageObj] },
           { merge: true },
         );
       });
+
       setNewMessage("");
     }
   };
+
   const getUserAvatar = async (email: any) => {
     const userRef = doc(appStore.db, "user", email);
     const userSnap = await getDoc(userRef);

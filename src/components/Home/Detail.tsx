@@ -122,7 +122,9 @@ const Detail: React.FC<DetailProps> = ({
               </div>
             </div>
             <div className="mt-4 flex w-full items-center justify-between ">
-              <div>請選擇數量：</div>
+              <div>
+                <p className="whitespace-nowrap">請選擇人數：</p>
+              </div>
               <div className="flex w-3/5 items-center justify-center">
                 <div className=" flex h-10 w-3/4 items-center justify-around rounded-md border">
                   <button
@@ -139,7 +141,7 @@ const Detail: React.FC<DetailProps> = ({
                   onClick={handleSignUp}
                   className="rounded-md bg-brown p-2"
                 >
-                  <p className="text-white">確定報名</p>
+                  <p className="whitespace-nowrap text-white">確定報名</p>
                 </button>
               </div>
             </div>

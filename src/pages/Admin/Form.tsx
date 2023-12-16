@@ -104,26 +104,30 @@ const Form: React.FC<FormProps> = ({
           </div>
         </div>
       ))}
+
       {showConfirmModal && (
-        <div className="fixed left-1/2 top-1/2 grid h-[300px] w-1/4 -translate-x-1/2 -translate-y-1/2 transform place-content-center gap-6 rounded-lg border border-b-[20px] border-brown bg-white p-4 shadow-lg">
-          <div className=" flex justify-center">
-            <p>確定要刪除嗎？</p>
+        <>
+          <div className="fixed left-1/2 top-1/2 z-40 grid h-[300px] w-1/4 -translate-x-1/2 -translate-y-1/2 transform place-content-center gap-6 rounded-lg border border-b-[20px] border-brown bg-white p-4 shadow-lg">
+            <div className=" flex justify-center">
+              <p>確定要刪除嗎？</p>
+            </div>
+            <div className=" flex justify-center gap-4">
+              <button
+                onClick={handleConfirmDelete}
+                className="whitespace-nowrap rounded-lg bg-green px-4 py-2 text-white transition duration-200 hover:bg-darkGreen"
+              >
+                確定
+              </button>
+              <button
+                onClick={handleCancelDelete}
+                className="whitespace-nowrap rounded-lg bg-yellow px-4 py-2 text-white transition duration-200 hover:bg-darkYellow"
+              >
+                取消
+              </button>
+            </div>
           </div>
-          <div className=" flex justify-center gap-4">
-            <button
-              onClick={handleConfirmDelete}
-              className="whitespace-nowrap rounded-lg bg-green px-4 py-2 text-white transition duration-200 hover:bg-darkGreen"
-            >
-              確定
-            </button>
-            <button
-              onClick={handleCancelDelete}
-              className="whitespace-nowrap rounded-lg bg-yellow px-4 py-2 text-white transition duration-200 hover:bg-darkYellow"
-            >
-              取消
-            </button>
-          </div>
-        </div>
+          <div className="background-cover"></div>
+        </>
       )}
     </div>
   );

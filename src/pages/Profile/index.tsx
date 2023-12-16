@@ -197,7 +197,13 @@ const Profile: React.FC = observer(() => {
                       選擇頭貼
                     </label>
                   </div>
-                  <div className="mx-auto my-4 flex h-28 w-28 justify-center overflow-hidden rounded-full border">
+                  <div
+                    className={`${
+                      currentImageUrl
+                        ? "mx-auto my-4 flex h-28 w-28 justify-center overflow-hidden rounded-full border"
+                        : ""
+                    }`}
+                  >
                     {currentImageUrl && (
                       <img
                         src={currentImageUrl}

@@ -14,6 +14,7 @@ interface Message {
   text: string;
   createdAt: Timestamp;
   sender: string;
+  avatar: string;
 }
 const Chat = observer(() => {
   const [message, setMessage] = useState("");
@@ -47,6 +48,7 @@ const Chat = observer(() => {
           text: message,
           createdAt: new Date(),
           sender: "client",
+          avatar: appStore.newUser?.avatar,
         };
 
         await runTransaction(appStore.db, async (transaction) => {

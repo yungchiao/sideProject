@@ -81,13 +81,13 @@ export interface UserFollow {
 
 class AppStore {
   config: FirebaseConfig = {
-    apiKey: "AIzaSyA69gAsOHrnfSdhKmKQniLUVExD9Kz8QK0",
-    authDomain: "gravity-fd062.firebaseapp.com",
-    projectId: "gravity-fd062",
-    storageBucket: "gravity-fd062.appspot.com",
-    messagingSenderId: "835366327544",
-    appId: "1:835366327544:web:6b68f2b9e5101c5eb2d70d",
-    measurementId: "G-X55F254YTP",
+    apiKey: "AIzaSyCsbG3z6fvFeIAyFsTwmSSy4jPv_d96SwE",
+    authDomain: "gravity-backup.firebaseapp.com",
+    projectId: "gravity-backup",
+    storageBucket: "gravity-backup.appspot.com",
+    messagingSenderId: "768371795119",
+    appId: "1:768371795119:web:6c3d74024f70aaf236605a",
+    measurementId: "G-KSYGS2KYFY",
   };
 
   app: FirebaseApp;
@@ -303,7 +303,7 @@ class AppStore {
 
       const docRef = doc(this.db, "user", email);
       await setDoc(docRef, newUser);
-      alert("註冊成功!");
+      console.log("加入用戶成功!");
       this.newUser = newUser;
     } catch (error) {
       console.error("加入用戶失敗", error);

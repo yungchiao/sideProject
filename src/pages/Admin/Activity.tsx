@@ -93,7 +93,12 @@ const Activity: React.FC = observer(() => {
       latitude: activity.latitude || "",
       longitude: activity.longitude || "",
     });
-    setSearchLocation(activity.place || "");
+    setSearchLocation(activity.place);
+    setIsActivityNameFilled(activity.name !== "");
+    setIsPriceFilled(activity.price.toString() !== "");
+    setIsImageUploaded(true);
+    setIsContentFilled(activity.content !== "");
+    setIsPlaceFilled(activity.place !== "");
   };
 
   const formatDateRange = (start: Date | null, end: Date | null) => {
@@ -211,7 +216,7 @@ const Activity: React.FC = observer(() => {
         const articlesCollection = collection(appStore.db, "admin");
         const docRef = doc(articlesCollection);
         await setDoc(docRef, activityData);
-
+        alert("活動新增成功！");
         console.log("活動新增成功！");
       }
     } catch (error) {
@@ -276,7 +281,7 @@ const Activity: React.FC = observer(() => {
             </div>
             {Array.from({ length: items }, (_, i) => (
               <Input
-                maxLength={6}
+                maxLength={8}
                 type="url"
                 className="mb-4 w-40"
                 placeholder="hashtag"
