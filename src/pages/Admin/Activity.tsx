@@ -19,9 +19,6 @@ import Map from "../../components/Map";
 import Form from "./Form";
 export const storage = getStorage(appStore.app);
 
-interface Hashtag {
-  [key: number]: string;
-}
 interface ActivityType {
   id: string;
   name: string;
@@ -63,7 +60,6 @@ const Activity: React.FC = observer(() => {
   const [selectedActivity, setSelectedActivity] = useState<ActivityType | null>(
     null,
   );
-
   const [isActivityNameFilled, setIsActivityNameFilled] = useState(false);
   const [isPriceFilled, setIsPriceFilled] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
@@ -179,7 +175,18 @@ const Activity: React.FC = observer(() => {
     isPlaceFilled &&
     isAtLeastOneHashtagFilled &&
     direction !== "";
-
+  const handleCleanInfo = () => {
+    setPrice("");
+    setPlace("");
+    setDirection("");
+    setPosition({ latitude: null, longitude: null });
+    setHashtags([]);
+    setSearchLocation("");
+    setActivityName("");
+    setContent("");
+    setImageUpload(null);
+    setCurrentImageUrl("");
+  };
   const handleSubmit = async () => {
     if (!isAllFieldsFilled) {
       alert("尚有未完成內容");
@@ -216,14 +223,15 @@ const Activity: React.FC = observer(() => {
       if (selectedActivity) {
         const docRef = doc(appStore.db, "admin", selectedActivity.id);
         await updateDoc(docRef, activityData);
+        handleCleanInfo();
         alert("活動更新成功！");
         console.log("活動更新成功！");
       } else {
         const articlesCollection = collection(appStore.db, "admin");
         const docRef = doc(articlesCollection);
         await setDoc(docRef, activityData);
+        handleCleanInfo();
         alert("活動新增成功！");
-        console.log("活動新增成功！");
       }
     } catch (error) {
       console.error("活動處理失敗", error);
@@ -345,7 +353,7 @@ const Activity: React.FC = observer(() => {
                 <SelectItem
                   key={item}
                   value={item}
-                  className="rounded-none bg-brown text-gray-100"
+                  className="rounded-none bg-brown text-gray-100 hover:bg-darkBrown"
                 >
                   {item}
                 </SelectItem>

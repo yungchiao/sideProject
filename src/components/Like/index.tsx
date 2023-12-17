@@ -1,9 +1,10 @@
-import { Button } from "@nextui-org/react";
+import { Button, Modal, ModalBody, ModalContent } from "@nextui-org/react";
 import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import Detail from "../../components/Home/Detail";
 interface LikeItem {
   id: string;
   name: string;
@@ -13,8 +14,31 @@ interface LikeItem {
   startTime: Timestamp;
   endTime: Timestamp;
 }
+interface Admin {
+  id: string;
+  name: string;
+  position: string;
+  price: number;
+  images: string;
+  hashtags: [];
+  startTime: Timestamp;
+  endTime: Timestamp;
+  content: string;
+  place: string;
+  longitude: string;
+  latitude: string;
+}
+interface CartItem {
+  name: string;
+  quantity: number;
+  price: number;
+  id: string;
+}
 const Like: React.FC = observer(() => {
   const [likeItems, setLikeItems] = useState<LikeItem[]>([]);
+  const [quantity, setQuantity] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
   useEffect(() => {
     const fetchLikeData = async () => {
       const userId = appStore.currentUserEmail;
@@ -38,6 +62,35 @@ const Like: React.FC = observer(() => {
       window.alert("取消收藏");
     }
   }
+  const handleAdminClick = (item: any) => {
+    const admin = appStore.admins.find((admin) => admin.name === item.name);
+    if (admin) {
+      setSelectedAdmin(admin);
+      toggleModal();
+    }
+  };
+  const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
+
+  const handleSignUp = () => {
+    if (selectedAdmin && quantity > 0) {
+      const cartItem: CartItem = {
+        name: selectedAdmin.name,
+        quantity: quantity,
+        price: selectedAdmin.price,
+        id: selectedAdmin.id,
+      };
+
+      const userEmail = appStore.currentUserEmail;
+      if (userEmail) {
+        appStore.newCart(userEmail, cartItem);
+        alert("加入訂單成功！");
+      } else {
+        alert("用戶未登入");
+      }
+    } else {
+      alert("請選擇數量");
+    }
+  };
   return (
     <div className="mx-auto mt-4 w-4/5  rounded-lg  p-4">
       {likeItems.length > 0 ? (
@@ -47,7 +100,33 @@ const Like: React.FC = observer(() => {
               key={index}
               className="mb-4 flex items-center justify-between rounded-md border bg-white p-4"
             >
-              <p>{item.name}</p>
+              <p
+                className="cursor-pointer text-lg font-bold text-brown transition duration-200 hover:scale-105 hover:text-darkBrown"
+                onClick={() => handleAdminClick(item)}
+              >
+                {item.name}
+              </p>
+              {isModalOpen && (
+                <div className="background-cover" onClick={toggleModal}></div>
+              )}
+              {isModalOpen && selectedAdmin && (
+                <Modal
+                  isOpen={isModalOpen}
+                  onOpenChange={toggleModal}
+                  className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
+                >
+                  <ModalContent>
+                    <ModalBody>
+                      <Detail
+                        selectedAdmin={selectedAdmin}
+                        quantity={quantity}
+                        setQuantity={setQuantity}
+                        handleSignUp={handleSignUp}
+                      />
+                    </ModalBody>
+                  </ModalContent>
+                </Modal>
+              )}
               <p>{item.position}</p>
               <p>
                 {item.startTime?.toDate()?.toLocaleString()}-

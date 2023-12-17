@@ -160,7 +160,7 @@ const Home: React.FC = observer(() => {
           <Carousal />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-8 bg-stone-200 px-20 py-20   md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-6 bg-stone-200 px-40 py-20   md:grid-cols-4">
         {appStore.admins.map((admin: Admin) => (
           <div className="relative">
             <Card
@@ -168,15 +168,15 @@ const Home: React.FC = observer(() => {
               className="relative mx-auto w-full rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
             >
               <CardBody className="flex overflow-visible p-0">
-                <div className="absolute left-1/2 top-[-155px] -translate-x-1/2 transform">
-                  <div className="mx-auto flex h-[500px] w-[500px] justify-center overflow-hidden rounded-full">
+                <div className="absolute left-1/2 top-[-95px] -translate-x-1/2 transform">
+                  <div className="mx-auto flex h-[400px] w-[400px] justify-center overflow-hidden rounded-full">
                     <img
                       src={admin.images}
                       className="h-full w-full object-cover"
                     />
                   </div>
                 </div>
-                <div className=" mt-[380px]  flex justify-center">
+                <div className=" mt-[330px]  flex justify-center">
                   <h3
                     onClick={() => handleAdminClick(admin)}
                     className="inline-block cursor-pointer text-lg font-bold text-brown"
@@ -305,7 +305,7 @@ const Home: React.FC = observer(() => {
         <Calendar />
       </div>
       <div
-        className=" absolute bottom-20 right-20 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-green shadow-lg transition duration-200 hover:scale-105 hover:bg-darkGreen"
+        className=" absolute bottom-10 right-10 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-green shadow-lg transition duration-200 hover:scale-105 hover:bg-darkGreen"
         onClick={scrollToTop}
       >
         <svg

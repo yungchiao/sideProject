@@ -21,8 +21,9 @@ const AdminAbout: React.FC = observer(() => {
         setExistingImages(aboutData.images || []);
       }
     };
-
+    setIsLoading(true);
     fetchAndSetAboutData();
+    setIsLoading(false);
   }, []);
 
   const [history, setHistory] = useState<string>("");
@@ -32,6 +33,7 @@ const AdminAbout: React.FC = observer(() => {
   const [selectedImageFiles, setSelectedImageFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]); // Existing images URLs
   const [currentImageUrl, setCurrentImageUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleHistoryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setHistory(event.target.value);
@@ -114,78 +116,88 @@ const AdminAbout: React.FC = observer(() => {
   };
 
   return (
-    <div className="h-screen-bg w-4/5">
-      <h1 className=" flex justify-center pb-4 pt-28 text-3xl">
-        地新引力的故事
-      </h1>
-      <div className="flex justify-center">
-        <Textarea
-          classNames={{
-            base: "w-4/5 ",
-            input: "resize-y min-h-[120px]",
-          }}
-          value={history}
-          onChange={handleHistoryChange}
-        />
-      </div>
-      <div className="flex items-center justify-center gap-4">
-        <p>舉辦過</p>
-        <Input
-          className="my-4 flex w-40 justify-center"
-          value={activities}
-          onChange={handleActivitiesChange}
-        />
-        <p>個活動</p>
-      </div>
-      <div className="flex items-center justify-center gap-4">
-        <p>累積</p>
-        <Input
-          className="my-4 flex w-40 justify-center"
-          value={attendants}
-          onChange={handleAttendantsChange}
-        />
-        <p>位參加者</p>
-      </div>
-      <div className="flex items-center justify-center gap-4">
-        <p>獲得</p>
-        <Input
-          className="my-4 flex w-40 justify-center"
-          value={subsidy}
-          onChange={handleSubsidyChange}
-        />
-        <p>萬元</p>
-      </div>
-      <div className="my-6 flex justify-center">
-        <input
-          type="file"
-          multiple
-          className="mb-4 "
-          onChange={handleImageChange}
-        ></input>
-      </div>
-      <div className=" flex items-center justify-center gap-4 ">
-        {existingImages.map((imageUrl, index) => (
-          <div key={index} className="relative">
-            <img
-              src={imageUrl}
-              alt={`Image ${index}`}
-              className="h-60 w-auto overflow-hidden rounded-md"
-            />
-            <button
-              className="absolute right-0 top-0 m-1 rounded-full border bg-white p-1 text-white"
-              onClick={() => handleDeleteImage(imageUrl)}
-            >
-              <div className="h-8 w-8 cursor-pointer bg-[url('/trash.png')] bg-contain" />
-            </button>
+    <>
+      {isLoading ? (
+        <div className="loading-container">
+          <img src="/loading.gif" alt="Loading..." className="h-full w-full" />
+        </div>
+      ) : (
+        <>
+          <div className="h-screen-bg w-4/5">
+            <h1 className=" flex justify-center pb-4 pt-28 text-3xl">
+              地新引力的故事
+            </h1>
+            <div className="flex justify-center">
+              <Textarea
+                classNames={{
+                  base: "w-4/5 ",
+                  input: "resize-y min-h-[120px]",
+                }}
+                value={history}
+                onChange={handleHistoryChange}
+              />
+            </div>
+            <div className="flex items-center justify-center gap-4">
+              <p>舉辦過</p>
+              <Input
+                className="my-4 flex w-40 justify-center"
+                value={activities}
+                onChange={handleActivitiesChange}
+              />
+              <p>個活動</p>
+            </div>
+            <div className="flex items-center justify-center gap-4">
+              <p>累積</p>
+              <Input
+                className="my-4 flex w-40 justify-center"
+                value={attendants}
+                onChange={handleAttendantsChange}
+              />
+              <p>位參加者</p>
+            </div>
+            <div className="flex items-center justify-center gap-4">
+              <p>獲得</p>
+              <Input
+                className="my-4 flex w-40 justify-center"
+                value={subsidy}
+                onChange={handleSubsidyChange}
+              />
+              <p>萬元</p>
+            </div>
+            <div className="my-6 flex justify-center">
+              <input
+                type="file"
+                multiple
+                className="mb-4 "
+                onChange={handleImageChange}
+              ></input>
+            </div>
+            <div className=" flex items-center justify-center gap-4 ">
+              {existingImages.map((imageUrl, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={imageUrl}
+                    alt={`Image ${index}`}
+                    className="h-60 w-auto overflow-hidden rounded-md"
+                  />
+                  <button
+                    className="absolute right-0 top-0 m-1 rounded-full border bg-white p-1 text-white"
+                    onClick={() => handleDeleteImage(imageUrl)}
+                  >
+                    <div className="h-8 w-8 cursor-pointer bg-[url('/trash.png')] bg-contain" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div className="my-6 flex justify-center ">
+              <Button onClick={handleSubmit} className="bg-stone-800">
+                <p className="text-white">更新</p>
+              </Button>
+            </div>
           </div>
-        ))}
-      </div>
-      <div className="my-6 flex justify-center ">
-        <Button onClick={handleSubmit} className="bg-stone-800">
-          <p className="text-white">更新</p>
-        </Button>
-      </div>
-    </div>
+        </>
+      )}
+    </>
   );
 });
 

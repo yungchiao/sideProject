@@ -348,10 +348,19 @@ class AppStore {
     const activitiesCollection = collection(db, "activity");
 
     onSnapshot(activitiesCollection, (snapshot) => {
-      const updatedActivities = snapshot.docs.map((doc) => ({
+      let updatedActivities = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+      if (appStore.newUser) {
+        const following = appStore.newUser.following;
+
+        updatedActivities = updatedActivities.filter(
+          (activity) =>
+            following.includes(activity.id) ||
+            appStore.newUser?.email === activity.id,
+        );
+      }
       this.activities = updatedActivities;
     });
   };

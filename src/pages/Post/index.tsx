@@ -1,13 +1,39 @@
-import { doc, getDoc } from "firebase/firestore";
+import { Modal, ModalBody, ModalContent } from "@nextui-org/react";
+import { Timestamp, doc, getDoc } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import Detail from "../../components/Home/Detail";
 import UserSearch from "./UserSearch";
+
+interface Admin {
+  id: string;
+  name: string;
+  position: string;
+  price: number;
+  images: string;
+  hashtags: [];
+  startTime: Timestamp;
+  endTime: Timestamp;
+  content: string;
+  place: string;
+  longitude: string;
+  latitude: string;
+}
+interface CartItem {
+  name: string;
+  quantity: number;
+  price: number;
+  id: string;
+}
+
 const Activity: React.FC = observer(() => {
   const [activitiesWithAvatar, setActivitiesWithAvatar] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [quantity, setQuantity] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
   useEffect(() => {
     console.log("Loading started");
     setIsLoading(true);
@@ -15,7 +41,7 @@ const Activity: React.FC = observer(() => {
       console.log("Loading finished");
       setIsLoading(false);
     });
-  }, []);
+  }, [appStore.currentUserEmail]);
 
   useEffect(() => {
     appStore.fetchActivities().then(() => {
@@ -40,6 +66,51 @@ const Activity: React.FC = observer(() => {
       return userSnap.data().avatar || "/bear.jpg";
     }
     return "/bear.jpg";
+  };
+
+  const handleAdminClick = (activity: any) => {
+    const admin = appStore.admins.find((admin) => admin.name === activity.name);
+    if (admin) {
+      setSelectedAdmin(admin);
+      toggleModal();
+    }
+  };
+  const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
+  const formatMessageTime = (timestamp: any) => {
+    if (timestamp && typeof timestamp.toDate === "function") {
+      const date = timestamp.toDate();
+      return date.toLocaleString("zh-TW", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+    } else {
+      return "某個時間點";
+    }
+  };
+
+  const handleSignUp = () => {
+    if (selectedAdmin && quantity > 0) {
+      const cartItem: CartItem = {
+        name: selectedAdmin.name,
+        quantity: quantity,
+        price: selectedAdmin.price,
+        id: selectedAdmin.id,
+      };
+
+      const userEmail = appStore.currentUserEmail;
+      if (userEmail) {
+        appStore.newCart(userEmail, cartItem);
+        alert("加入訂單成功！");
+      } else {
+        alert("用戶未登入");
+      }
+    } else {
+      alert("請選擇數量");
+    }
   };
   const scrollToTop = () => {
     window.scrollTo({
@@ -88,7 +159,7 @@ const Activity: React.FC = observer(() => {
                 className="h-full w-full"
               />
             </div>
-          ) : (
+          ) : activitiesWithAvatar.length > 0 ? (
             <div>
               {activitiesWithAvatar.map((activity) => (
                 <div
@@ -105,11 +176,40 @@ const Activity: React.FC = observer(() => {
                   <div className="flex justify-center gap-6">
                     <div>
                       <div className="flex justify-between gap-6">
-                        <div className="">
-                          <h3 className="mb-3 text-lg font-bold text-brown">
+                        <div>
+                          <h3
+                            className="mb-3 cursor-pointer text-lg font-bold text-brown transition duration-200 hover:scale-105 hover:text-darkBrown"
+                            onClick={() => handleAdminClick(activity)}
+                          >
                             {activity.name}
                           </h3>
-
+                          <div className="mt-7 text-sm text-gray-500">
+                            {formatMessageTime(activity.createdAt)}
+                          </div>
+                          {isModalOpen && (
+                            <div
+                              className="background-cover bg-black/20"
+                              onClick={toggleModal}
+                            ></div>
+                          )}
+                          {isModalOpen && selectedAdmin && (
+                            <Modal
+                              isOpen={isModalOpen}
+                              onOpenChange={toggleModal}
+                              className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
+                            >
+                              <ModalContent>
+                                <ModalBody>
+                                  <Detail
+                                    selectedAdmin={selectedAdmin}
+                                    quantity={quantity}
+                                    setQuantity={setQuantity}
+                                    handleSignUp={handleSignUp}
+                                  />
+                                </ModalBody>
+                              </ModalContent>
+                            </Modal>
+                          )}
                           <div className="mt-2 flex items-center gap-3">
                             <div className="h-6 w-6">
                               <img
@@ -139,6 +239,7 @@ const Activity: React.FC = observer(() => {
                         <div className="mx-[5px] h-[300px] min-w-[300px] rounded-md bg-stone-100 p-4">
                           <p>{activity.content}</p>
                         </div>
+
                         <div className="h-[300px] w-[300px] overflow-hidden rounded-md border p-2 shadow-md">
                           <img
                             src={activity.image}
@@ -151,10 +252,16 @@ const Activity: React.FC = observer(() => {
                 </div>
               ))}
             </div>
+          ) : (
+            <div className="h-screen-bg ml-[60px] flex items-center  text-center">
+              <div className="block rounded-md border px-40 py-6">
+                <h1 className="my-4 text-3xl">追蹤好友查看更多貼文！</h1>
+              </div>
+            </div>
           )}
         </div>
         <div
-          className=" absolute bottom-20 right-20 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-green shadow-lg transition duration-200 hover:scale-105 hover:bg-darkGreen"
+          className=" absolute bottom-10 right-10 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-green shadow-lg transition duration-200 hover:scale-105 hover:bg-darkGreen"
           onClick={scrollToTop}
         >
           <svg

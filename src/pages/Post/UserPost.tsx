@@ -29,12 +29,12 @@ interface Admin {
 const UserPost: React.FC = observer(() => {
   const [items, setItems] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const [position, setPosition] = useState<string>("");
-  const [hashtags, setHashtags] = useState<Hashtag>({});
+  const [hashtags, setHashtags] = useState<string[]>([]);
   const [activityName, setActivityName] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [isContentFilled, setIsContentFilled] = useState(false);
+  const [currentImageUrl, setCurrentImageUrl] = useState("");
 
   useEffect(() => {
     appStore.fetchAdmin();
@@ -50,15 +50,23 @@ const UserPost: React.FC = observer(() => {
     index: number,
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setHashtags({ ...hashtags, [index]: event.target.value });
+    const newHashtags = [...hashtags];
+    newHashtags[index] = event.target.value;
+    setHashtags(newHashtags);
   };
 
-  const handlePositionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPosition(event.target.value);
-  };
   const handleContent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContent(event.target.value);
     setIsContentFilled(event.target.value !== "");
+  };
+  const handleCleanInfo = () => {
+    setSelectedOption("");
+    setHashtags([]);
+    setActivityName("");
+    setContent("");
+    setImageUpload(null);
+    setIsContentFilled(false);
+    setCurrentImageUrl("");
   };
   const handleSubmit = async () => {
     try {
@@ -71,39 +79,42 @@ const UserPost: React.FC = observer(() => {
 
         setDoc(docRef, {
           name: activityName,
-
           weather: selectedOption,
           hashtags: Object.values(hashtags),
           content: content,
-          position: position,
+          createdAt: new Date(),
           image: imageUrl,
           id: appStore.currentUserEmail,
           postId: docRef.id,
         });
       }
-      console.log("貼文已添加到 Firestore");
+      handleCleanInfo();
+
       alert("已發布貼文！");
     } catch (error) {
       console.error("添加貼文失敗", error);
     }
   };
-
-  const variant = "underlined";
+  const isAllFieldsFilled =
+    isContentFilled && activityName !== "" && imageUpload;
 
   return (
     <div>
       {appStore.newUser ? (
-        <div className="h-screen-bg m-auto w-3/4  p-10 pb-40 pt-28">
+        <div className=" m-auto w-3/4  p-10 pb-28 pt-40">
           <Select
             aria-label="Select Activity Name"
-            label={activityName ? "" : "選擇活動名稱"}
-            className="max-w-xs"
+            label={activityName ? activityName : "選擇活動名稱"}
+            value={activityName}
+            className="mb-4 max-w-xs"
             onChange={(e) => {
               const selectedAdmin = appStore.admins.find(
                 (admin) => admin.id === e.target.value,
               );
               if (selectedAdmin) {
                 setActivityName(selectedAdmin.name);
+              } else {
+                setActivityName("");
               }
             }}
           >
@@ -111,7 +122,7 @@ const UserPost: React.FC = observer(() => {
               <SelectItem
                 key={admin.id}
                 value={admin.id}
-                className="rounded-none bg-brown text-gray-100"
+                className="rounded-none bg-brown text-gray-100 hover:bg-darkBrown"
               >
                 {admin.name}
               </SelectItem>
@@ -119,11 +130,12 @@ const UserPost: React.FC = observer(() => {
           </Select>
           {Array.from({ length: items }).map((_, index) => (
             <Input
-              maxLength={6}
+              maxLength={10}
               type="url"
               className="mb-4 w-40"
               placeholder="hashtag"
               labelPlacement="outside"
+              value={hashtags[index] || ""}
               startContent={
                 <div className="pointer-events-none flex items-center">
                   <span className="text-small text-default-400">#</span>
@@ -139,17 +151,7 @@ const UserPost: React.FC = observer(() => {
           >
             <p className="text-stone-800">更多 #hashtag</p>
           </Button>
-          <div className="grid w-full grid-cols-12 gap-4">
-            <Input
-              key={variant}
-              variant={variant}
-              labelPlacement="outside"
-              placeholder="輸入地點"
-              className="col-span-12 mb-6 md:col-span-6 md:mb-4"
-              onChange={handlePositionChange}
-            />
-          </div>
-          <form className="mb-4 ">
+          <form className="my-4 ">
             <label className="mr-4 ">
               <input
                 type="radio"
@@ -186,6 +188,7 @@ const UserPost: React.FC = observer(() => {
               onChange={(e) => {
                 if (e.target.files && e.target.files.length > 0) {
                   setImageUpload(e.target.files[0]);
+                  setCurrentImageUrl(URL.createObjectURL(e.target.files[0]));
                 } else {
                   setImageUpload(null);
                 }
@@ -193,29 +196,39 @@ const UserPost: React.FC = observer(() => {
             ></input>
             <label
               htmlFor="file-upload"
-              className="fc-today-button cursor-pointer rounded-lg bg-yellow px-4 py-2 font-bold text-white hover:bg-darkYellow"
+              className="fc-today-button my-4 cursor-pointer rounded-lg bg-yellow px-4 py-2 font-bold text-white hover:bg-darkYellow"
             >
               選擇照片
             </label>
           </div>
+          <div>
+            {currentImageUrl && (
+              <img
+                src={currentImageUrl}
+                alt="Current Activity"
+                className="mb-4 h-auto w-24"
+              />
+            )}
+          </div>
           <Textarea
-            maxLength={200}
+            maxLength={400}
+            value={content}
             variant="bordered"
             placeholder="輸入你的心得"
             disableAnimation
             disableAutosize
             classNames={{
               base: "w-4/5 ",
-              input: "resize-y min-h-[120px]",
+              input: "resize-y min-h-[180px] max-h-[200px]",
             }}
             onChange={handleContent}
           />
           <div className="mx-auto mt-10 flex items-center justify-center">
             <Button
               onClick={handleSubmit}
-              disabled={!isContentFilled}
+              disabled={!isAllFieldsFilled}
               className={`bg-green px-4 py-2 text-white hover:bg-darkGreen ${
-                !isContentFilled
+                !isAllFieldsFilled
                   ? "disabled:cursor-not-allowed disabled:bg-stone-200"
                   : ""
               }`}

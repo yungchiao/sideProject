@@ -1,6 +1,19 @@
-import { Button, Card, CardBody } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  Modal,
+  ModalBody,
+  ModalContent,
+} from "@nextui-org/react";
 import { getAuth } from "firebase/auth";
-import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
+import {
+  Timestamp,
+  doc,
+  getFirestore,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
@@ -8,10 +21,30 @@ import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import Cart from "../../components/Cart";
+import Detail from "../../components/Home/Detail";
 import Like from "../../components/Like";
 import GoogleMap from "../../components/Map/GoogleMap";
 export const storage = getStorage(appStore.app);
-
+interface Admin {
+  id: string;
+  name: string;
+  position: string;
+  price: number;
+  images: string;
+  hashtags: [];
+  startTime: Timestamp;
+  endTime: Timestamp;
+  content: string;
+  place: string;
+  longitude: string;
+  latitude: string;
+}
+interface CartItem {
+  name: string;
+  quantity: number;
+  price: number;
+  id: string;
+}
 const UserPage: React.FC = observer(() => {
   appStore.db = getFirestore(appStore.app);
   const auth = getAuth();
@@ -48,6 +81,9 @@ const UserPage: React.FC = observer(() => {
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState("/bear.jpg");
   const [userName, setUserName] = useState<string>("");
+  const [quantity, setQuantity] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const toggleModal = () => setIsModalOpen(!isModalOpen);
   const toggleOpenFollower = () => {
     setDetailFollower(!isDetailFollower);
     isDetailFollowing
@@ -102,7 +138,50 @@ const UserPage: React.FC = observer(() => {
   const handleTabChange = (tabKey: any) => {
     setActiveTab(tabKey);
   };
+  const handleAdminClick = (activity: any) => {
+    const admin = appStore.admins.find((admin) => admin.name === activity.name);
+    if (admin) {
+      setSelectedAdmin(admin);
+      toggleModal();
+    }
+  };
+  const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
+  const formatMessageTime = (timestamp: any) => {
+    if (timestamp && typeof timestamp.toDate === "function") {
+      const date = timestamp.toDate();
+      return date.toLocaleString("zh-TW", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+    } else {
+      return "某個時間點";
+    }
+  };
 
+  const handleSignUp = () => {
+    if (selectedAdmin && quantity > 0) {
+      const cartItem: CartItem = {
+        name: selectedAdmin.name,
+        quantity: quantity,
+        price: selectedAdmin.price,
+        id: selectedAdmin.id,
+      };
+
+      const userEmail = appStore.currentUserEmail;
+      if (userEmail) {
+        appStore.newCart(userEmail, cartItem);
+        alert("加入訂單成功！");
+      } else {
+        alert("用戶未登入");
+      }
+    } else {
+      alert("請選擇數量");
+    }
+  };
   return (
     <div>
       {appStore.newUser ? (
@@ -282,38 +361,39 @@ const UserPage: React.FC = observer(() => {
                             <div>
                               <div className="flex gap-6">
                                 <div className="flex-none">
-                                  <h3 className="mb-3 text-lg font-bold text-brown">
+                                  <h3
+                                    className="mb-3 cursor-pointer text-lg font-bold text-brown transition duration-200 hover:scale-105 hover:text-darkBrown"
+                                    onClick={() => handleAdminClick(activity)}
+                                  >
                                     {activity.name}
                                   </h3>
-                                  <div className="flex gap-3">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth="1.5"
-                                      stroke="currentColor"
-                                      className="h-6 w-6"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
-                                      />
-                                    </svg>
-                                    <div className="h-[40px] w-[3px] bg-yellow" />
-                                    <div>
-                                      <p>
-                                        {activity.startTime
-                                          ?.toDate()
-                                          ?.toLocaleString()}
-                                      </p>
-                                      <p>
-                                        {activity.endTime
-                                          ?.toDate()
-                                          ?.toLocaleString()}
-                                      </p>
-                                    </div>
+                                  <div className="mt-7 text-sm text-gray-500">
+                                    {formatMessageTime(activity.createdAt)}
                                   </div>
+                                  {isModalOpen && (
+                                    <div
+                                      className="background-cover"
+                                      onClick={toggleModal}
+                                    ></div>
+                                  )}
+                                  {isModalOpen && selectedAdmin && (
+                                    <Modal
+                                      isOpen={isModalOpen}
+                                      onOpenChange={toggleModal}
+                                      className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
+                                    >
+                                      <ModalContent>
+                                        <ModalBody>
+                                          <Detail
+                                            selectedAdmin={selectedAdmin}
+                                            quantity={quantity}
+                                            setQuantity={setQuantity}
+                                            handleSignUp={handleSignUp}
+                                          />
+                                        </ModalBody>
+                                      </ModalContent>
+                                    </Modal>
+                                  )}
                                   <div className="mt-2 flex items-center gap-3">
                                     <div className="h-6 w-6">
                                       <img
@@ -324,29 +404,7 @@ const UserPage: React.FC = observer(() => {
                                     <div className="h-[30px] w-[3px] bg-yellow" />
                                     <p>{activity.weather}</p>
                                   </div>
-                                  <div className="mt-4 flex gap-3">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth="1.5"
-                                      stroke="currentColor"
-                                      className="h-6 w-6"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                                      />
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                                      />
-                                    </svg>
-                                    <div className="h-[30px] w-[3px] bg-yellow" />
-                                    <p>{activity.position}</p>
-                                  </div>
+
                                   <div className="mt-8 flex flex-col">
                                     {activity.hashtags.map(
                                       (hashtag: string, index: number) => (
