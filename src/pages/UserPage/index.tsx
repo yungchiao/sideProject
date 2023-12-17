@@ -1,11 +1,4 @@
-import {
-  Button,
-  Card,
-  CardBody,
-  Modal,
-  ModalBody,
-  ModalContent,
-} from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import { getAuth } from "firebase/auth";
 import {
   Timestamp,
@@ -21,9 +14,9 @@ import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import Cart from "../../components/Cart";
-import Detail from "../../components/Home/Detail";
 import Like from "../../components/Like";
 import GoogleMap from "../../components/Map/GoogleMap";
+import ActivityCard from "../Post/ActivityCard";
 export const storage = getStorage(appStore.app);
 interface Admin {
   id: string;
@@ -38,12 +31,6 @@ interface Admin {
   place: string;
   longitude: string;
   latitude: string;
-}
-interface CartItem {
-  name: string;
-  quantity: number;
-  price: number;
-  id: string;
 }
 const UserPage: React.FC = observer(() => {
   appStore.db = getFirestore(appStore.app);
@@ -81,9 +68,7 @@ const UserPage: React.FC = observer(() => {
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState("/bear.jpg");
   const [userName, setUserName] = useState<string>("");
-  const [quantity, setQuantity] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
   const toggleOpenFollower = () => {
     setDetailFollower(!isDetailFollower);
     isDetailFollowing
@@ -138,49 +123,12 @@ const UserPage: React.FC = observer(() => {
   const handleTabChange = (tabKey: any) => {
     setActiveTab(tabKey);
   };
-  const handleAdminClick = (activity: any) => {
-    const admin = appStore.admins.find((admin) => admin.name === activity.name);
-    if (admin) {
-      setSelectedAdmin(admin);
-      toggleModal();
-    }
-  };
-  const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
-  const formatMessageTime = (timestamp: any) => {
-    if (timestamp && typeof timestamp.toDate === "function") {
-      const date = timestamp.toDate();
-      return date.toLocaleString("zh-TW", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
-    } else {
-      return "某個時間點";
-    }
-  };
 
-  const handleSignUp = () => {
-    if (selectedAdmin && quantity > 0) {
-      const cartItem: CartItem = {
-        name: selectedAdmin.name,
-        quantity: quantity,
-        price: selectedAdmin.price,
-        id: selectedAdmin.id,
-      };
-
-      const userEmail = appStore.currentUserEmail;
-      if (userEmail) {
-        appStore.newCart(userEmail, cartItem);
-        alert("加入訂單成功！");
-      } else {
-        alert("用戶未登入");
-      }
-    } else {
-      alert("請選擇數量");
-    }
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
   return (
     <div>
@@ -341,111 +289,28 @@ const UserPage: React.FC = observer(() => {
               </button>
             </div>
             {activeTab === "post" && (
-              <div className="p-4">
-                {appStore.userActivities.length > 0 ? (
-                  <Card>
-                    <CardBody>
-                      {appStore.userActivities.map((activity, index) => (
-                        <div
-                          key={`${activity.name}-${activity.startTime}-${index}`}
-                          className="mx-auto mt-6 w-3/4 rounded-lg border bg-white p-4"
-                        >
-                          <div className=" mb-4 flex items-center justify-center gap-2 border-b-2 px-2 pb-2">
-                            <img
-                              src={appStore.newUser?.avatar || "/bear.jpg"}
-                              className="h-10 w-10 rounded-full"
-                            />
-                            <p>{activity.id}</p>
-                          </div>
-                          <div className="flex justify-center gap-6">
-                            <div>
-                              <div className="flex gap-6">
-                                <div className="flex-none">
-                                  <h3
-                                    className="mb-3 cursor-pointer text-lg font-bold text-brown transition duration-200 hover:scale-105 hover:text-darkBrown"
-                                    onClick={() => handleAdminClick(activity)}
-                                  >
-                                    {activity.name}
-                                  </h3>
-                                  <div className="mt-7 text-sm text-gray-500">
-                                    {formatMessageTime(activity.createdAt)}
-                                  </div>
-                                  {isModalOpen && (
-                                    <div
-                                      className="background-cover"
-                                      onClick={toggleModal}
-                                    ></div>
-                                  )}
-                                  {isModalOpen && selectedAdmin && (
-                                    <Modal
-                                      isOpen={isModalOpen}
-                                      onOpenChange={toggleModal}
-                                      className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
-                                    >
-                                      <ModalContent>
-                                        <ModalBody>
-                                          <Detail
-                                            selectedAdmin={selectedAdmin}
-                                            quantity={quantity}
-                                            setQuantity={setQuantity}
-                                            handleSignUp={handleSignUp}
-                                          />
-                                        </ModalBody>
-                                      </ModalContent>
-                                    </Modal>
-                                  )}
-                                  <div className="mt-2 flex items-center gap-3">
-                                    <div className="h-6 w-6">
-                                      <img
-                                        src="/weather.png"
-                                        className="h-full w-full object-cover"
-                                      />
-                                    </div>
-                                    <div className="h-[30px] w-[3px] bg-yellow" />
-                                    <p>{activity.weather}</p>
-                                  </div>
-
-                                  <div className="mt-8 flex flex-col">
-                                    {activity.hashtags.map(
-                                      (hashtag: string, index: number) => (
-                                        <div className="hashtag mb-2 flex h-8 w-auto items-center rounded-full p-4">
-                                          <p
-                                            key={index}
-                                            className="whitespace-nowrap text-stone-800"
-                                          >
-                                            #{hashtag}
-                                          </p>
-                                        </div>
-                                      ),
-                                    )}
-                                  </div>
-                                </div>
-                                <div className="h-[300px] w-[500px] rounded-md bg-stone-100 p-4 ">
-                                  <p>{activity.content}</p>
-                                </div>
-                                <div className="h-[300px] w-[300px] overflow-hidden rounded-md border p-2 shadow-md">
-                                  <img
-                                    src={activity.image}
-                                    className="h-full w-full object-cover"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+              <div className="flex justify-center">
+                <div className="w-[60%]  p-4">
+                  {appStore.userActivities.length > 0 ? (
+                    <div>
+                      {appStore.userActivities.map((activity) => (
+                        <ActivityCard
+                          key={activity.postId}
+                          activity={activity}
+                        />
                       ))}
-                    </CardBody>
-                  </Card>
-                ) : (
-                  <div className="mx-40  mt-4  justify-center rounded-md border p-4 text-center">
-                    <h1 className="mb-4  items-center text-xl">
-                      尚未分享文章!
-                    </h1>
-                    <Button>
-                      <Link to="/post">前往社群</Link>
-                    </Button>
-                  </div>
-                )}
+                    </div>
+                  ) : (
+                    <div className="mx-40  mt-4  justify-center rounded-md border p-4 text-center">
+                      <h1 className="mb-4  items-center text-xl">
+                        尚未分享文章!
+                      </h1>
+                      <Button>
+                        <Link to="/post">前往社群</Link>
+                      </Button>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
