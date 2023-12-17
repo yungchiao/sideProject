@@ -76,10 +76,6 @@ const Home: React.FC = observer(() => {
       });
     }
   }, [appStore.currentUserEmail]);
-  const modalVariants = {
-    hidden: { opacity: 0, scale: 0.8, duration: 4 },
-    visible: { opacity: 1, scale: 1, duration: 4 },
-  };
 
   const handleSignUp = () => {
     if (selectedAdmin && quantity > 0) {
@@ -242,7 +238,7 @@ const Home: React.FC = observer(() => {
                     元
                   </p>
                 </div>{" "}
-                <div className="mx-4 mb-4 mt-2 flex justify-center gap-2">
+                <div className=" mx-auto mb-4 mt-2 flex w-full justify-center gap-2 overflow-x-auto">
                   {admin.hashtags &&
                     Array.isArray(admin.hashtags) &&
                     admin.hashtags.map((hashtag: string, index: number) => (

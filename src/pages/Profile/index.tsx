@@ -5,7 +5,6 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { collection, doc, getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useEffect, useState } from "react";
@@ -13,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { appStore } from "../../AppStore";
 
 const app = initializeApp(appStore.config);
-const db = getFirestore(app);
 export const storage = getStorage(app);
 const Profile: React.FC = observer(() => {
   const navigate = useNavigate();
@@ -22,7 +20,6 @@ const Profile: React.FC = observer(() => {
       navigate("/");
     }
   }, [appStore.currentUserEmail, navigate]);
-
   const [selected, setSelected] = useState("login");
   const [activeTab, setActiveTab] = useState("login");
   const auth = getAuth();
@@ -31,7 +28,6 @@ const Profile: React.FC = observer(() => {
   const [name, setName] = useState<string>("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [currentImageUrl, setCurrentImageUrl] = useState("");
-  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -46,7 +42,6 @@ const Profile: React.FC = observer(() => {
 
   const handleLogin = () => {
     if (email && password) {
-      const docRef = doc(collection(db, "user"), email);
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;

@@ -263,7 +263,7 @@ class AppStore {
       console.error("更新購物車失敗", error);
     }
   };
-  async addCheckoutItem(email: any, cartItems: any) {
+  async addCheckoutItem(email: string, cartItems: any) {
     const userRef = doc(this.db, "user", email);
 
     try {
@@ -272,8 +272,22 @@ class AppStore {
         if (!userDoc.exists()) {
           throw new Error("用戶不存在");
         }
-        const existingCheckoutItems = userDoc.data().checkout || [];
-        const updatedCheckoutItems = [...existingCheckoutItems, ...cartItems];
+        const userData = userDoc.data();
+        const existingCheckoutItems = userData.checkout || [];
+
+        const updatedCheckoutItems = [...existingCheckoutItems];
+        cartItems.forEach((newItem: any) => {
+          const existingItemIndex = updatedCheckoutItems.findIndex(
+            (item) => item.name === newItem.name,
+          );
+          if (existingItemIndex !== -1) {
+            updatedCheckoutItems[existingItemIndex].quantity +=
+              newItem.quantity;
+          } else {
+            updatedCheckoutItems.push(newItem);
+          }
+        });
+
         transaction.update(userRef, { checkout: updatedCheckoutItems });
       });
       console.log("訂單加入成功！");

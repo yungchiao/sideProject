@@ -1,11 +1,10 @@
 import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-import setHours from "date-fns/setHours";
-import setMinutes from "date-fns/setMinutes";
+
 import { Timestamp, collection, doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
+
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import { v4 } from "uuid";
@@ -28,12 +27,6 @@ interface Admin {
 }
 
 const UserPost: React.FC = observer(() => {
-  const [startDate, setStartDate] = useState(
-    setHours(setMinutes(new Date(), 30), 24),
-  );
-  const [endDate, setEndDate] = useState(
-    setHours(setMinutes(new Date(), 30), 24),
-  );
   const [items, setItems] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("");
   const [position, setPosition] = useState<string>("");
@@ -41,19 +34,11 @@ const UserPost: React.FC = observer(() => {
   const [activityName, setActivityName] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
+  const [isContentFilled, setIsContentFilled] = useState(false);
 
   useEffect(() => {
     appStore.fetchAdmin();
   }, []);
-
-  const formatDateRange = (start: Date | null, end: Date | null) => {
-    if (start instanceof Date && end instanceof Date) {
-      const startFormatted = start.toLocaleString("zh-TW");
-      const endFormatted = end.toLocaleString("zh-TW");
-      return `${startFormatted} - ${endFormatted}`;
-    }
-    return "請選擇日期與時間";
-  };
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
@@ -73,6 +58,7 @@ const UserPost: React.FC = observer(() => {
   };
   const handleContent = (event: React.ChangeEvent<HTMLInputElement>) => {
     setContent(event.target.value);
+    setIsContentFilled(event.target.value !== "");
   };
   const handleSubmit = async () => {
     try {
@@ -85,8 +71,7 @@ const UserPost: React.FC = observer(() => {
 
         setDoc(docRef, {
           name: activityName,
-          startTime: startDate,
-          endTime: endDate,
+
           weather: selectedOption,
           hashtags: Object.values(hashtags),
           content: content,
@@ -132,35 +117,6 @@ const UserPost: React.FC = observer(() => {
               </SelectItem>
             ))}
           </Select>
-          <div className="mt-4">
-            <div className="my-4 ">
-              <p>{formatDateRange(startDate, endDate)}</p>
-            </div>
-            <div className="mb-4 flex gap-4">
-              <DatePicker
-                selected={startDate}
-                onChange={(date) => date && setStartDate(date)}
-                showTimeSelect
-                selectsStart
-                minTime={setHours(setMinutes(new Date(), 0), 24)}
-                maxTime={setHours(setMinutes(new Date(), 59), 23)}
-                dateFormat="MMMM d, yyyy h:mm aa"
-                className=" w-[230px]  rounded-md border-2 border-green px-2"
-              />
-              <p className="text-xl">-</p>
-              <DatePicker
-                selected={endDate}
-                onChange={(date) => date && setEndDate(date)}
-                showTimeSelect
-                selectsEnd
-                minDate={startDate}
-                minTime={setHours(setMinutes(new Date(), 0), 24)}
-                maxTime={setHours(setMinutes(new Date(), 59), 23)}
-                dateFormat="MMMM d, yyyy h:mm aa"
-                className=" w-[230px]  rounded-md border-2 border-green px-2"
-              />
-            </div>
-          </div>
           {Array.from({ length: items }).map((_, index) => (
             <Input
               maxLength={6}
@@ -255,7 +211,15 @@ const UserPost: React.FC = observer(() => {
             onChange={handleContent}
           />
           <div className="mx-auto mt-10 flex items-center justify-center">
-            <Button className="bg-stone-800" onClick={handleSubmit}>
+            <Button
+              onClick={handleSubmit}
+              disabled={!isContentFilled}
+              className={`bg-green px-4 py-2 text-white hover:bg-darkGreen ${
+                !isContentFilled
+                  ? "disabled:cursor-not-allowed disabled:bg-stone-200"
+                  : ""
+              }`}
+            >
               <p className="text-gray-100">發布</p>
             </Button>
           </div>{" "}

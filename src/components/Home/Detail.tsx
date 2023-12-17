@@ -29,6 +29,10 @@ const Detail: React.FC<DetailProps> = ({
   setQuantity,
   handleSignUp,
 }) => {
+  const modifiedHandleSignUp = () => {
+    handleSignUp();
+    setQuantity(0);
+  };
   return (
     <div className="detail-container relative z-40  mt-4  rounded-md  bg-white p-4">
       <div className=" gap-8">
@@ -51,43 +55,45 @@ const Detail: React.FC<DetailProps> = ({
               </h3>
               <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
               <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
-              <div className="mt-4 flex">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="h-6 w-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                  />
-                </svg>
+              <div className="mt-4 inline-block transition duration-200 hover:text-brown">
+                <div className="flex">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                    />
+                  </svg>
 
-                <p>
-                  {selectedAdmin.latitude && selectedAdmin.longitude ? (
-                    <a
-                      href={getGoogleMapsLink(
-                        selectedAdmin.latitude,
-                        selectedAdmin.longitude,
-                      )}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {selectedAdmin.place}
-                    </a>
-                  ) : (
-                    <span>{selectedAdmin.place}</span>
-                  )}
-                </p>
+                  <p>
+                    {selectedAdmin.latitude && selectedAdmin.longitude ? (
+                      <a
+                        href={getGoogleMapsLink(
+                          selectedAdmin.latitude,
+                          selectedAdmin.longitude,
+                        )}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {selectedAdmin.place}
+                      </a>
+                    ) : (
+                      <span>{selectedAdmin.place}</span>
+                    )}
+                  </p>
+                </div>
               </div>
               <div className="mt-4 flex items-center gap-4">
                 <p className="">
@@ -103,7 +109,7 @@ const Detail: React.FC<DetailProps> = ({
 
           <div className="grid content-between">
             <div>
-              <p className="mb-10 max-w-lg rounded-md border p-4 text-sm">
+              <p className="mb-10 h-[240px] max-w-lg overflow-auto rounded-md border p-4 text-sm leading-8">
                 {selectedAdmin.content}
               </p>
               <div className="my-4 flex gap-4 ">
@@ -138,7 +144,7 @@ const Detail: React.FC<DetailProps> = ({
               </div>
               <div>
                 <button
-                  onClick={handleSignUp}
+                  onClick={modifiedHandleSignUp}
                   className="rounded-md bg-brown p-2"
                 >
                   <p className="whitespace-nowrap text-white">確定報名</p>

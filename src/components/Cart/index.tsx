@@ -19,9 +19,8 @@ interface CheckoutItem {
 
 const Cart: React.FC = observer(() => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [hasCheckedOut, setHasCheckedOut] = useState(false);
   const [checkoutItems, setCheckoutItems] = useState<CheckoutItem[]>([]);
-
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   useEffect(() => {
     const fetchCartData = async () => {
       const userId = appStore.currentUserEmail;
@@ -61,10 +60,13 @@ const Cart: React.FC = observer(() => {
     const unsubscribe = onSnapshot(userRef, (doc) => {
       if (doc.exists()) {
         const userData = doc.data();
-        if (userData.checkout && userData.checkout.length > 0) {
-          setHasCheckedOut(true);
-        } else {
-          setHasCheckedOut(false);
+
+        if (userData.cartItems) {
+          setCartItems(userData.cartItems);
+        }
+
+        if (userData.checkoutItems) {
+          setCheckoutItems(userData.checkoutItems || []);
         }
       }
     });
@@ -118,6 +120,7 @@ const Cart: React.FC = observer(() => {
   const handleCheckOut = async () => {
     if (appStore.newUser && appStore.currentUserEmail) {
       try {
+        setShowConfirmModal(true);
         const formattedCartItems = formatCartItemsForEmail();
         await appStore.addCheckoutItem(appStore.currentUserEmail, cartItems);
         await emailjs.send(
@@ -138,15 +141,15 @@ const Cart: React.FC = observer(() => {
         await updateDoc(userRef, {
           cartItems: [],
         });
-
-        alert("已送出訂單！");
       } catch (error) {
         console.error("訂單處理失敗", error);
         alert("訂單處理失敗");
       }
-    } else {
-      console.log("無法發送電子郵件，因為用戶資料不完整。");
     }
+  };
+
+  const handleConfirm = () => {
+    setShowConfirmModal(false);
   };
   const [activeTab, setActiveTab] = useState("cart");
 
@@ -258,6 +261,27 @@ const Cart: React.FC = observer(() => {
                   </Button>
                 </div>
               </div>
+              {showConfirmModal && (
+                <>
+                  <div className="fixed left-1/2 top-1/2 z-40 grid h-[300px] w-1/4 -translate-x-1/2 -translate-y-1/2 transform place-content-center gap-6 rounded-lg border border-b-[20px] border-brown bg-white p-4 shadow-lg">
+                    <div className=" flex justify-center">
+                      <div>
+                        <p className="mb-3">已送出訂單資訊至您的E-mail!</p>
+                        <p>重整畫面即可查看地圖中足跡</p>
+                      </div>
+                    </div>
+                    <div className=" flex justify-center gap-4">
+                      <button
+                        onClick={handleConfirm}
+                        className="whitespace-nowrap rounded-lg bg-green px-4 py-2 text-white transition duration-200 hover:bg-darkGreen"
+                      >
+                        確定
+                      </button>
+                    </div>
+                  </div>
+                  <div className="background-cover"></div>
+                </>
+              )}
             </>
           ) : (
             <div className="mx-40  my-6  justify-center rounded-md border p-4 text-center">

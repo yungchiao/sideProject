@@ -159,3 +159,27 @@ body {
 .fc-event-time {
   display: none;
 }
+
+.search-friend {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.search-client {
+  margin-top: 0.8rem;
+  display: inline-block;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.search-client:hover {
+  background-color: #699748;
+  color: white;
+  border-radius: 10px;
+}

@@ -6,11 +6,13 @@ import {
   getDoc,
   onSnapshot,
   runTransaction,
+  setDoc,
 } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import UserSearch from "../Post/UserSearch";
 
 interface Chat {
   id: string;
@@ -22,7 +24,6 @@ interface Message {
   text: string;
   createdAt: Timestamp;
   sender: string;
-
   avatar: string;
 }
 
@@ -139,17 +140,46 @@ const AdminChat = observer(() => {
       hour12: true,
     });
   };
+  async function checkIfChatExists(userEmail: any) {
+    const chatRef = doc(appStore.db, "adminChat", userEmail);
+    const docSnap = await getDoc(chatRef);
+    return docSnap.exists();
+  }
+
+  async function createNewChatWithUser(userEmail: any) {
+    const chatRef = doc(appStore.db, "adminChat", userEmail);
+    await setDoc(chatRef, {
+      currentUserEmail: userEmail,
+      messages: [],
+    });
+  }
+  const handleSelectUser = async (userEmail: any) => {
+    const existingChat = await checkIfChatExists(userEmail);
+    if (existingChat) {
+      selectChat(userEmail);
+    }
+    if (!existingChat) {
+      await createNewChatWithUser(userEmail);
+    }
+  };
   return (
     <>
       {appStore.currentUserEmail === "imadmin@gmail.com" ? (
         <>
           <div className=" mx-20 flex justify-between  p-4 pb-10 pt-28">
             <div className="w-1/3">
+              <div className="mb-8">
+                <UserSearch
+                  onSelectUser={handleSelectUser}
+                  showFollowButton={false}
+                  userProfileClassName="search-client"
+                />
+              </div>
               {chats.map((chat) => (
                 <button
                   key={chat.id}
                   onClick={() => selectChat(chat.id)}
-                  className="mb-4 flex w-[300px] content-center items-center gap-4 rounded-md border-1 bg-white p-2"
+                  className="trasition mb-4 flex w-[300px] content-center items-center gap-4 rounded-md border-1 bg-white p-2 duration-200 hover:border-2 hover:border-yellow"
                 >
                   <div className="flex  ">
                     <div className="h-[40px] w-[40px] overflow-hidden rounded-full">

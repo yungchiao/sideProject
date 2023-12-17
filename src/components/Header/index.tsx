@@ -193,7 +193,7 @@ const Header: React.FC = observer(() => {
           {appStore.newUser ? (
             <div>
               <img
-                className="h-10 w-10 rounded-full"
+                className="h-10 w-10 rounded-full object-cover"
                 src={
                   appStore.newUser.avatar
                     ? appStore.newUser.avatar

@@ -53,7 +53,7 @@ const Activity: React.FC = observer(() => {
     latitude: string | null;
     longitude: string | null;
   }>({ latitude: null, longitude: null });
-  const [hashtags, setHashtags] = useState<Hashtag>({});
+  const [hashtags, setHashtags] = useState<string[]>([]);
   const [searchLocation, setSearchLocation] = useState<string>("");
   const [activityName, setActivityName] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -69,7 +69,9 @@ const Activity: React.FC = observer(() => {
   const [isImageUploaded, setIsImageUploaded] = useState(false);
   const [isContentFilled, setIsContentFilled] = useState(false);
   const [isPlaceFilled, setIsPlaceFilled] = useState(false);
-
+  const isAtLeastOneHashtagFilled = hashtags.some(
+    (hashtag) => hashtag.trim() !== "",
+  );
   const handleSelectedActivity = (activity: ActivityType) => {
     const start = activity.startTime.toDate();
     const end = activity.endTime.toDate();
@@ -82,7 +84,7 @@ const Activity: React.FC = observer(() => {
     setPrice(activity.price.toString());
     setContent(activity.content);
     setImageUpload(activity.imagesFile);
-    setHashtags(activity.hashtags);
+    setHashtags(Object.values(activity.hashtags));
     setPlace(activity.place);
     setPosition({
       latitude: activity.latitude || "",
@@ -129,7 +131,9 @@ const Activity: React.FC = observer(() => {
     index: number,
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setHashtags({ ...hashtags, [index]: event.target.value });
+    const newHashtags = [...hashtags];
+    newHashtags[index] = event.target.value;
+    setHashtags(newHashtags);
   };
 
   const handlePositionChange = (newPosition: any) => {
@@ -172,6 +176,8 @@ const Activity: React.FC = observer(() => {
     isPriceFilled &&
     isImageUploaded &&
     isContentFilled &&
+    isPlaceFilled &&
+    isAtLeastOneHashtagFilled &&
     direction !== "";
 
   const handleSubmit = async () => {
@@ -304,7 +310,7 @@ const Activity: React.FC = observer(() => {
             </Button>
             <div className="grid w-full grid-cols-12 gap-4">
               <Input
-                maxLength={5}
+                maxLength={10}
                 key={variant}
                 variant={variant}
                 labelPlacement="outside"
@@ -371,7 +377,7 @@ const Activity: React.FC = observer(() => {
               </div>
             </div>
             <Textarea
-              maxLength={200}
+              maxLength={300}
               variant="bordered"
               placeholder="活動描述"
               disableAnimation

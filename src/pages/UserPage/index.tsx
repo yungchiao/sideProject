@@ -111,6 +111,7 @@ const UserPage: React.FC = observer(() => {
             <div className=" relative">
               <div className=" flex items-center justify-end gap-2">
                 <input
+                  maxLength={20}
                   className="my-4 flex w-40 justify-center bg-stone-100"
                   value={userName ? userName : "某位探險家"}
                   onChange={nameChange}
