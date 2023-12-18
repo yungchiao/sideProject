@@ -119,7 +119,7 @@ const AdminAbout: React.FC = observer(() => {
     <>
       {isLoading ? (
         <div className="loading-container">
-          <img src="/loading.gif" alt="Loading..." className="h-full w-full" />
+          <img src="/loading.gif" alt="Loading..." className="h-full w-full " />
         </div>
       ) : (
         <>

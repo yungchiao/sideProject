@@ -1,12 +1,6 @@
 import { Button, Card, CardBody } from "@nextui-org/react";
 import { getAuth } from "firebase/auth";
-import {
-  Timestamp,
-  doc,
-  getFirestore,
-  onSnapshot,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
@@ -18,26 +12,11 @@ import Like from "../../components/Like";
 import GoogleMap from "../../components/Map/GoogleMap";
 import ActivityCard from "../Post/ActivityCard";
 export const storage = getStorage(appStore.app);
-interface Admin {
-  id: string;
-  name: string;
-  position: string;
-  price: number;
-  images: string;
-  hashtags: [];
-  startTime: Timestamp;
-  endTime: Timestamp;
-  content: string;
-  place: string;
-  longitude: string;
-  latitude: string;
-}
+
 const UserPage: React.FC = observer(() => {
   appStore.db = getFirestore(appStore.app);
   const auth = getAuth();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+
   useEffect(() => {
     const userId = appStore.currentUserEmail;
 
@@ -124,16 +103,10 @@ const UserPage: React.FC = observer(() => {
     setActiveTab(tabKey);
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
   return (
     <div>
       {appStore.newUser ? (
-        <>
+        <div className="relative">
           <div className=" mx-auto mt-4  flex  flex-wrap justify-center pt-28 text-center">
             <div className=" relative">
               <div className=" flex items-center justify-end gap-2">
@@ -289,14 +262,15 @@ const UserPage: React.FC = observer(() => {
               </button>
             </div>
             {activeTab === "post" && (
-              <div className="flex justify-center">
-                <div className="w-[60%]  p-4">
+              <div className="flex justify-center ">
+                <div className="mt-6 w-[50%] rounded-xl bg-white p-4">
                   {appStore.userActivities.length > 0 ? (
                     <div>
                       {appStore.userActivities.map((activity) => (
                         <ActivityCard
                           key={activity.postId}
                           activity={activity}
+                          customAvatar={appStore.newUser?.avatar || "/bear.jpg"}
                         />
                       ))}
                     </div>
@@ -345,7 +319,7 @@ const UserPage: React.FC = observer(() => {
               <p className="mx-auto flex text-white">登出</p>
             </Button>
           </div>
-        </>
+        </div>
       ) : (
         <div className="h-screen-bg  mx-40   flex items-center justify-center   text-center">
           <div className="block rounded-md border px-40 py-6">

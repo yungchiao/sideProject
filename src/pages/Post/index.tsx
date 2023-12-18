@@ -1,30 +1,15 @@
-import { Timestamp, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 import ActivityCard from "./ActivityCard";
 import UserSearch from "./UserSearch";
-interface Admin {
-  id: string;
-  name: string;
-  position: string;
-  price: number;
-  images: string;
-  hashtags: [];
-  startTime: Timestamp;
-  endTime: Timestamp;
-  content: string;
-  place: string;
-  longitude: string;
-  latitude: string;
-}
 
 const Activity: React.FC = observer(() => {
   const [activitiesWithAvatar, setActivitiesWithAvatar] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
+
   useEffect(() => {
     console.log("Loading started");
     setIsLoading(true);
@@ -59,24 +44,8 @@ const Activity: React.FC = observer(() => {
     return "/bear.jpg";
   };
 
-  const handleAdminClick = (activity: any) => {
-    const admin = appStore.admins.find((admin) => admin.name === activity.name);
-    if (admin) {
-      setSelectedAdmin(admin);
-      toggleModal();
-    }
-  };
-  const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   return (
-    <div>
+    <div className="pt-10">
       <div className=" relative flex pb-20 pt-20">
         <div className="fixed left-[-50px] top-[-50px] grid h-[500px] w-[500px] content-center rounded-full bg-brown pl-[60px] pt-20 shadow-md transition duration-200 hover:scale-105 hover:bg-darkBrown">
           <div className=" flex items-center justify-center gap-2">
@@ -106,7 +75,7 @@ const Activity: React.FC = observer(() => {
             <UserSearch />
           </div>
         </div>
-        <div className="ml-[550px] inline w-[50%] justify-center  pt-[40px]">
+        <div className="ml-[550px] inline w-[50%] justify-center rounded-xl bg-white px-8 shadow-lg">
           {isLoading ? (
             <div className="loading-container">
               <img
@@ -116,7 +85,7 @@ const Activity: React.FC = observer(() => {
               />
             </div>
           ) : activitiesWithAvatar.length > 0 ? (
-            <div>
+            <div className="pt-4">
               {activitiesWithAvatar.map((activity) => (
                 <ActivityCard key={activity.postId} activity={activity} />
               ))}{" "}
@@ -128,25 +97,6 @@ const Activity: React.FC = observer(() => {
               </div>
             </div>
           )}
-        </div>
-        <div
-          className=" absolute bottom-10 right-10 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full bg-green shadow-lg transition duration-200 hover:scale-105 hover:bg-darkGreen"
-          onClick={scrollToTop}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="2.5"
-            stroke="white"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"
-            />
-          </svg>
         </div>
       </div>
     </div>
