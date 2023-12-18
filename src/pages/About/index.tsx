@@ -8,9 +8,7 @@ const About: React.FC = observer(() => {
 
   return (
     <div className="pb-40 pt-20">
-      <div className="h-[370px] w-full bg-[url('/see-you.jpg')] bg-contain bg-fixed  bg-no-repeat shadow-inner">
-        {/* <img src="/wind-lion.jpg" className="h-full w-full object-cover" /> */}
-      </div>
+      <div className="h-[370px] w-full bg-[url('/see-you.jpg')] bg-contain bg-fixed  bg-no-repeat shadow-inner"></div>
       <div className="relative">
         <div className=" absolute top-[-145px] h-[150px]   w-full bg-[url('/wave.png')] bg-cover bg-no-repeat">
           <h1 className="  absolute left-[400px] top-[50px] flex pt-4 text-3xl font-bold text-brown">

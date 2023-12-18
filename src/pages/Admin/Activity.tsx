@@ -258,6 +258,7 @@ const Activity: React.FC = observer(() => {
             />
             <div className="mt-4 ">
               <Input
+                type="number"
                 maxLength={5}
                 label="活動價格"
                 onChange={handlePriceChange}

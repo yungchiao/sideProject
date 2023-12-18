@@ -1,6 +1,5 @@
 import { Modal, ModalBody, ModalContent } from "@nextui-org/react";
 import Detail from "../Home/Detail";
-// import { appStore } from "../../AppStore";
 import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 

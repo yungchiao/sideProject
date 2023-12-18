@@ -2,7 +2,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { Modal, ModalBody, ModalContent } from "@nextui-org/react";
 import {
   Timestamp,
   collection,
@@ -12,7 +11,7 @@ import {
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
-import Detail from "../../components/Home/Detail";
+import ActivityModal from "../../components/ModalDetail";
 const Calendar: React.FC = observer(() => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   interface CalendarEvent {
@@ -198,27 +197,21 @@ const Calendar: React.FC = observer(() => {
         </div>
       )}
       {isModalOpen && (
-        <div className="background-cover" onClick={toggleModal}></div>
+        <div
+          className="background-cover bg-black/20"
+          onClick={toggleModal}
+        ></div>
       )}
       {isModalOpen && selectedAdmin && (
-        <Modal
+        <ActivityModal
           isOpen={isModalOpen}
-          onOpenChange={toggleModal}
-          className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
-        >
-          <ModalContent>
-            <ModalBody>
-              <Detail
-                selectedAdmin={selectedAdmin}
-                quantity={quantity}
-                setQuantity={setQuantity}
-                handleSignUp={handleSignUp}
-              />
-            </ModalBody>
-          </ModalContent>
-        </Modal>
+          toggleModal={toggleModal}
+          selectedAdmin={selectedAdmin}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          handleSignUp={handleSignUp}
+        />
       )}
-
       <div className="calendar-bg">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}

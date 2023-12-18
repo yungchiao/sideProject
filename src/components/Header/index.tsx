@@ -106,7 +106,8 @@ const Header: React.FC = observer(() => {
             <Link
               to="/post"
               aria-current="page"
-              className="text-brown transition duration-200 hover:text-darkBrown"
+              className="text-brown transition duration-200 hover:text-darkBrown "
+              onClick={scrollToTop}
             >
               社群
             </Link>
@@ -116,6 +117,7 @@ const Header: React.FC = observer(() => {
               to="/about"
               aria-current="page"
               className="text-brown transition duration-200 hover:text-darkBrown"
+              onClick={scrollToTop}
             >
               關於
             </Link>
@@ -165,6 +167,7 @@ const Header: React.FC = observer(() => {
                 ? "/adminchat"
                 : "/chat"
             }
+            onClick={scrollToTop}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -189,6 +192,7 @@ const Header: React.FC = observer(() => {
               ? "/admin"
               : "/userpage"
           }
+          onClick={scrollToTop}
         >
           {appStore.newUser ? (
             <div>

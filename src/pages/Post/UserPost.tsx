@@ -10,9 +10,6 @@ import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 export const storage = getStorage(appStore.app);
-interface Hashtag {
-  [key: string]: boolean;
-}
 interface Admin {
   id: string;
   name: string;
