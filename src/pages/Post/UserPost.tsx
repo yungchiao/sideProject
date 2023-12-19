@@ -11,10 +11,10 @@ export const storage = getStorage(appStore.app);
 
 const UserPost: React.FC = observer(() => {
   const [items, setItems] = useState<number>(1);
-  const [selectedOption, setSelectedOption] = useState<string>("");
-  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [selectedOption, setSelectedOption] = useState<string>("Sunny");
+  const [hashtags, setHashtags] = useState<string[]>(["好玩"]);
   const [activityName, setActivityName] = useState<string>("");
-  const [content, setContent] = useState<string>("");
+  const [content, setContent] = useState<string>("好希望能再次參加！");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [isContentFilled, setIsContentFilled] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState("");

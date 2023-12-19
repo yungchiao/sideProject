@@ -81,6 +81,8 @@ const Calendar: React.FC = observer(() => {
     quantity: number;
     price: number;
     id: string;
+    latitude: string;
+    longitude: string;
   }
 
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
@@ -112,6 +114,8 @@ const Calendar: React.FC = observer(() => {
         quantity: quantity,
         price: selectedAdmin.price,
         id: selectedAdmin.id,
+        latitude: selectedAdmin.latitude,
+        longitude: selectedAdmin.longitude,
       };
 
       const userEmail = appStore.currentUserEmail;
