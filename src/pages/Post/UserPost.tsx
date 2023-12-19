@@ -1,4 +1,4 @@
-import { Button, Input, Textarea } from "@nextui-org/react";
+import { Button, Textarea } from "@nextui-org/react";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
@@ -89,11 +89,11 @@ const UserPost: React.FC = observer(() => {
   return (
     <div>
       {appStore.newUser ? (
-        <div className=" m-auto w-3/4  p-10 pb-28 pt-40">
+        <div className="m-auto h-[100vh] w-3/4  p-10 pb-28 pt-40">
           <select
             aria-label="Select Activity Name"
             value={activityName}
-            className="mb-4 max-w-xs"
+            className="mb-4 max-w-xs cursor-pointer rounded-lg bg-white p-4 text-sm text-gray-500"
             onChange={(e) => {
               const selectedAdmin = appStore.admins.find(
                 (admin) => admin.id === e.target.value,
@@ -115,18 +115,18 @@ const UserPost: React.FC = observer(() => {
             ))}
           </select>
           {Array.from({ length: items }).map((_, index) => (
-            <Input
+            <input
               maxLength={10}
               type="url"
-              className="mb-4 w-40"
+              className="mb-4 block w-40 rounded-lg bg-white px-4 py-2"
               placeholder="hashtag"
-              labelPlacement="outside"
+              // labelPlacement="outside"
               value={hashtags[index] || ""}
-              startContent={
-                <div className="pointer-events-none flex items-center">
-                  <span className="text-small text-default-400">#</span>
-                </div>
-              }
+              // startContent={
+              //   <div className="pointer-events-none flex items-center">
+              //     <span className="text-small text-default-400">#</span>
+              //   </div>
+              // }
               key={index}
               onChange={(e) => handleHashtagChange(index, e)}
             />

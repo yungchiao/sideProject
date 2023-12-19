@@ -178,7 +178,7 @@ const AdminChat = observer(() => {
     <>
       {appStore.currentUserEmail === "imadmin@gmail.com" ? (
         <>
-          <div className=" mx-20 flex justify-between  p-4 pb-10 pt-28">
+          <div className="mx-20 flex h-[100vh] justify-between  overflow-auto p-4 pb-10 pt-28">
             <div className="w-1/3">
               <div className="mb-8">
                 <UserSearch
@@ -194,7 +194,7 @@ const AdminChat = observer(() => {
                   className="trasition mb-4 flex w-[300px] content-center items-center gap-4 rounded-md border-1 bg-white p-2 duration-200 hover:border-2 hover:border-yellow"
                 >
                   <div className="flex  ">
-                    <div className="h-[40px] w-[40px] overflow-hidden rounded-full">
+                    <div className="h-[40px] w-[40px] overflow-hidden rounded-full ">
                       <img
                         src={chat.avatar}
                         className="h-full w-full object-cover"
@@ -206,7 +206,7 @@ const AdminChat = observer(() => {
               ))}
             </div>
             <div className=" w-2/3   ">
-              <div className="h-[750px] overflow-scroll rounded-md border p-4">
+              <div className="h-[750px] overflow-auto rounded-md border p-4">
                 {currentMessages.map((message, index) => (
                   <div
                     key={index}

@@ -141,7 +141,7 @@ const HeroHeader: React.FC = observer(() => {
           </div>
         </div>
         <div className="relative  w-2/3  bg-white">
-          <img src="/hero-header-cloud.png" className="w-full" />
+          <img src="/hero-header.png" className="w-full" />
 
           <div className="absolute left-0 top-0 z-20 w-full ">
             <motion.img

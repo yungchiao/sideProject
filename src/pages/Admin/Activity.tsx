@@ -345,7 +345,7 @@ const Activity: React.FC = observer(() => {
             </div>
             <select
               aria-label="Select Activity Direction"
-              className="max-w-xs p-4"
+              className="max-w-xs cursor-pointer rounded-lg bg-gray-100 p-4 text-sm text-gray-500"
               onChange={(e) => setDirection(e.target.value)}
               value={direction}
             >

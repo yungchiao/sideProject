@@ -115,7 +115,7 @@ const UserPage: React.FC = observer(() => {
   return (
     <div>
       {appStore.newUser ? (
-        <div className="relative">
+        <div className="relative ">
           <div className=" mx-auto mt-4  flex  flex-wrap justify-center pt-28 text-center">
             <div className=" relative">
               <div className="relative">

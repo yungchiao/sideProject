@@ -1,4 +1,5 @@
 import { observer } from "mobx-react-lite";
+import { useLocation } from "react-router-dom";
 const Footer: React.FC = observer(() => {
   const scrollToTop = () => {
     window.scrollTo({
@@ -6,8 +7,19 @@ const Footer: React.FC = observer(() => {
       behavior: "smooth",
     });
   };
+  const location = useLocation();
+  const hideFooterOn = [
+    "/chat",
+    "/adminchat",
+    "/profile",
+    "/admin",
+    "/userpost",
+  ];
+  if (hideFooterOn.includes(location.pathname)) {
+    return null;
+  }
   return (
-    <div className="relative w-full shadow-inner">
+    <div className="relative  w-full shadow-inner">
       <div className="absolute left-0 top-0 h-full w-full bg-white opacity-50"></div>
       <div className="relative flex h-[770px] w-full items-center justify-center bg-[url('/footer.jpeg')] bg-cover bg-scroll bg-no-repeat">
         <div className=" text-center">

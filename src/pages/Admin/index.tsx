@@ -68,7 +68,7 @@ const Admin: React.FC = observer(() => {
           </div>
         </>
       ) : (
-        <div className="h-screen-bg  flex items-center justify-center pt-28">
+        <div className="flex  h-[100vh] items-center justify-center pt-28">
           <div className="  rounded-md border px-40 py-6">
             <p className="text-3xl">
               只有 <span className="text-green">Admin</span> 身份可進入此頁面。

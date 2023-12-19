@@ -43,6 +43,10 @@ const Activity: React.FC = observer(() => {
   useEffect(() => {
     if (appStore.activities.length > 0) {
       updateActivitiesWithAvatars().then(() => setIsLoading(false));
+    } else {
+      setTimeout(function () {
+        setIsLoading(false);
+      }, 1600);
     }
   }, [appStore.activities]);
 

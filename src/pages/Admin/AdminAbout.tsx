@@ -152,7 +152,7 @@ const AdminAbout: React.FC = observer(() => {
         </div>
       ) : (
         <>
-          <div className="h-screen-bg w-4/5 pt-32">
+          <div className="h-screen-bg mx-auto w-4/5 pt-32">
             <h1 className=" flex justify-center pb-4  text-3xl">
               地新引力的故事
             </h1>

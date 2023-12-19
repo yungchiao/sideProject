@@ -92,7 +92,7 @@ const Profile: React.FC = observer(() => {
     setActiveTab(tabKey);
   };
   return (
-    <div className=" h-screen-bg flex pt-20">
+    <div className="flex h-[100vh] pt-20">
       <div className=" w-1/3">
         <img src="/profile.jpg" className="h-full w-full object-cover " />
       </div>

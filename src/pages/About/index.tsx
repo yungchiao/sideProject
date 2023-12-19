@@ -1,16 +1,17 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { appStore } from "../../AppStore";
+
 const About: React.FC = observer(() => {
   useEffect(() => {
     appStore.fetchAbout();
   }, []);
 
   return (
-    <div className="pb-10 pt-20">
-      <div className="h-[370px] w-full bg-[url('/see-you.jpg')] bg-cover bg-fixed bg-left  bg-no-repeat shadow-inner"></div>
+    <div className="mt-20 pb-10">
+      <div className="h-[24vw] w-screen bg-[url('/see-you.jpg')] bg-cover bg-fixed bg-center" />
       <div className="relative">
-        <div className=" absolute top-[-145px]   h-[150px] w-full bg-[url('/waving.png')] bg-cover bg-no-repeat"></div>
+        <div className=" absolute top-[-145px] h-[150px] w-full bg-[url('/waving.png')] bg-cover bg-no-repeat"></div>
         <div className="mx-auto flex items-center justify-center gap-8">
           <div className="spin-slow flex  h-[240px] w-[240px] justify-center ">
             <img
@@ -34,11 +35,11 @@ const About: React.FC = observer(() => {
         </div>
         {appStore.aboutInfos.map((about, index) => (
           <div key={index} className="mx-auto mt-6 w-3/4 rounded-lg p-4">
-            <div className="mb-12 mt-4 flex flex-col justify-center gap-8">
+            <div className="mb-10 mt-12 flex flex-col justify-center gap-8">
               {about.images.map((image: any, imgIndex: any) => (
                 <div
                   key={imgIndex}
-                  className={`mt-12 flex items-center justify-center gap-12 ${
+                  className={`mt-12 flex items-center justify-center gap-24 ${
                     imgIndex % 2 === 0 ? " flex-row" : "flex-row-reverse"
                   }`}
                 >
@@ -46,7 +47,7 @@ const About: React.FC = observer(() => {
                     <img
                       src={image}
                       alt={`Image ${imgIndex}`}
-                      className="rotate-30 h-auto w-60 transform overflow-hidden rounded-md"
+                      className="rotate-30 h-auto w-[400px] transform overflow-hidden rounded-md"
                     />
                   </div>
                   <div className=" flex w-1/3 border-b-2 border-t-2 py-4">
@@ -55,7 +56,7 @@ const About: React.FC = observer(() => {
                 </div>
               ))}
             </div>
-            <div className="my-24 flex justify-center gap-60 rounded-lg bg-white py-6">
+            <div className="mb-24 mt-24 flex justify-center gap-60 rounded-lg bg-white py-6">
               <div className="grid justify-items-center ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
