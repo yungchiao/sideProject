@@ -1,6 +1,6 @@
-import { Timestamp, doc, getDoc } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
 interface Admin {
@@ -41,44 +41,11 @@ interface ActivityCardProps {
 const ActivityCard: React.FC<ActivityCardProps> = observer(
   ({ activity, customAvatar }) => {
     const avatar = customAvatar || activity.avatar;
-    useEffect(() => {
-      console.log("Loading started");
-      setIsLoading(true);
-      appStore.fetchActivities().then(() => {
-        console.log("Loading finished");
-        setIsLoading(false);
-      });
-    }, [appStore.currentUserEmail]);
 
-    useEffect(() => {
-      appStore.fetchActivities().then(() => {
-        updateActivitiesWithAvatars();
-      });
-    }, [appStore.activities]);
-
-    const updateActivitiesWithAvatars = async () => {
-      const updatedActivities = await Promise.all(
-        appStore.activities.map(async (activity) => {
-          const avatarUrl = await getUserAvatar(activity.id);
-          return { ...activity, avatar: avatarUrl };
-        }),
-      );
-      setActivitiesWithAvatar(updatedActivities);
-    };
-    const [activitiesWithAvatar, setActivitiesWithAvatar] = useState<any[]>([]);
     const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
     const toggleModal = () => setIsModalOpen(!isModalOpen);
     const [quantity, setQuantity] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const getUserAvatar = async (email: string) => {
-      const userRef = doc(appStore.db, "user", email);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        return userSnap.data().avatar || "/bear.jpg";
-      }
-      return "/bear.jpg";
-    };
-    const [isLoading, setIsLoading] = useState(true);
     const formatMessageTime = (timestamp: any) => {
       if (timestamp && typeof timestamp.toDate === "function") {
         const date = timestamp.toDate();
@@ -161,11 +128,11 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
                 </div>
                 <div className="mt-8 inline-block flex-col">
                   {activity.hashtags.map((hashtag: string, index: number) => (
-                    <div className="hashtag mb-2 flex h-8 w-auto items-center rounded-full p-4">
-                      <p
-                        key={index}
-                        className="whitespace-nowrap text-stone-800"
-                      >
+                    <div
+                      className="hashtag mb-2 flex h-8 w-auto items-center rounded-full p-4"
+                      key={index}
+                    >
+                      <p className="whitespace-nowrap text-stone-800">
                         #{hashtag}
                       </p>
                     </div>

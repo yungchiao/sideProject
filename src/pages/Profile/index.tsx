@@ -31,15 +31,12 @@ const Profile: React.FC = observer(() => {
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
-
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
-
   const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   };
-
   const handleLogin = () => {
     if (email && password) {
       signInWithEmailAndPassword(auth, email, password)
@@ -99,10 +96,10 @@ const Profile: React.FC = observer(() => {
       <div className=" w-1/3">
         <img src="/profile.jpg" className="h-full w-full object-cover " />
       </div>
-      <div className=" flex w-2/3 items-center justify-center bg-white ">
+      <div className="flex w-2/3 items-center justify-center bg-white">
         <div>
-          <Card className=" w-[400px] ">
-            <div className=" mb-6    rounded-lg p-4">
+          <Card className="w-[400px]">
+            <div className="mb-6 rounded-lg p-4">
               <div className="mb-6 flex  justify-center">
                 <button
                   className={`mt-4 px-2 py-2 ${

@@ -345,27 +345,6 @@ class AppStore {
     appStore.setIsLoggedIn(false);
     alert("登出成功！");
   }
-  fetchActivities = async () => {
-    const db = getFirestore();
-    const activitiesCollection = collection(db, "activity");
-
-    onSnapshot(activitiesCollection, (snapshot) => {
-      let updatedActivities = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      if (appStore.newUser) {
-        const following = appStore.newUser.following;
-
-        updatedActivities = updatedActivities.filter(
-          (activity) =>
-            following.includes(activity.id) ||
-            appStore.newUser?.email === activity.id,
-        );
-      }
-      this.activities = updatedActivities;
-    });
-  };
 
   fetchUserData = async (userId: string) => {
     const db = getFirestore();
@@ -680,5 +659,19 @@ class AppStore {
   }
 }
 
+const FirebaseConfig = {
+  apiKey: "AIzaSyCsbG3z6fvFeIAyFsTwmSSy4jPv_d96SwE",
+  authDomain: "gravity-backup.firebaseapp.com",
+  projectId: "gravity-backup",
+  storageBucket: "gravity-backup.appspot.com",
+  messagingSenderId: "768371795119",
+  appId: "1:768371795119:web:6c3d74024f70aaf236605a",
+  measurementId: "G-KSYGS2KYFY",
+};
+
+const app = initializeApp(FirebaseConfig);
+const db = getFirestore(app);
+
 export const appStore = new AppStore();
 export const storage = appStore.storage;
+export { db };

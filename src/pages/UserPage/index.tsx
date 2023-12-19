@@ -1,4 +1,4 @@
-import { Button, Card, CardBody } from "@nextui-org/react";
+import { Button, Card, CardBody, Spinner } from "@nextui-org/react";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -44,9 +44,11 @@ const UserPage: React.FC = observer(() => {
   const [isDetailFollower, setDetailFollower] = useState(false);
   const [isDetailFollowing, setDetailFollowing] = useState(false);
   const [isChangeAvatar, setChangeAvatar] = useState(false);
+  const [isChangeName, setChangeName] = useState(false);
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState("/bear.jpg");
   const [userName, setUserName] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleOpenFollower = () => {
     setDetailFollower(!isDetailFollower);
@@ -69,6 +71,9 @@ const UserPage: React.FC = observer(() => {
   const toggleChangeAvatar = () => {
     setChangeAvatar(!isChangeAvatar);
   };
+  const toggleChangeName = () => {
+    setChangeName(!isChangeName);
+  };
   const handleChangeAvatar = () => {
     toggleChangeAvatar();
   };
@@ -81,6 +86,7 @@ const UserPage: React.FC = observer(() => {
     return getDownloadURL(imageRef);
   };
   const handleSubmit = async () => {
+    setIsLoading(true);
     try {
       const NameData = {
         name: userName,
@@ -95,6 +101,9 @@ const UserPage: React.FC = observer(() => {
     } catch (error) {
       console.error("更改名稱失敗", error);
       alert("更改名稱失敗");
+    } finally {
+      toggleChangeName();
+      setIsLoading(false);
     }
   };
   const [activeTab, setActiveTab] = useState("post");
@@ -109,18 +118,6 @@ const UserPage: React.FC = observer(() => {
         <div className="relative">
           <div className=" mx-auto mt-4  flex  flex-wrap justify-center pt-28 text-center">
             <div className=" relative">
-              <div className=" flex items-center justify-end gap-2">
-                <input
-                  maxLength={20}
-                  className="my-4 flex w-40 justify-center bg-stone-100"
-                  value={userName ? userName : "某位探險家"}
-                  onChange={nameChange}
-                />
-                <Button onClick={handleSubmit}>完成</Button>
-              </div>
-              <p className=" mx-24 mt-4  flex justify-center">
-                Email: {appStore.newUser.email}
-              </p>
               <div className="relative">
                 <img
                   src={avatarUrl ? avatarUrl : "/bear.jpg"}
@@ -199,7 +196,39 @@ const UserPage: React.FC = observer(() => {
                   )}
                 </div>
               </div>
-
+              <button>
+                <p
+                  onChange={nameChange}
+                  onClick={toggleChangeName}
+                  className="mt-8 cursor-pointer text-xl text-brown transition duration-200 hover:scale-105 hover:text-darkBrown"
+                  title="更改名稱"
+                >
+                  {userName}
+                </p>
+              </button>
+              {isChangeName && (
+                <div className="my-4 flex items-center justify-center gap-4">
+                  <button onClick={toggleChangeName} className="text-yellow">
+                    x
+                  </button>
+                  <input
+                    maxLength={20}
+                    className=" flex w-40 justify-center rounded-md border bg-white p-2 "
+                    value={userName}
+                    onChange={nameChange}
+                  />
+                  <Button
+                    onClick={handleSubmit}
+                    isDisabled={userName.trim().length === 0}
+                  >
+                    {isLoading && <Spinner color="warning" size="sm" />}
+                    完成
+                  </Button>
+                </div>
+              )}
+              <p className=" mx-24 mt-4  flex justify-center">
+                Email : {appStore.newUser.email}
+              </p>
               <div className="mt-6 flex items-center justify-center gap-4">
                 <div
                   className=" block cursor-pointer"

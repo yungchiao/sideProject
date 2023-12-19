@@ -1,4 +1,4 @@
-import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Button, Input, Textarea } from "@nextui-org/react";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import {
@@ -343,23 +343,23 @@ const Activity: React.FC = observer(() => {
                 </p>
               </div>
             </div>
-            <Select
+            <select
               aria-label="Select Activity Direction"
-              label={direction ? direction : "選擇活動地區"}
-              className="max-w-xs"
+              className="max-w-xs p-4"
               onChange={(e) => setDirection(e.target.value)}
               value={direction}
             >
+              <option value="">{direction ? direction : "選擇活動地區"}</option>
               {directionItems.map((item) => (
-                <SelectItem
+                <option
                   key={item}
                   value={item}
                   className="rounded-none bg-brown text-gray-100 hover:bg-darkBrown"
                 >
                   {item}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
             <div className="container mt-2 flex gap-6 ">
               <div className="my-8">
                 <input

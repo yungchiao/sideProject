@@ -1,28 +1,13 @@
-import { Button, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-
-import { Timestamp, collection, doc, setDoc } from "firebase/firestore";
+import { Button, Input, Textarea } from "@nextui-org/react";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 export const storage = getStorage(appStore.app);
-
-interface Admin {
-  id: string;
-  name: string;
-  position: string;
-  price: number;
-  images: string;
-  hashtags: [];
-  startTime: Timestamp;
-  endTime: Timestamp;
-  content: string;
-  postId: string;
-}
 
 const UserPost: React.FC = observer(() => {
   const [items, setItems] = useState<number>(1);
@@ -105,9 +90,8 @@ const UserPost: React.FC = observer(() => {
     <div>
       {appStore.newUser ? (
         <div className=" m-auto w-3/4  p-10 pb-28 pt-40">
-          <Select
+          <select
             aria-label="Select Activity Name"
-            label={activityName ? activityName : "選擇活動名稱"}
             value={activityName}
             className="mb-4 max-w-xs"
             onChange={(e) => {
@@ -121,16 +105,15 @@ const UserPost: React.FC = observer(() => {
               }
             }}
           >
-            {appStore.admins.map((admin: Admin) => (
-              <SelectItem
-                key={admin.id}
-                value={admin.id}
-                className="rounded-none bg-brown text-gray-100 hover:bg-darkBrown"
-              >
+            <option value="">
+              {activityName ? activityName : "選擇活動名稱"}
+            </option>
+            {appStore.admins.map((admin) => (
+              <option key={admin.id} value={admin.id}>
                 {admin.name}
-              </SelectItem>
+              </option>
             ))}
-          </Select>
+          </select>
           {Array.from({ length: items }).map((_, index) => (
             <Input
               maxLength={10}

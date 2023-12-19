@@ -1,8 +1,8 @@
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { appStore } from "../../AppStore";
+import { appStore, db } from "../../AppStore";
 import ActivityCard from "./ActivityCard";
 import UserSearch from "./UserSearch";
 
@@ -10,24 +10,25 @@ const Activity: React.FC = observer(() => {
   const [activitiesWithAvatar, setActivitiesWithAvatar] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const activitiesCollection = collection(db, "activity");
   useEffect(() => {
-    console.log("Loading started");
-    setIsLoading(true);
-
-    async function fetchAndSetActivities() {
-      await appStore.fetchActivities();
-      console.log("Loading finished");
-      setIsLoading(false);
-    }
-
-    fetchAndSetActivities();
-  }, [appStore.currentUserEmail]);
-
-  useEffect(() => {
-    appStore.fetchActivities().then(() => {
-      updateActivitiesWithAvatars();
+    const unsubscribe = onSnapshot(activitiesCollection, (snapshot) => {
+      let updatedActivities = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      if (appStore.newUser) {
+        const following = appStore.newUser.following;
+        updatedActivities = updatedActivities.filter(
+          (activity) =>
+            following.includes(activity.id) ||
+            appStore.newUser?.email === activity.id,
+        );
+      }
+      appStore.activities = updatedActivities;
     });
-  }, [appStore.activities]);
+    return () => unsubscribe();
+  }, []);
 
   const updateActivitiesWithAvatars = async () => {
     const updatedActivities = await Promise.all(
@@ -38,6 +39,12 @@ const Activity: React.FC = observer(() => {
     );
     setActivitiesWithAvatar(updatedActivities);
   };
+
+  useEffect(() => {
+    if (appStore.activities.length > 0) {
+      updateActivitiesWithAvatars().then(() => setIsLoading(false));
+    }
+  }, [appStore.activities]);
 
   const getUserAvatar = async (email: string) => {
     const userRef = doc(appStore.db, "user", email);
@@ -80,26 +87,34 @@ const Activity: React.FC = observer(() => {
           </div>
         </div>
         <div className="ml-[550px] inline w-[50%] justify-center rounded-xl bg-white px-8 shadow-lg">
-          {isLoading ? (
-            <div className="loading-container">
-              <img
-                src="/loading.gif"
-                alt="Loading..."
-                className="h-full w-full"
-              />
-            </div>
-          ) : activitiesWithAvatar.length > 0 ? (
-            <div className="pt-4">
-              {activitiesWithAvatar.map((activity) => (
-                <ActivityCard key={activity.postId} activity={activity} />
-              ))}{" "}
-            </div>
-          ) : (
-            <div className="h-screen-bg ml-[60px] flex items-center  text-center">
-              <div className="block rounded-md border px-40 py-6">
-                <h1 className="my-4 text-3xl">追蹤好友查看更多貼文！</h1>
+          {isLoading && (
+            <div className="h-screen-bg flex items-center justify-center text-center">
+              <div className="block rounded-md px-40 py-6">
+                <div className="spin-slow flex h-[150px] w-[150px] justify-center ">
+                  <img
+                    src="./gravity-logo.png"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               </div>
             </div>
+          )}
+          {!isLoading && (
+            <>
+              {activitiesWithAvatar.length > 0 ? (
+                <div className="pt-4">
+                  {activitiesWithAvatar.map((activity) => (
+                    <ActivityCard key={activity.postId} activity={activity} />
+                  ))}
+                </div>
+              ) : (
+                <div className="h-screen-bg ml-[60px] flex items-center  text-center">
+                  <div className="block rounded-md border px-40 py-6">
+                    <h1 className="my-4 text-3xl">追蹤好友查看更多貼文！</h1>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
