@@ -245,8 +245,8 @@ const Activity: React.FC = observer(() => {
   return (
     <>
       <div className="flex">
-        <div className=" mx-[50px] flex w-full justify-center gap-4 pb-10 pt-28">
-          <div className="mt-2 w-3/5 overflow-auto rounded-lg border bg-white p-10">
+        <div className=" mx-[50px] flex  w-full justify-center gap-4   pt-28">
+          <div className="mt-2 h-[1140px] w-3/5 overflow-auto rounded-lg border bg-white p-10">
             <h1 className="mb-5 flex justify-center text-xl font-bold text-brown">
               新增活動
             </h1>

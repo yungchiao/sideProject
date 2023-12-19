@@ -9,7 +9,7 @@ const About: React.FC = observer(() => {
 
   return (
     <div className="mt-20 pb-10">
-      <div className="h-[24vw] w-screen bg-[url('/see-you.jpg')] bg-cover bg-fixed bg-center" />
+      <div className="h-[24vw] w-screen bg-[url('/seeyou.jpg')] bg-cover bg-fixed bg-center" />
       <div className="relative">
         <div className=" absolute top-[-145px] h-[150px] w-full bg-[url('/waving.png')] bg-cover bg-no-repeat"></div>
         <div className="mx-auto flex items-center justify-center gap-8">

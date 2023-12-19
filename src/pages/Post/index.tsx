@@ -12,23 +12,38 @@ const Activity: React.FC = observer(() => {
 
   const activitiesCollection = collection(db, "activity");
   useEffect(() => {
-    const unsubscribe = onSnapshot(activitiesCollection, (snapshot) => {
-      let updatedActivities = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      if (appStore.newUser) {
-        const following = appStore.newUser.following;
-        updatedActivities = updatedActivities.filter(
-          (activity) =>
-            following.includes(activity.id) ||
-            appStore.newUser?.email === activity.id,
-        );
+    async function fetchData() {
+      const userEmail = appStore.currentUserEmail;
+      if (userEmail) {
+        await appStore.fetchUserData(userEmail);
       }
-      appStore.activities = updatedActivities;
-    });
-    return () => unsubscribe();
-  }, []);
+      const unsubscribe = onSnapshot(activitiesCollection, async (snapshot) => {
+        let updatedActivities = await Promise.all(
+          snapshot.docs.map(async (doc) => {
+            const data = doc.data();
+            const avatarUrl = userEmail
+              ? await getUserAvatar(data.id)
+              : "/default-avatar.jpg";
+            return { id: doc.id, ...data, avatar: avatarUrl };
+          }),
+        );
+
+        if (appStore.newUser && appStore.newUser.following) {
+          updatedActivities = updatedActivities.filter(
+            (activity) =>
+              appStore.newUser?.following.includes(activity.id) ||
+              userEmail === activity.id,
+          );
+        }
+
+        setActivitiesWithAvatar(updatedActivities);
+      });
+
+      return () => unsubscribe();
+    }
+
+    fetchData();
+  }, [appStore.currentUserEmail]);
 
   const updateActivitiesWithAvatars = async () => {
     const updatedActivities = await Promise.all(
@@ -112,7 +127,7 @@ const Activity: React.FC = observer(() => {
                   ))}
                 </div>
               ) : (
-                <div className="h-screen-bg ml-[60px] flex items-center  text-center">
+                <div className="flex h-[900px] items-center justify-center  text-center">
                   <div className="block rounded-md border px-40 py-6">
                     <h1 className="my-4 text-3xl">追蹤好友查看更多貼文！</h1>
                   </div>

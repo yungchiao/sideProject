@@ -208,9 +208,6 @@ const UserPage: React.FC = observer(() => {
               </button>
               {isChangeName && (
                 <div className="my-4 flex items-center justify-center gap-4">
-                  <button onClick={toggleChangeName} className="text-yellow">
-                    x
-                  </button>
                   <input
                     maxLength={20}
                     className=" flex w-40 justify-center rounded-md border bg-white p-2 "
@@ -304,7 +301,7 @@ const UserPage: React.FC = observer(() => {
                       ))}
                     </div>
                   ) : (
-                    <div className="mx-40  mt-4  justify-center rounded-md border p-4 text-center">
+                    <div className="mx-40 justify-center rounded-md border p-4 text-center">
                       <h1 className="mb-4  items-center text-xl">
                         尚未分享文章!
                       </h1>
