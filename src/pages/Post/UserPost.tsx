@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 export const storage = getStorage(appStore.app);
+
 interface Admin {
   id: string;
   name: string;
@@ -32,6 +33,10 @@ const UserPost: React.FC = observer(() => {
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [isContentFilled, setIsContentFilled] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     appStore.fetchAdmin();
@@ -82,6 +87,7 @@ const UserPost: React.FC = observer(() => {
           createdAt: new Date(),
           image: imageUrl,
           id: appStore.currentUserEmail,
+          userName: appStore.newUser?.name,
           postId: docRef.id,
         });
       }

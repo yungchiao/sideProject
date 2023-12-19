@@ -7,19 +7,55 @@ const About: React.FC = observer(() => {
   }, []);
 
   return (
-    <div className="pb-40 pt-20">
-      <div className="h-[370px] w-full bg-[url('/see-you.jpg')] bg-contain bg-fixed  bg-no-repeat shadow-inner"></div>
+    <div className="pb-10 pt-20">
+      <div className="h-[370px] w-full bg-[url('/see-you.jpg')] bg-cover bg-fixed bg-left  bg-no-repeat shadow-inner"></div>
       <div className="relative">
-        <div className=" absolute top-[-145px] h-[150px]   w-full bg-[url('/wave.png')] bg-cover bg-no-repeat">
-          <h1 className="  absolute left-[400px] top-[50px] flex pt-4 text-3xl font-bold text-brown">
-            地新引力的故事
-          </h1>
-        </div>
+        <div className=" absolute top-[-145px]   h-[150px] w-full bg-[url('/waving.png')] bg-cover bg-no-repeat"></div>
+        <div className="mx-auto flex items-center justify-center gap-8">
+          <div className="spin-slow flex  h-[240px] w-[240px] justify-center ">
+            <img
+              src="./gravity-logo.png"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="inline">
+            <h1 className="mb-8 ml-8 flex  w-[2/3] pt-4 text-3xl font-bold text-brown">
+              地新引力的故事
+            </h1>
 
+            {appStore.aboutInfos.map((about, index) => (
+              <div className="grid grid-flow-col gap-4" key={index}>
+                <p className=" text-6xl text-yellow">「</p>
+                <p className="w-[600px] text-sm leading-8">{about.history}</p>
+                <p className="mt-[100px] text-6xl text-yellow">」</p>
+              </div>
+            ))}
+          </div>
+        </div>
         {appStore.aboutInfos.map((about, index) => (
           <div key={index} className="mx-auto mt-6 w-3/4 rounded-lg p-4">
-            <h3>{about.history}</h3>
-            <div className="mt-8 flex justify-evenly gap-8">
+            <div className="mb-12 mt-4 flex flex-col justify-center gap-8">
+              {about.images.map((image: any, imgIndex: any) => (
+                <div
+                  key={imgIndex}
+                  className={`mt-12 flex items-center justify-center gap-12 ${
+                    imgIndex % 2 === 0 ? " flex-row" : "flex-row-reverse"
+                  }`}
+                >
+                  <div className="rotate-image flex shadow-md">
+                    <img
+                      src={image}
+                      alt={`Image ${imgIndex}`}
+                      className="rotate-30 h-auto w-60 transform overflow-hidden rounded-md"
+                    />
+                  </div>
+                  <div className=" flex w-1/3 border-b-2 border-t-2 py-4">
+                    <p>{about.descriptions[imgIndex]}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="my-24 flex justify-center gap-60 rounded-lg bg-white py-6">
               <div className="grid justify-items-center ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +71,9 @@ const About: React.FC = observer(() => {
                     d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
                   />
                 </svg>
-                <p className="text-2xl">{about.activities}</p>
+                <p className="my-2 text-3xl font-bold text-green">
+                  {about.activities}
+                </p>
                 <p>個活動</p>
               </div>
               <div className="grid justify-items-center">
@@ -54,7 +92,9 @@ const About: React.FC = observer(() => {
                   />
                 </svg>
 
-                <p className="text-2xl">{about.attendants}</p>
+                <p className="my-2 text-3xl font-bold text-green">
+                  {about.attendants}
+                </p>
                 <p>位參加者</p>
               </div>
               <div className="grid justify-items-center">
@@ -72,19 +112,11 @@ const About: React.FC = observer(() => {
                     d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <p className="text-2xl">{about.subsidy}</p>
+                <p className="my-2  text-3xl font-bold text-green">
+                  {about.subsidy}
+                </p>
                 <p>萬元補助</p>
               </div>
-            </div>
-            <div className="  mt-8 flex justify-center gap-3 rounded-md">
-              {about.images.map((image: any, imgIndex: any) => (
-                <img
-                  key={imgIndex}
-                  src={image}
-                  alt={`Image ${imgIndex}`}
-                  className="h-auto w-60 overflow-hidden rounded-md"
-                />
-              ))}
             </div>
           </div>
         ))}

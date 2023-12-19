@@ -148,7 +148,7 @@ const Home: React.FC = observer(() => {
           <Carousal />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-6 bg-stone-200 px-40 py-20   md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-6 bg-stone-200 px-40 py-20  md:grid-cols-4">
         {appStore.admins.map((admin: Admin) => (
           <ActivityCard
             admin={admin}

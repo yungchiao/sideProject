@@ -72,6 +72,8 @@ interface About {
   images: string[];
   image: string;
   subsidy: string;
+  descriptions: string[];
+  description: string;
 }
 export interface UserFollow {
   id: string;
@@ -419,7 +421,8 @@ class AppStore {
           attendants: docSnapshot.data().attendants || "",
           images: docSnapshot.data().images || [],
           image: docSnapshot.data().image || "",
-
+          descriptions: docSnapshot.data().descriptions || [],
+          description: docSnapshot.data().description || "",
           subsidy: docSnapshot.data().subsidy || "",
         };
         this.setAbout([aboutData]);

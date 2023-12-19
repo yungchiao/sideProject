@@ -13,10 +13,14 @@ const Activity: React.FC = observer(() => {
   useEffect(() => {
     console.log("Loading started");
     setIsLoading(true);
-    appStore.fetchActivities().then(() => {
+
+    async function fetchAndSetActivities() {
+      await appStore.fetchActivities();
       console.log("Loading finished");
       setIsLoading(false);
-    });
+    }
+
+    fetchAndSetActivities();
   }, [appStore.currentUserEmail]);
 
   useEffect(() => {

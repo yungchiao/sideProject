@@ -163,8 +163,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 400px;
-  width: 400px;
+  height: 80px;
+  width: 80px;
 }
 
 .fc-event-time {
@@ -193,4 +193,20 @@ body {
   background-color: #699748;
   color: white;
   border-radius: 10px;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spin 6s linear infinite;
+}
+
+.rotate-image {
+  transform: rotate(10deg);
 }

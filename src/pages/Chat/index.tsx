@@ -18,7 +18,7 @@ interface Message {
 }
 const Chat = observer(() => {
   const [message, setMessage] = useState("");
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
   useEffect(() => {
     if (!appStore.currentUserEmail) return;
@@ -37,6 +37,9 @@ const Chat = observer(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [currentMessages]);
   const sendMessage = async () => {
+    if (isSubmitting || !message.trim()) return;
+
+    setIsSubmitting(true);
     if (message.trim() && appStore.currentUserEmail) {
       try {
         const userRef = doc(
@@ -69,6 +72,7 @@ const Chat = observer(() => {
       } catch (error) {
         console.error("傳送訊息失敗", error);
       }
+      setIsSubmitting(false);
     }
   };
   const adminAvatar = "/bear-logo.png";
@@ -82,7 +86,13 @@ const Chat = observer(() => {
       hour12: true,
     });
   };
-
+  const handleKeyDown = (event: any) => {
+    if (event.key === "Enter" && !event.isComposing && !isSubmitting) {
+      event.preventDefault();
+      sendMessage();
+      setMessage("");
+    }
+  };
   return (
     <>
       {appStore.currentUserEmail ? (
@@ -174,13 +184,7 @@ const Chat = observer(() => {
               placeholder="輸入訊息"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.repeat) {
-                  e.preventDefault();
-                  sendMessage();
-                  setMessage("");
-                }
-              }}
+              onKeyDown={handleKeyDown}
             />
             <Button className="bg-stone-800 text-white" onClick={sendMessage}>
               傳送

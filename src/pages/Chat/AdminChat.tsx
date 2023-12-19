@@ -35,7 +35,7 @@ const AdminChat = observer(() => {
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   useEffect(() => {
     const chatsRef = collection(appStore.db, "adminChat");
     onSnapshot(chatsRef, async (snapshot) => {
@@ -90,7 +90,11 @@ const AdminChat = observer(() => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [currentMessages]);
+
   const handleSendMessage = async () => {
+    if (isSubmitting || !newMessage.trim()) return;
+
+    setIsSubmitting(true);
     if (newMessage.trim() !== "" && selectedChatId) {
       const chatRef = doc(appStore.db, "adminChat", selectedChatId);
 
@@ -119,6 +123,14 @@ const AdminChat = observer(() => {
       });
 
       setNewMessage("");
+    }
+    setIsSubmitting(false);
+  };
+
+  const handleKeyDown = (event: any) => {
+    if (event.key === "Enter" && !event.shiftKey && !isSubmitting) {
+      event.preventDefault();
+      handleSendMessage();
     }
   };
 
@@ -269,12 +281,7 @@ const AdminChat = observer(() => {
                   placeholder="輸入訊息"
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
+                  onKeyDown={handleKeyDown}
                 />
 
                 <Button

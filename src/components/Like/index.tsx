@@ -1,10 +1,10 @@
-import { Button, Modal, ModalBody, ModalContent } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
-import Detail from "../../components/Home/Detail";
+import ActivityModal from "../../components/ModalDetail";
 interface LikeItem {
   id: string;
   name: string;
@@ -92,7 +92,7 @@ const Like: React.FC = observer(() => {
     }
   };
   return (
-    <div className="mx-auto mt-4 w-4/5  rounded-lg  p-4">
+    <div className="mx-auto mt-4 w-3/5  rounded-lg px-8 py-4">
       {likeItems.length > 0 ? (
         <>
           {likeItems.map((item, index) => (
@@ -107,32 +107,70 @@ const Like: React.FC = observer(() => {
                 {item.name}
               </p>
               {isModalOpen && (
-                <div className="background-cover" onClick={toggleModal}></div>
+                <div
+                  className="background-cover bg-black/20"
+                  onClick={toggleModal}
+                ></div>
               )}
               {isModalOpen && selectedAdmin && (
-                <Modal
+                <ActivityModal
                   isOpen={isModalOpen}
-                  onOpenChange={toggleModal}
-                  className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
-                >
-                  <ModalContent>
-                    <ModalBody>
-                      <Detail
-                        selectedAdmin={selectedAdmin}
-                        quantity={quantity}
-                        setQuantity={setQuantity}
-                        handleSignUp={handleSignUp}
-                      />
-                    </ModalBody>
-                  </ModalContent>
-                </Modal>
+                  toggleModal={toggleModal}
+                  selectedAdmin={selectedAdmin}
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                  handleSignUp={handleSignUp}
+                />
               )}
-              <p>{item.position}</p>
-              <p>
-                {item.startTime?.toDate()?.toLocaleString()}-
-                {item.endTime?.toDate()?.toLocaleString()}
-              </p>
-              <img src={item.images} className="h-16 w-16" />
+              <div className="flex gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                  />
+                </svg>
+                <p>{item.position}</p>
+              </div>
+              <div className="flex gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  data-slot="icon"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"
+                  />
+                </svg>
+
+                <p>
+                  {item.startTime?.toDate()?.toLocaleString()}-
+                  {item.endTime?.toDate()?.toLocaleString()}
+                </p>
+              </div>
+              <div className=" rounded-lg border p-1">
+                <div className="overflow-hidden rounded-md">
+                  <img src={item.images} className="h-16 w-16 object-cover" />
+                </div>
+              </div>
               <button onClick={() => deleteItem(index)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

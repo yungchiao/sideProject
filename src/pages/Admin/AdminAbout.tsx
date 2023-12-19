@@ -10,18 +10,27 @@ export const storage = getStorage(appStore.app);
 const AdminAbout: React.FC = observer(() => {
   useEffect(() => {
     const fetchAndSetAboutData = async () => {
-      const aboutData = await appStore.fetchAbout();
-      if (aboutData) {
-        setHistory(aboutData.history);
-        setActivities(aboutData.activities);
-        setAttendants(aboutData.attendants);
-        setSubsidy(aboutData.subsidy);
-        setExistingImages(aboutData.images || []);
+      setIsLoading(true);
+      try {
+        const aboutData = await appStore.fetchAbout();
+        if (aboutData) {
+          setHistory(aboutData.history);
+          setActivities(aboutData.activities);
+          setAttendants(aboutData.attendants);
+          setSubsidy(aboutData.subsidy);
+          setExistingImages(aboutData.images || []);
+          setImageDescriptions(
+            aboutData.descriptions || aboutData.images.map(() => ""),
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching about data: ", error);
+      } finally {
+        setIsLoading(false);
       }
     };
-    setIsLoading(true);
+
     fetchAndSetAboutData();
-    setIsLoading(false);
   }, []);
 
   const [history, setHistory] = useState<string>("");
@@ -32,6 +41,7 @@ const AdminAbout: React.FC = observer(() => {
   const [existingImages, setExistingImages] = useState<string[]>([]); // Existing images URLs
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  // const [descriptions, setDescriptions] = useState<string>("");
   useEffect(() => {
     return () => {
       previewUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -99,6 +109,7 @@ const AdminAbout: React.FC = observer(() => {
         attendants: attendants,
         subsidy: subsidy,
         images: imageUrlsToUpdate,
+        descriptions: imageDescriptions,
       };
 
       await updateDoc(aboutDocRef, newAboutData);
@@ -131,6 +142,7 @@ const AdminAbout: React.FC = observer(() => {
     const newDescriptions = [...imageDescriptions];
     newDescriptions[index] = event.target.value;
     setImageDescriptions(newDescriptions);
+    // setDescriptions(event.target.value);
   };
   return (
     <>

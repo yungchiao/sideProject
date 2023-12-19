@@ -34,6 +34,7 @@ interface ActivityCardProps {
     image: string;
     hashtags: string[];
     createdAt: Timestamp;
+    userName: string;
   };
   customAvatar?: string;
 }
@@ -126,7 +127,7 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
       <div key={activity.postId} className="   px-[20px] pt-6">
         <div className=" mb-4 flex items-center gap-2  px-2 pb-2">
           <img src={avatar} className="h-10 w-10 rounded-full object-cover" />
-          <p className="text-lg">{activity.id}</p>
+          <p className="text-lg">{activity.userName}</p>
         </div>
         <div className="justify-spacing flex gap-6">
           <div>
