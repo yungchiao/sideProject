@@ -11,10 +11,10 @@ export const storage = getStorage(appStore.app);
 
 const UserPost: React.FC = observer(() => {
   const [items, setItems] = useState<number>(1);
-  const [selectedOption, setSelectedOption] = useState<string>("Sunny");
-  const [hashtags, setHashtags] = useState<string[]>(["好玩"]);
+  const [selectedOption, setSelectedOption] = useState<string>("");
+  const [hashtags, setHashtags] = useState<string[]>([""]);
   const [activityName, setActivityName] = useState<string>("");
-  const [content, setContent] = useState<string>("好希望能再參加！");
+  const [content, setContent] = useState<string>("");
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [isContentFilled, setIsContentFilled] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState("");
@@ -224,7 +224,7 @@ const UserPost: React.FC = observer(() => {
           </div>{" "}
         </div>
       ) : (
-        <div className="h-screen-bg  mx-40   flex items-center justify-center   text-center">
+        <div className="mx-40  flex   h-[100vh] items-center justify-center   text-center">
           <div className="block rounded-md border px-40 py-6">
             <h1 className="mb-4 text-3xl">登入後即可發文</h1>
             <Link to="/profile">
