@@ -212,19 +212,36 @@ const Paint: React.FC = observer(() => {
             </svg>
           </Button>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-4 border-b-2 pb-9">
-          <Button color="default" onClick={() => setColor("black")}>
-            黑色
-          </Button>
-          <Button color="primary" onClick={() => setColor("blue")}>
-            藍色
-          </Button>
-          <Button color="success" onClick={() => setColor("green")}>
-            綠色
-          </Button>
-          <Button color="danger" onClick={() => setColor("red")}>
-            紅色
-          </Button>
+        <div className="flex flex-wrap items-center justify-center gap-4 border-b-2 pt-4">
+          <button onClick={() => setColor("black")}>
+            <div className="w=[100px] flex h-[80px] justify-center transition duration-200 hover:scale-110">
+              <img
+                src="/crayon/crayon-black.png"
+                className="h-[60px] w-[60px]"
+              />
+            </div>
+          </button>
+          <button color="primary" onClick={() => setColor("blue")}>
+            <div className="w=[100px] flex h-[80px] justify-center transition duration-200 hover:scale-110">
+              <img
+                src="/crayon/crayon-blue.png"
+                className="h-[60px] w-[60px]"
+              />
+            </div>
+          </button>
+          <button color="success" onClick={() => setColor("green")}>
+            <div className="w=[100px] flex h-[80px] justify-center transition duration-200 hover:scale-110">
+              <img
+                src="/crayon/crayon-green.png"
+                className="h-[60px] w-[60px]"
+              />
+            </div>
+          </button>
+          <button color="danger" onClick={() => setColor("red")}>
+            <div className="w=[100px] flex h-[80px] justify-center transition duration-200 hover:scale-110">
+              <img src="/crayon/crayon-red.png" className="h-[60px] w-[60px]" />
+            </div>
+          </button>
         </div>
       </div>
       <div ref={sketchRef} className="mb-10 flex justify-center"></div>

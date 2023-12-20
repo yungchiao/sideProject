@@ -23,7 +23,7 @@ const Activity: React.FC = observer(() => {
             const data = doc.data();
             const avatarUrl = userEmail
               ? await getUserAvatar(data.id)
-              : "/default-avatar.jpg";
+              : "/bear.jpg";
             return { id: doc.id, ...data, avatar: avatarUrl };
           }),
         );

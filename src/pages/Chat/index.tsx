@@ -75,7 +75,7 @@ const Chat = observer(() => {
       setIsSubmitting(false);
     }
   };
-  const adminAvatar = "/bear-logo.png";
+  const adminAvatar = "/bear.jpg";
   const userAvatar = appStore.newUser?.avatar || "/bear.jpg";
 
   const formatMessageTime = (timestamp: Timestamp) => {

@@ -142,7 +142,7 @@ const AdminChat = observer(() => {
     }
     return "/bear.jpg";
   };
-  const adminAvatar = "/bear-logo.png";
+  const adminAvatar = "/bear.jpg";
 
   const formatMessageTime = (timestamp: Timestamp) => {
     const date = timestamp.toDate();
