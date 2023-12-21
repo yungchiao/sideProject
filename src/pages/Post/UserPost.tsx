@@ -120,13 +120,7 @@ const UserPost: React.FC = observer(() => {
               type="url"
               className="mb-4 block w-40 rounded-lg bg-white px-4 py-2"
               placeholder="hashtag"
-              // labelPlacement="outside"
               value={hashtags[index] || ""}
-              // startContent={
-              //   <div className="pointer-events-none flex items-center">
-              //     <span className="text-small text-default-400">#</span>
-              //   </div>
-              // }
               key={index}
               onChange={(e) => handleHashtagChange(index, e)}
             />

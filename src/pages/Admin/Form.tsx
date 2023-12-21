@@ -1,26 +1,8 @@
-import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
-interface FormProps {
-  onActivitySelect: (activity: ActivityType) => void;
-}
+import { ActivityType } from "../../type.ts";
 
-interface ActivityType {
-  id: string;
-  name: string;
-  imagesFile: File;
-  price: number;
-  content: string;
-  hashtags: {};
-  latitude: string;
-  longitude: string;
-  startTime: Timestamp;
-  endTime: Timestamp;
-  images: string;
-  place: string;
-  direction: string;
-}
 interface FormProps {
   onActivitySelect: (activity: ActivityType) => void;
   onSearchLocationChange: (location: string) => void;

@@ -12,14 +12,10 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
+import { CalendarEvent } from "../../type.ts";
+
 const Calendar: React.FC = observer(() => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-  interface CalendarEvent {
-    title: string;
-    start: Date;
-    end: Date;
-    allDay: boolean;
-  }
 
   const fetchEvents = async () => {
     const db = getFirestore();

@@ -1,27 +1,12 @@
 import { Modal, ModalBody, ModalContent } from "@nextui-org/react";
-import Detail from "../Home/Detail";
-import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
-
-interface Admin {
-  id: string;
-  name: string;
-  position: string;
-  price: number;
-  images: string;
-  hashtags: [];
-  startTime: Timestamp;
-  endTime: Timestamp;
-  content: string;
-  place: string;
-  longitude: string;
-  latitude: string;
-}
+import { Admin } from "../../type.ts";
+import Detail from "../Home/Detail";
 
 interface ActivityModalProps {
   isOpen: boolean;
   toggleModal: () => void;
-  selectedAdmin: Admin;
+  selectedAdmin: Admin | null;
   quantity: number;
   setQuantity: (quantity: number) => void;
   handleSignUp: () => void;

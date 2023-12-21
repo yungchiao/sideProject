@@ -1,23 +1,7 @@
 import { Card, CardBody } from "@nextui-org/react";
-import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React from "react";
-
-interface Admin {
-  id: string;
-  name: string;
-  position: string;
-  price: number;
-  images: string;
-  hashtags: [];
-  startTime: Timestamp;
-  endTime: Timestamp;
-  content: string;
-  place: string;
-  longitude: string;
-  latitude: string;
-  isLiked?: boolean;
-}
+import { Admin } from "../../type.ts";
 
 interface ActivityCardProps {
   handleIconClick: (admin: Admin) => void;

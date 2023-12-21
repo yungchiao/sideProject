@@ -1,39 +1,11 @@
 import { Button } from "@nextui-org/react";
-import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
-interface LikeItem {
-  id: string;
-  name: string;
-  images: string;
-  position: string;
-  price: number;
-  startTime: Timestamp;
-  endTime: Timestamp;
-}
-interface Admin {
-  id: string;
-  name: string;
-  position: string;
-  price: number;
-  images: string;
-  hashtags: [];
-  startTime: Timestamp;
-  endTime: Timestamp;
-  content: string;
-  place: string;
-  longitude: string;
-  latitude: string;
-}
-interface CartItem {
-  name: string;
-  quantity: number;
-  price: number;
-  id: string;
-}
+import { Admin, CartItem, LikeItem } from "../../type.ts";
+
 const Like: React.FC = observer(() => {
   const [likeItems, setLikeItems] = useState<LikeItem[]>([]);
   const [quantity, setQuantity] = useState(0);
@@ -78,6 +50,8 @@ const Like: React.FC = observer(() => {
         quantity: quantity,
         price: selectedAdmin.price,
         id: selectedAdmin.id,
+        longitude: selectedAdmin.longitude,
+        latitude: selectedAdmin.latitude,
       };
 
       const userEmail = appStore.currentUserEmail;

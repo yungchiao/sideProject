@@ -16,9 +16,9 @@ const HeroHeader: React.FC = observer(() => {
   };
 
   return (
-    <div>
+    <div className="">
       <div className="flex ">
-        <div className="flex w-1/2 justify-center pt-24">
+        <div className="flex w-1/2 justify-center pt-24 ">
           <div className="text-center ">
             <div className="mx-auto mb-12 flex h-auto w-[100px] justify-center">
               <img

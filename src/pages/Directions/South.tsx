@@ -1,11 +1,10 @@
 import "firebase/firestore";
-import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
 import ActivityCard from "../../components/AdminCard";
 import ActivityModal from "../../components/ModalDetail";
-
+import { Admin, CartItem, LikeItem } from "../../type.ts";
 const North: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -13,39 +12,6 @@ const North: React.FC = observer(() => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  interface Admin {
-    id: string;
-    name: string;
-    place: string;
-    price: number;
-    images: string;
-    hashtags: [];
-    startTime: Timestamp;
-    endTime: Timestamp;
-    content: string;
-    isLiked?: boolean;
-    latitude: string;
-    longitude: string;
-    position: string;
-  }
-  interface CartItem {
-    name: string;
-    quantity: number;
-    price: number;
-    id: string;
-    latitude: string;
-    longitude: string;
-  }
-  interface LikeItem {
-    id: string;
-    name: string;
-    images: string;
-    position: string;
-    price: number;
-    startTime: Timestamp;
-    endTime: Timestamp;
-  }
-
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
   const [quantity, setQuantity] = useState(0);
   const [likeItems, setLikeItems] = useState<LikeItem[]>([]);

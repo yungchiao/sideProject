@@ -4,18 +4,8 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import { Chat, Message } from "../../type.ts";
 
-interface Chat {
-  id: string;
-  userId: string;
-}
-
-interface Message {
-  text: string;
-  createdAt: Timestamp;
-  sender: string;
-  avatar: string;
-}
 const Chat = observer(() => {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);

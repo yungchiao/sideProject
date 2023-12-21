@@ -2,13 +2,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
-interface CheckoutItem {
-  name: string;
-  quantity: number;
-  price: number;
-  latitude: string;
-  longitude: string;
-}
+import { CheckoutItem } from "../../type.ts";
 
 const GoogleMap: React.FC = observer(() => {
   const [checkoutItems, setCheckoutItems] = useState<CheckoutItem[]>([]);

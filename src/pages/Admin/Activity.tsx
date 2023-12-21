@@ -1,13 +1,7 @@
 import { Button, Input, Textarea } from "@nextui-org/react";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
-import {
-  Timestamp,
-  collection,
-  doc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
@@ -16,24 +10,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import Map from "../../components/Map";
+import { ActivityType } from "../../type.ts";
 import Form from "./Form";
 export const storage = getStorage(appStore.app);
-
-interface ActivityType {
-  id: string;
-  name: string;
-  imagesFile: File;
-  price: number;
-  content: string;
-  hashtags: { [key: string]: string };
-  latitude: string;
-  longitude: string;
-  startTime: Timestamp;
-  endTime: Timestamp;
-  images: string;
-  place: string;
-  direction: string;
-}
 
 const Activity: React.FC = observer(() => {
   const [startDate, setStartDate] = useState(

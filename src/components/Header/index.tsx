@@ -1,45 +1,23 @@
 import {
   Input,
-  Modal,
-  ModalBody,
-  ModalContent,
   Navbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/react";
-import { Timestamp } from "firebase/firestore";
 import Fuse from "fuse.js";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
-import Detail from "../Home/Detail.tsx";
+import ActivityModal from "../../components/ModalDetail";
+import { Admin, CartItem } from "../../type.ts";
 import { SearchIcon } from "./SearchIcon.tsx";
 
 const Header: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
-  interface Admin {
-    id: string;
-    name: string;
-    place: string;
-    price: number;
-    images: string;
-    hashtags: [];
-    startTime: Timestamp;
-    endTime: Timestamp;
-    content: string;
-    isLiked?: boolean;
-    latitude: string;
-    longitude: string;
-  }
-  interface CartItem {
-    name: string;
-    quantity: number;
-    price: number;
-    id: string;
-  }
+
   useEffect(() => {
     const userId = appStore.currentUserEmail;
     if (userId) {
@@ -47,6 +25,7 @@ const Header: React.FC = observer(() => {
     }
     appStore.fetchAdmin();
   }, [appStore.currentUserEmail]);
+
   const [headerSelectedAdmin, setHeaderSelectedAdmin] = useState<Admin | null>(
     null,
   );
@@ -68,6 +47,8 @@ const Header: React.FC = observer(() => {
         quantity: quantity,
         price: headerSelectedAdmin.price,
         id: headerSelectedAdmin.id,
+        longitude: headerSelectedAdmin.longitude,
+        latitude: headerSelectedAdmin.latitude,
       };
       const userEmail = appStore.currentUserEmail;
       if (userEmail) {
@@ -80,7 +61,7 @@ const Header: React.FC = observer(() => {
       alert("請選擇數量");
     }
   };
-  const handleAdminClick = (admin: any) => {
+  const handleAdminClick = (admin: Admin) => {
     setHeaderSelectedAdmin(admin);
     toggleModal();
   };
@@ -224,27 +205,19 @@ const Header: React.FC = observer(() => {
           )}
         </Link>
       </NavbarContent>
-      {isModalOpen && (
+      {isModalOpen && headerSelectedAdmin && (
         <div className="background-cover" onClick={toggleModal}></div>
       )}
-      <Modal
-        isOpen={isModalOpen}
-        onOpenChange={toggleModal}
-        className="fixed left-1/2 top-1/2 w-2/3 -translate-x-1/2 -translate-y-1/2 transform gap-4 border border-b-[20px] border-b-green bg-white shadow-lg"
-      >
-        <ModalContent>
-          <ModalBody>
-            {headerSelectedAdmin && (
-              <Detail
-                selectedAdmin={headerSelectedAdmin}
-                quantity={quantity}
-                setQuantity={setQuantity}
-                handleSignUp={handleSignUp}
-              />
-            )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      {isModalOpen && headerSelectedAdmin && (
+        <ActivityModal
+          isOpen={isModalOpen}
+          toggleModal={toggleModal}
+          selectedAdmin={headerSelectedAdmin}
+          quantity={quantity}
+          setQuantity={setQuantity}
+          handleSignUp={handleSignUp}
+        />
+      )}
     </Navbar>
   );
 });

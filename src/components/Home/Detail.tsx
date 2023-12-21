@@ -1,19 +1,6 @@
-import { Timestamp } from "firebase/firestore";
 import React from "react";
-interface Admin {
-  id: string;
-  name: string;
-  place: string;
-  price: number;
-  images: string;
-  hashtags: [];
-  startTime: Timestamp;
-  endTime: Timestamp;
-  content: string;
-  isLiked?: boolean;
-  latitude: string;
-  longitude: string;
-}
+import { Admin } from "../../type.ts";
+
 interface DetailProps {
   selectedAdmin: Admin;
   quantity: number;

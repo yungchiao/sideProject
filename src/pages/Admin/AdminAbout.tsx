@@ -41,7 +41,7 @@ const AdminAbout: React.FC = observer(() => {
   const [existingImages, setExistingImages] = useState<string[]>([]); // Existing images URLs
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const [descriptions, setDescriptions] = useState<string>("");
+
   useEffect(() => {
     return () => {
       previewUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -142,7 +142,6 @@ const AdminAbout: React.FC = observer(() => {
     const newDescriptions = [...imageDescriptions];
     newDescriptions[index] = event.target.value;
     setImageDescriptions(newDescriptions);
-    // setDescriptions(event.target.value);
   };
   return (
     <>
