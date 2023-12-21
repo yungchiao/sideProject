@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import Map from "../../components/Map";
-import { ActivityType } from "../../type.ts";
+import { ActivityType } from "../../type";
 import Form from "./Form";
 export const storage = getStorage(appStore.app);
 

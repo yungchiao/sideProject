@@ -12,7 +12,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
-import { Chat, Message } from "../../type.ts";
+import { Chat, Message } from "../../type";
 import UserSearch from "../Post/UserSearch";
 
 const AdminChat = observer(() => {

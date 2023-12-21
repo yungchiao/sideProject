@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
 import ActivityCard from "../../components/AdminCard";
 import ActivityModal from "../../components/ModalDetail";
-import { Admin, CartItem, LikeItem } from "../../type.ts";
+import { Admin, CartItem, LikeItem } from "../../type";
 const North: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 

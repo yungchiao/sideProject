@@ -7,7 +7,7 @@ import Calendar from "../../pages/Calendar";
 import ActivityCard from "../AdminCard";
 import Carousal from "./Carousel";
 import HeroHeader from "./HeroHeader";
-import { Admin, CartItem, LikeItem } from "../../type.ts";
+import { Admin, CartItem, LikeItem } from "../../type";
 
 const Home: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
