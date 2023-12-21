@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
-import { Chat, Message } from "../../type";
+import { Message } from "../../type";
 
 const Chat = observer(() => {
   const [message, setMessage] = useState("");

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
-import { Admin, CartItem, LikeItem } from "../../type.ts";
+import { Admin, CartItem, LikeItem } from "../../type";
 
 const Like: React.FC = observer(() => {
   const [likeItems, setLikeItems] = useState<LikeItem[]>([]);

@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
-import { ActivityType } from "../../type.ts";
+import { ActivityType } from "../../type";
 
 interface FormProps {
   onActivitySelect: (activity: ActivityType) => void;

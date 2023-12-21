@@ -12,14 +12,14 @@ import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
-import { Chat, Message } from "../../type";
+import { ChatRoom, Message } from "../../type";
 import UserSearch from "../Post/UserSearch";
 
 const AdminChat = observer(() => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const [chats, setChats] = useState<Chat[]>([]);
+  const [chats, setChats] = useState<ChatRoom[]>([]);
   const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
   const [currentMessages, setCurrentMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");

@@ -1,43 +1,9 @@
-import { Timestamp } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
-interface Admin {
-  id: string;
-  name: string;
-  position: string;
-  price: number;
-  images: string;
-  hashtags: [];
-  startTime: Timestamp;
-  endTime: Timestamp;
-  content: string;
-  place: string;
-  longitude: string;
-  latitude: string;
-}
-interface CartItem {
-  name: string;
-  quantity: number;
-  price: number;
-  id: string;
-}
-interface ActivityCardProps {
-  activity: {
-    postId: string;
-    avatar: string;
-    id: string;
-    name: string;
-    weather: string;
-    content: string;
-    image: string;
-    hashtags: string[];
-    createdAt: Timestamp;
-    userName: string;
-  };
-  customAvatar?: string;
-}
+import { ActivityCardProps, Admin, CartItem } from "../../type.ts";
+
 const ActivityCard: React.FC<ActivityCardProps> = observer(
   ({ activity, customAvatar }) => {
     const avatar = customAvatar || activity.avatar;
@@ -77,6 +43,8 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
           quantity: quantity,
           price: selectedAdmin.price,
           id: selectedAdmin.id,
+          longitude: selectedAdmin.longitude,
+          latitude: selectedAdmin.latitude,
         };
 
         const userEmail = appStore.currentUserEmail;

@@ -1,7 +1,7 @@
 import { Card, CardBody } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Admin } from "../../type.ts";
+import { Admin } from "../../type";
 
 interface ActivityCardProps {
   handleIconClick: (admin: Admin) => void;

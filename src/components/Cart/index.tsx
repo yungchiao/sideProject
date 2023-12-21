@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
-import { CartItem, CheckoutItem } from "../../type.ts";
+import { CartItem, CheckoutItem } from "../../type";
 
 const Cart: React.FC = observer(() => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);

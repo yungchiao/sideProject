@@ -65,7 +65,7 @@ export interface CalendarEvent {
   allDay: boolean;
 }
 
-export interface Chat {
+export interface ChatRoom {
   id: string;
   userId: string;
   avatar: string;
@@ -76,4 +76,20 @@ export interface Message {
   createdAt: Timestamp;
   sender: string;
   avatar: string;
+}
+
+export interface ActivityCardProps {
+  activity: {
+    postId: string;
+    avatar: string;
+    id: string;
+    name: string;
+    weather: string;
+    content: string;
+    image: string;
+    hashtags: string[];
+    createdAt: Timestamp;
+    userName: string;
+  };
+  customAvatar?: string;
 }

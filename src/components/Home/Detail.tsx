@@ -1,5 +1,5 @@
 import React from "react";
-import { Admin } from "../../type.ts";
+import { Admin } from "../../type";
 
 interface DetailProps {
   selectedAdmin: Admin;
