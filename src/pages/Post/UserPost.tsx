@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 export const storage = getStorage(appStore.app);
 
 const UserPost: React.FC = observer(() => {
@@ -204,17 +205,14 @@ const UserPost: React.FC = observer(() => {
             onChange={handleContent}
           />
           <div className="mx-auto mt-10 flex items-center justify-center">
-            <Button
-              onClick={handleSubmit}
-              disabled={!isAllFieldsFilled}
-              className={`bg-green px-4 py-2 text-white hover:bg-darkGreen ${
-                !isAllFieldsFilled
-                  ? "disabled:cursor-not-allowed disabled:bg-stone-200"
-                  : ""
-              }`}
-            >
-              <p className="text-gray-100">發布</p>
-            </Button>
+            <div>
+              <GlobalButton
+                variant="green"
+                content="發布"
+                disabled={!isAllFieldsFilled}
+                onClick={handleSubmit}
+              />
+            </div>
           </div>{" "}
         </div>
       ) : (
