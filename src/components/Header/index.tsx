@@ -5,25 +5,37 @@ import {
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/react";
+import { getAuth } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore";
 import Fuse from "fuse.js";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
-import { Admin, CartItem } from "../../type.ts";
+import { Admin, CartItem } from "../../type";
 import { SearchIcon } from "./SearchIcon.tsx";
 
 const Header: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
-
+  const auth = getAuth();
   useEffect(() => {
     const userId = appStore.currentUserEmail;
     if (userId) {
       appStore.fetchUserData(userId);
     }
+    const userEmail = auth.currentUser?.email;
+    if (!userEmail) return;
+    const userDocRef = doc(appStore.db, "user", userEmail);
+    const unsubscribe = onSnapshot(userDocRef, (doc) => {
+      const userData = doc.data();
+      if (userData && userData.avatar) {
+        setAvatarUrl(userData.avatar);
+      }
+    });
     appStore.fetchAdmin();
+    return () => unsubscribe();
   }, [appStore.currentUserEmail]);
 
   const [headerSelectedAdmin, setHeaderSelectedAdmin] = useState<Admin | null>(
@@ -31,6 +43,7 @@ const Header: React.FC = observer(() => {
   );
   const [quantity, setQuantity] = useState(0);
   const [query, setQuery] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("/bear.jpg");
   const fuse = new Fuse(appStore.admins, {
     keys: ["name", "position"],
   });
@@ -179,11 +192,7 @@ const Header: React.FC = observer(() => {
             <div>
               <img
                 className="h-10 w-10 rounded-full object-cover"
-                src={
-                  appStore.newUser.avatar
-                    ? appStore.newUser.avatar
-                    : "/bear.jpg"
-                }
+                src={avatarUrl ? avatarUrl : "/bear.jpg"}
                 alt="Avatar"
               />
             </div>

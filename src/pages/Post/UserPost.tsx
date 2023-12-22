@@ -19,6 +19,7 @@ const UserPost: React.FC = observer(() => {
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [isContentFilled, setIsContentFilled] = useState(false);
   const [currentImageUrl, setCurrentImageUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -57,6 +58,7 @@ const UserPost: React.FC = observer(() => {
     setCurrentImageUrl("");
   };
   const handleSubmit = async () => {
+    setIsLoading(true);
     try {
       if (imageUpload) {
         const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
@@ -78,8 +80,8 @@ const UserPost: React.FC = observer(() => {
         });
       }
       handleCleanInfo();
-
       alert("已發布貼文！");
+      setIsLoading(false);
     } catch (error) {
       console.error("添加貼文失敗", error);
     }
@@ -212,6 +214,15 @@ const UserPost: React.FC = observer(() => {
                 disabled={!isAllFieldsFilled}
                 onClick={handleSubmit}
               />
+              {isLoading && (
+                <div className="flex">
+                  <img
+                    src="./gravity-logo.png"
+                    className="spin-slow relative mx-auto mt-4 flex h-[40px] w-[40px] object-cover"
+                  />
+                  <p className="">上傳中...</p>
+                </div>
+              )}
             </div>
           </div>{" "}
         </div>

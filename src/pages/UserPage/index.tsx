@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Spinner } from "@nextui-org/react";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
@@ -19,7 +19,6 @@ const UserPage: React.FC = observer(() => {
 
   useEffect(() => {
     const userId = appStore.currentUserEmail;
-
     if (userId) {
       appStore.fetchUserData(userId);
       appStore.fetchUserActivities();
@@ -48,7 +47,8 @@ const UserPage: React.FC = observer(() => {
   const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState("/bear.jpg");
   const [userName, setUserName] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isAvatarLoading, setAvatarIsLoading] = useState(false);
+  const [isNameLoading, setNameIsLoading] = useState(false);
 
   const toggleOpenFollower = () => {
     setDetailFollower(!isDetailFollower);
@@ -74,7 +74,7 @@ const UserPage: React.FC = observer(() => {
   const toggleChangeName = () => {
     setChangeName(!isChangeName);
   };
-  const handleChangeAvatar = () => {
+  const handleTriggerChangeAvatar = () => {
     toggleChangeAvatar();
   };
   const nameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +86,7 @@ const UserPage: React.FC = observer(() => {
     return getDownloadURL(imageRef);
   };
   const handleSubmit = async () => {
-    setIsLoading(true);
+    setNameIsLoading(true);
     try {
       const NameData = {
         name: userName,
@@ -98,16 +98,42 @@ const UserPage: React.FC = observer(() => {
       const userDocRef = doc(appStore.db, "user", userEmail);
       await updateDoc(userDocRef, NameData);
       alert("名稱更新成功！");
+      setNameIsLoading(false);
     } catch (error) {
       console.error("更改名稱失敗", error);
       alert("更改名稱失敗");
     } finally {
       toggleChangeName();
-      setIsLoading(false);
+      setNameIsLoading(false);
     }
   };
-  const [activeTab, setActiveTab] = useState("post");
+  const handleChangeAvatar = async (e: any) => {
+    setAvatarIsLoading(true);
+    if (e.target.files && e.target.files[0]) {
+      setImageUpload(e.target.files[0]);
+      try {
+        const imageUrl = await uploadImage(e.target.files[0]);
+        const userEmail = auth.currentUser?.email;
+        if (!userEmail) {
+          throw new Error("找不到該用戶！");
+        }
+        const userDocRef = doc(appStore.db, "user", userEmail);
+        await updateDoc(userDocRef, {
+          avatar: imageUrl,
+        });
+        alert("頭貼更新成功！");
+      } catch (error) {
+        console.error("更改頭貼失敗", error);
+        alert("更改頭貼失敗");
+      }
+    } else {
+      setImageUpload(null);
+    }
+    toggleChangeAvatar();
+    setAvatarIsLoading(false);
+  };
 
+  const [activeTab, setActiveTab] = useState("post");
   const handleTabChange = (tabKey: any) => {
     setActiveTab(tabKey);
   };
@@ -119,14 +145,25 @@ const UserPage: React.FC = observer(() => {
           <div className=" mx-auto mt-4  flex  flex-wrap justify-center pt-28 text-center">
             <div className=" relative">
               <div className="relative">
-                <img
-                  src={avatarUrl ? avatarUrl : "/bear.jpg"}
-                  alt="Avatar"
-                  className="relative mx-auto mt-4 flex h-40 w-40 rounded-full object-cover"
-                />
+                {isAvatarLoading && (
+                  <>
+                    <img
+                      src="./gravity-logo.png"
+                      className="spin-slow relative mx-auto mt-4 flex h-[150px] w-[150px] object-cover"
+                    />
+                    <p className="mt-8">上傳中...</p>
+                  </>
+                )}
+                {!isAvatarLoading && (
+                  <img
+                    src={avatarUrl ? avatarUrl : "/bear.jpg"}
+                    alt="Avatar"
+                    className="relative mx-auto mt-4 flex h-[150px] w-[150px] rounded-full object-cover"
+                  />
+                )}
                 <button
                   className="absolute  bottom-5 right-28 h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow"
-                  onClick={handleChangeAvatar}
+                  onClick={handleTriggerChangeAvatar}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +181,7 @@ const UserPage: React.FC = observer(() => {
                   </svg>
                 </button>
 
-                <div className="   flex justify-end">
+                <div className="flex justify-end">
                   {isChangeAvatar && (
                     <div className="  absolute right-2 top-24 ml-4 h-auto  w-24 justify-center rounded-md    bg-white py-1">
                       <Link to="/paint" className="text-brown">
@@ -156,34 +193,7 @@ const UserPage: React.FC = observer(() => {
                           type="file"
                           id="file-upload"
                           className="hidden"
-                          onChange={async (e) => {
-                            if (e.target.files && e.target.files[0]) {
-                              setImageUpload(e.target.files[0]);
-                              try {
-                                const imageUrl = await uploadImage(
-                                  e.target.files[0],
-                                );
-                                const userEmail = auth.currentUser?.email;
-                                if (!userEmail) {
-                                  throw new Error("找不到該用戶！");
-                                }
-                                const userDocRef = doc(
-                                  appStore.db,
-                                  "user",
-                                  userEmail,
-                                );
-                                await updateDoc(userDocRef, {
-                                  avatar: imageUrl,
-                                });
-                                alert("頭貼更新成功！");
-                              } catch (error) {
-                                console.error("更改頭貼失敗", error);
-                                alert("更改頭貼失敗");
-                              }
-                            } else {
-                              setImageUpload(null);
-                            }
-                          }}
+                          onChange={(e) => handleChangeAvatar(e)}
                         />
                         <label
                           htmlFor="file-upload"
@@ -218,9 +228,17 @@ const UserPage: React.FC = observer(() => {
                     onClick={handleSubmit}
                     isDisabled={userName.trim().length === 0}
                   >
-                    {isLoading && <Spinner color="warning" size="sm" />}
                     完成
                   </Button>
+                  {isNameLoading && (
+                    <div className="flex items-center gap-4">
+                      <img
+                        src="./gravity-logo.png"
+                        className="spin-slow relative mx-auto  flex h-[40px] w-[40px] object-cover"
+                      />
+                      <p className="text-xs">更新中...</p>
+                    </div>
+                  )}
                 </div>
               )}
               <p className=" mx-24 mt-4  flex justify-center">

@@ -30,51 +30,12 @@ import {
 } from "firebase/storage";
 import { configure, makeAutoObservable } from "mobx";
 import { v4 } from "uuid";
+import { About, Admin, FirebaseConfig, NewUser } from "./type";
+
 configure({
   enforceActions: "never",
 });
-interface FirebaseConfig {
-  apiKey: string;
-  authDomain: string;
-  projectId: string;
-  storageBucket: string;
-  messagingSenderId: string;
-  appId: string;
-  measurementId: string;
-}
-interface Admin {
-  id: string;
-  name: string;
-  latitude: string;
-  longitude: string;
-  price: number;
-  images: string;
-  hashtags: [];
-  startTime: Date;
-  endTime: Date;
-  content: string;
-  isLiked?: boolean;
-  place: string;
-  direction: string;
-}
-interface NewUser {
-  avatar: string;
-  email: string;
-  following: string[];
-  followers: string[];
-  id: string;
-  name: string;
-}
-interface About {
-  history: string;
-  activities: string;
-  attendants: string;
-  images: string[];
-  image: string;
-  subsidy: string;
-  descriptions: string[];
-  description: string;
-}
+
 export interface UserFollow {
   id: string;
   userName: string;
@@ -303,7 +264,7 @@ class AppStore {
     uid: string,
     email: string,
     name: string,
-    imageFile: File,
+    imageFile: File | null,
   ) => {
     try {
       const imageUrl = await this.uploadImage(imageFile);
@@ -325,10 +286,11 @@ class AppStore {
       console.error("加入用戶失敗", error);
     }
   };
-  uploadImage = async (imageUpload: File): Promise<string> => {
+  uploadImage = async (imageUpload: File | null): Promise<string> => {
     try {
-      if (!imageUpload) throw new Error("未選取圖片");
-
+      if (!imageUpload) {
+        return "/bear.jpg";
+      }
       const imageRef = ref(this.storage, `images/${imageUpload.name + v4()}`);
       await uploadBytes(imageRef, imageUpload);
       return await getDownloadURL(imageRef);
@@ -629,49 +591,7 @@ class AppStore {
       }
     });
   }
-
-  async sendMessage(text: string) {
-    const userEmail = this.currentUserEmail;
-    if (!userEmail) return;
-    const chatRef = doc(this.db, "adminChat", userEmail);
-
-    await runTransaction(this.db, async (transaction) => {
-      const chatDoc = await transaction.get(chatRef);
-      const newMessage = {
-        timestamp: new Date().toISOString(),
-        text: text,
-      };
-
-      let currentMessages = [];
-      if (chatDoc.exists()) {
-        currentMessages = chatDoc.data().messages || [];
-      }
-
-      transaction.set(
-        chatRef,
-        {
-          currentUserEmail: userEmail,
-          messages: [...currentMessages, newMessage],
-        },
-        { merge: true },
-      );
-    });
-  }
 }
-
-const FirebaseConfig = {
-  apiKey: "AIzaSyCsbG3z6fvFeIAyFsTwmSSy4jPv_d96SwE",
-  authDomain: "gravity-backup.firebaseapp.com",
-  projectId: "gravity-backup",
-  storageBucket: "gravity-backup.appspot.com",
-  messagingSenderId: "768371795119",
-  appId: "1:768371795119:web:6c3d74024f70aaf236605a",
-  measurementId: "G-KSYGS2KYFY",
-};
-
-const app = initializeApp(FirebaseConfig);
-const db = getFirestore(app);
 
 export const appStore = new AppStore();
 export const storage = appStore.storage;
-export { db };

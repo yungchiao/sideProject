@@ -2,7 +2,8 @@ import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { appStore, db } from "../../AppStore";
+import { appStore } from "../../AppStore";
+import { db } from "../../type";
 import ActivityCard from "./ActivityCard";
 import UserSearch from "./UserSearch";
 
@@ -115,6 +116,7 @@ const Activity: React.FC = observer(() => {
                     className="h-full w-full object-cover"
                   />
                 </div>
+                <p className="mt-12">Loading中...</p>
               </div>
             </div>
           )}
