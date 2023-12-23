@@ -149,7 +149,7 @@ const UserPage: React.FC = observer(() => {
                   <>
                     <img
                       src="./gravity-logo.png"
-                      className="spin-slow relative mx-auto mt-4 flex h-[150px] w-[150px] object-cover"
+                      className="spin-slow relative mx-auto mt-4 flex h-[100px] w-[100px] object-cover"
                     />
                     <p className="mt-8">上傳中...</p>
                   </>
@@ -162,7 +162,7 @@ const UserPage: React.FC = observer(() => {
                   />
                 )}
                 <button
-                  className="absolute  bottom-5 right-28 h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow"
+                  className="absolute  bottom-5 right-24 h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow"
                   onClick={handleTriggerChangeAvatar}
                 >
                   <svg
@@ -183,7 +183,7 @@ const UserPage: React.FC = observer(() => {
 
                 <div className="flex justify-end">
                   {isChangeAvatar && (
-                    <div className="  absolute right-2 top-24 ml-4 h-auto  w-24 justify-center rounded-md    bg-white py-1">
+                    <div className="  absolute right-[-10px] top-[80px]  h-auto  w-24 justify-center rounded-md    bg-white py-1">
                       <Link to="/paint" className="text-brown">
                         繪製頭貼
                       </Link>

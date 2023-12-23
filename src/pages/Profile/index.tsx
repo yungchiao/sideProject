@@ -70,7 +70,9 @@ const Profile: React.FC = observer(() => {
         password,
       );
       const user = userCredential.user;
-      let avatarUrl = imageUpload || new File(["/bear.jpg"], "/bear.jpg");
+      let avatarUrl = imageUpload
+        ? await appStore.uploadImage(imageUpload)
+        : "/bear.jpg";
       const finalName = name.trim() ? name : "某位探險家";
       await appStore.addUser(user.uid, email, finalName, avatarUrl);
       alert("註冊成功!");

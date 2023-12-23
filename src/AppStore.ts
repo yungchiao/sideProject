@@ -264,10 +264,10 @@ class AppStore {
     uid: string,
     email: string,
     name: string,
-    imageFile: File | null,
+    avatarUrl: string,
   ) => {
     try {
-      const imageUrl = await this.uploadImage(imageFile);
+      const imageUrl = await this.uploadImage(avatarUrl);
 
       const newUser: NewUser = {
         avatar: imageUrl,
@@ -286,19 +286,18 @@ class AppStore {
       console.error("加入用戶失敗", error);
     }
   };
-  uploadImage = async (imageUpload: File | null): Promise<string> => {
-    try {
-      if (!imageUpload) {
-        return "/bear.jpg";
-      }
-      const imageRef = ref(this.storage, `images/${imageUpload.name + v4()}`);
-      await uploadBytes(imageRef, imageUpload);
+  uploadImage = async (imagePath: string | File | null): Promise<string> => {
+    if (typeof imagePath === "string") {
+      return imagePath;
+    } else if (imagePath instanceof File) {
+      const imageRef = ref(this.storage, `images/${imagePath.name + v4()}`);
+      await uploadBytes(imageRef, imagePath);
       return await getDownloadURL(imageRef);
-    } catch (error) {
-      console.error("上傳圖片失敗", error);
-      throw error;
+    } else {
+      return "/path/to/default/bear.jpg";
     }
   };
+
   logout() {
     const auth = getAuth();
     signOut(auth).then(() => {
