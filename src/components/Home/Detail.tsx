@@ -22,13 +22,13 @@ const Detail: React.FC<DetailProps> = ({
   };
   return (
     <div className="relative z-40 mt-4 flex  gap-8 rounded-md   bg-white lg:flex-col">
-      <div className="absolute left-1/2 top-[-50px]  h-12 w-1/3 min-w-[140px] -translate-x-1/2 transform rounded-full border-2 bg-white shadow-md">
-        <div className=" flex justify-center py-2 align-middle text-base font-bold tracking-widest text-brown md:text-xl">
+      <div className="absolute left-1/2 top-[-40px] h-8 w-1/3 min-w-[140px] -translate-x-1/2 transform rounded-full border-2 bg-white shadow-md md:top-[-50px] md:h-12">
+        <div className=" flex items-center justify-center pt-1 text-base font-bold text-brown md:py-2 md:text-xl md:tracking-widest">
           詳細資訊
         </div>
       </div>
-      <div className="mx-[20px] mb-4 flex  max-h-[600px] flex-col justify-center gap-8 overflow-auto pt-6 md:flex-row lg:pt-12">
-        <div className="sm:pt-40 md:pt-0">
+      <div className="mx-[20px] mb-4 flex  max-h-[600px] flex-col justify-center gap-8 overflow-auto pt-6  md:flex-row">
+        <div className="w-full pt-0 sm:pt-40 md:w-2/3 md:pt-0 ">
           <div className="mb-5  w-full overflow-hidden rounded-md md:mt-0 md:h-52 lg:h-60 ">
             <img
               src={selectedAdmin.images}
@@ -93,16 +93,16 @@ const Detail: React.FC<DetailProps> = ({
           </div>
         </div>
 
-        <div className="grid w-full content-between md:w-1/2">
+        <div className="grid w-full content-between md:w-full">
           <div>
-            <p className="mb-10 h-52 w-full overflow-auto rounded-md border p-4 text-sm leading-8 lg:h-[240px]">
+            <p className="mb-4 h-52 w-full overflow-auto rounded-md border p-4 text-sm leading-8 lg:h-[240px]">
               {selectedAdmin.content}
             </p>
-            <div className="my-4 flex flex-col gap-4 md:flex-row ">
+            <div className="my-4 block gap-4 sm:flex ">
               {selectedAdmin.hashtags &&
                 Array.isArray(selectedAdmin.hashtags) &&
                 selectedAdmin.hashtags.map((hashtag: any, index: any) => (
-                  <div className="hashtag inline-flex h-8 items-center  rounded-full p-4">
+                  <div className="hashtag mb-2 inline-flex h-8  items-center rounded-full p-4">
                     <p
                       key={index}
                       className=" whitespace-nowrap text-stone-800"

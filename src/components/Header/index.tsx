@@ -37,13 +37,25 @@ const Header: React.FC = observer(() => {
     appStore.fetchAdmin();
     return () => unsubscribe();
   }, [appStore.currentUserEmail]);
-
+  useEffect(() => {
+    function handleResize() {
+      setIsLargeScreen(window.innerWidth >= 768);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const [headerSelectedAdmin, setHeaderSelectedAdmin] = useState<Admin | null>(
     null,
   );
   const [quantity, setQuantity] = useState(0);
   const [query, setQuery] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("/bear.jpg");
+  const [searchActive, setSearchActive] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 768);
+  const toggleSearch = () => {
+    setSearchActive(!searchActive);
+  };
+
   const fuse = new Fuse(appStore.admins, {
     keys: ["name", "position"],
   });
@@ -119,41 +131,49 @@ const Header: React.FC = observer(() => {
         </NavbarContent>
       </NavbarContent>
       <NavbarContent as="div" className="items-center" justify="end">
-        <div className="relative">
-          <Input
-            classNames={{
-              base: "max-w-full sm:max-w-[10rem] h-10",
-              mainWrapper: "h-full",
-              input: "text-small",
-              inputWrapper:
-                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-            }}
-            placeholder="搜尋活動..."
-            size="sm"
-            startContent={<SearchIcon size={18} />}
-            type="search"
-            value={query}
-            onChange={handleOnSearch}
+        <div className="relative block ">
+          <SearchIcon
+            size={18}
+            onClick={toggleSearch}
+            className=" cursor-pointer md:hidden"
           />
-          {query && (
-            <ul className="search-results absolute left-0 top-full z-10 mt-4 w-full rounded-md bg-white px-2 shadow-lg">
-              {results.length > 0 ? (
-                results.map((result) => (
-                  <li
-                    key={result.item.id}
-                    onClick={() => handleAdminClick(result.item)}
-                    className="flex cursor-pointer flex-col transition duration-200 hover:text-stone-400"
-                  >
-                    {result.item.name}
-                  </li>
-                ))
-              ) : (
-                <li>查無活動</li>
+          {(searchActive || isLargeScreen) && (
+            <div className="absolute right-0 top-[50px] mt-2 bg-white  md:top-[-28px]">
+              <Input
+                classNames={{
+                  base: "max-w-full w-[10rem] h-10 relative ",
+                  mainWrapper: "h-full",
+                  input: "text-small",
+                  inputWrapper:
+                    "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                }}
+                placeholder="搜尋活動..."
+                size="sm"
+                startContent={<SearchIcon size={18} />}
+                type="search"
+                value={query}
+                onChange={handleOnSearch}
+              />
+              {query && (
+                <ul className="search-results absolute left-0 top-full z-10 mt-4 w-full rounded-md bg-white px-2 shadow-lg">
+                  {results.length > 0 ? (
+                    results.map((result) => (
+                      <li
+                        key={result.item.id}
+                        onClick={() => handleAdminClick(result.item)}
+                        className="flex cursor-pointer flex-col transition duration-200 hover:text-stone-400"
+                      >
+                        {result.item.name}
+                      </li>
+                    ))
+                  ) : (
+                    <li>查無活動</li>
+                  )}
+                </ul>
               )}
-            </ul>
+            </div>
           )}
         </div>
-
         <NavbarItem className="list-none">
           <Link
             to={
