@@ -1,5 +1,4 @@
 import {
-  Input,
   Navbar,
   NavbarBrand,
   NavbarContent,
@@ -138,18 +137,10 @@ const Header: React.FC = observer(() => {
             className=" cursor-pointer md:hidden"
           />
           {(searchActive || isLargeScreen) && (
-            <div className="absolute right-0 top-[50px] mt-2 bg-white  md:top-[-28px]">
-              <Input
-                classNames={{
-                  base: "max-w-full w-[10rem] h-10 relative ",
-                  mainWrapper: "h-full",
-                  input: "text-small",
-                  inputWrapper:
-                    "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-                }}
+            <div className="absolute right-[-120px] top-[60px] mt-2 md:right-0   md:top-[-28px]">
+              <input
+                className="relative h-10 w-[10rem] max-w-full rounded-lg border border-brown bg-white px-2 text-small font-normal text-default-500 outline-transparent dark:bg-default-500/20"
                 placeholder="搜尋活動..."
-                size="sm"
-                startContent={<SearchIcon size={18} />}
                 type="search"
                 value={query}
                 onChange={handleOnSearch}
