@@ -59,7 +59,7 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
       }
     };
     return (
-      <div key={activity.postId} className="   px-[20px] pt-6">
+      <div key={activity.postId} className="px-[4px] pt-6 ">
         <div className=" mb-4 flex items-center gap-2  px-2 pb-2">
           <img src={avatar} className="h-10 w-10 rounded-full object-cover" />
           <p className="text-lg">{activity.userName}</p>
@@ -85,10 +85,10 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
                   <div className="h-[30px] w-[3px] bg-yellow" />
                   <p>{activity.weather}</p>
                 </div>
-                <div className="max-width-[80%] max-h-[400px] overflow-auto py-4">
+                <div className="sm:max-width-[40%] md:max-width-[80%] max-h-[400px]  overflow-auto py-4 sm:w-full md:w-full">
                   <p className="leading-8">{activity.content}</p>
                 </div>
-                <div className="h-[300px] w-[300px] overflow-hidden rounded-md border p-2 shadow-md">
+                <div className="h-auto w-2/3 overflow-hidden rounded-md border p-2 shadow-md">
                   <img
                     src={activity.image}
                     className="h-full w-full object-cover"

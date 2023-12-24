@@ -86,11 +86,13 @@ const Chat = observer(() => {
   return (
     <>
       {appStore.currentUserEmail ? (
-        <div className="mx-20 p-10 pt-28">
-          <div className="my-8 flex justify-center">
-            <h1 className="text-3xl font-bold text-brown">客服聊聊</h1>
+        <div className="mx-8 pt-28 sm:mx-4 md:px-4 lg:mx-20 lg:px-10">
+          <div className="flex justify-center sm:my-4 md:my-8">
+            <h1 className="font-bold text-brown  sm:text-xl md:text-3xl">
+              客服聊聊
+            </h1>
           </div>
-          <div className="h-[700px] overflow-auto rounded-md border border-stone-700 p-4">
+          <div className="h-[700px] overflow-auto border-stone-700 p-4 sm:rounded-none sm:border-t sm:p-4 md:rounded-md md:border lg:border">
             {appStore.chats.map((chat) => (
               <div key={chat.id} className="flex flex-col">
                 {chat.messages.map((msg: any, index: any) => (
@@ -170,7 +172,7 @@ const Chat = observer(() => {
             <div ref={messagesEndRef} />
           </div>
 
-          <div className="my-8 flex w-full flex-wrap items-center gap-4 md:mb-0 md:flex-nowrap">
+          <div className="my-8 flex w-full flex-nowrap items-center gap-4 md:mb-0 md:flex-nowrap">
             <Input
               type="email"
               variant="bordered"

@@ -45,7 +45,9 @@ body {
     font-family: "Josefin Sans", "Montserrat", sans-serif;
   }
 }
-
+.input-placeholder::placeholder {
+  @apply text-brown;
+}
 .fc-event {
   --fc-event-bg-color: #81b35d;
   --fc-event-border-color: #81b35d;
@@ -119,22 +121,6 @@ body {
   border-radius: 0px 8px 8px 0px;
 }
 
-.input-button-container {
-  position: relative;
-  width: 240px;
-  background-color: white;
-  border-radius: 12px;
-}
-
-.search-button {
-  position: absolute;
-  right: 0;
-  top: 0;
-  height: 100%;
-  border: none;
-  background: transparent;
-  margin-right: 10px;
-}
 .cloud {
   position: absolute;
   top: 0;

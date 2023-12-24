@@ -139,14 +139,14 @@ const Header: React.FC = observer(() => {
           {(searchActive || isLargeScreen) && (
             <div className="absolute right-[-120px] top-[60px] mt-2 md:right-0   md:top-[-28px]">
               <input
-                className="relative h-10 w-[10rem] max-w-full rounded-lg border border-brown bg-white px-2 text-small font-normal text-default-500 outline-transparent dark:bg-default-500/20"
+                className="input-placeholder relative h-10 w-[10rem] max-w-full rounded-lg border border-brown bg-white px-2 text-small font-normal text-brown outline-transparent dark:bg-default-500/20"
                 placeholder="搜尋活動..."
                 type="search"
                 value={query}
                 onChange={handleOnSearch}
               />
               {query && (
-                <ul className="search-results absolute left-0 top-full z-10 mt-4 w-full rounded-md bg-white px-2 shadow-lg">
+                <ul className=" absolute left-0 top-full z-10 mt-4 w-full rounded-md bg-white px-2 shadow-lg">
                   {results.length > 0 ? (
                     results.map((result) => (
                       <li

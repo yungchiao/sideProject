@@ -1,4 +1,3 @@
-import { Input } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { UserFollow, appStore } from "../../AppStore";
@@ -40,29 +39,26 @@ const UserSearch: React.FC<UserSearchProps> = observer(
       setIsvisible(false);
     };
     return (
-      <>
-        <div className="input-button-container flex justify-center">
-          <Input
-            classNames={{
-              base: "max-w-[full]  h-10 ",
-              mainWrapper: "h-full",
-              input: "text-small",
-              inputWrapper:
-                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-            }}
+      <div className="absolute  flex flex-col">
+        <div className="relative flex h-10 w-60 justify-between rounded-lg bg-white ">
+          <input
+            className="input-placeholder relative w-[200px] rounded-lg pl-3 text-small font-normal  outline-none dark:bg-default-500/20"
             placeholder="搜尋完整帳號..."
             type="search"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value.trim())}
           />
-          <button onClick={handleSearch} className="search-button">
+          <button
+            onClick={handleSearch}
+            className="relative right-0 top-0 mr-3 h-full bg-transparent"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className="mr-6 h-6 w-6"
+              className="h-6 w-6"
             >
               <path
                 strokeLinecap="round"
@@ -77,7 +73,7 @@ const UserSearch: React.FC<UserSearchProps> = observer(
             ? appStore.searchResults.map((user: UserFollow) => (
                 <div
                   key={user.userEmail}
-                  className="mt-5 block"
+                  className=" left-[-30px] top-full z-10 mt-2 rounded-lg  p-3"
                   onClick={() => handleUserClick(user.userEmail)}
                 >
                   <UserProfile
@@ -90,16 +86,14 @@ const UserSearch: React.FC<UserSearchProps> = observer(
                   />
                 </div>
               ))
-            : isVisible && (
-                <p className="mr-4 inline text-darkYellow">查無此帳號</p>
-              )}
+            : isVisible && <p className="mr-4 inline text-white">查無此帳號</p>}
           {isVisible && (
-            <button onClick={handleHideClick} className="mt-8">
-              <p className="text-yellow">x</p>
+            <button onClick={handleHideClick} className="mt-2">
+              <p className="text-white">x</p>
             </button>
           )}
         </div>
-      </>
+      </div>
     );
   },
 );

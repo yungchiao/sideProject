@@ -62,7 +62,7 @@ const UserProfile: React.FC<
                 </Button>
               )}
             </div>
-            <button onClick={handleHideClick} className="mt-3">
+            <button onClick={handleHideClick} className="">
               <p className="text-yellow">x</p>
             </button>
           </div>
