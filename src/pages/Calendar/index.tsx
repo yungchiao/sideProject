@@ -2,18 +2,13 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import {
-  Timestamp,
-  collection,
-  getDocs,
-  getFirestore,
-} from "firebase/firestore";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
+import { Admin, CartItem } from "../../type";
 import { CalendarEvent } from "../../type.ts";
-
 const Calendar: React.FC = observer(() => {
   const [events, setEvents] = useState<CalendarEvent[]>([]);
 
@@ -57,29 +52,6 @@ const Calendar: React.FC = observer(() => {
       setClosestEventAsSelected();
     }
   }, [appStore.admins, events]);
-
-  interface Admin {
-    id: string;
-    name: string;
-    position: string;
-    price: number;
-    images: string;
-    hashtags: [];
-    startTime: Timestamp;
-    endTime: Timestamp;
-    content: string;
-    place: string;
-    longitude: string;
-    latitude: string;
-  }
-  interface CartItem {
-    name: string;
-    quantity: number;
-    price: number;
-    id: string;
-    latitude: string;
-    longitude: string;
-  }
 
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
   const [quantity, setQuantity] = useState(0);
@@ -169,22 +141,32 @@ const Calendar: React.FC = observer(() => {
   };
 
   return (
-    <div className="mt-10 flex h-full w-full items-center justify-center gap-20">
+    <div className=" flex h-full w-full items-center justify-center gap-10 sm:flex-col md:flex-col lg:flex-col xl:flex-row">
       {showPartialInfo && selectedAdmin && (
-        <div>
-          <h1 className="mb-10 flex justify-center border-b-large pb-5 text-3xl">
-            EVENT 這是什麼活動呢？
-          </h1>
-
+        <div className="mb-4 px-0 sm:px-14">
+          <div className="mb-10 flex border-b-large sm:flex-col sm:px-4 md:flex-row">
+            <h1 className="mb-4 flex justify-center  text-3xl">EVENT</h1>
+            <h1 className="mb-2 flex justify-center  text-3xl">
+              這是什麼活動呢？
+            </h1>
+          </div>
           <div className="flex gap-5" onClick={() => setIsModalOpen(true)}>
             <div className="grid content-between">
               <div>
-                <h3 className="mb-2 font-bold">{selectedAdmin.name}</h3>
-                <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
-                <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
+                <h3 className="mb-2 font-bold sm:text-sm md:text-base">
+                  {selectedAdmin.name}
+                </h3>
+                <p className="sm:text-sm md:text-base">
+                  {selectedAdmin.startTime?.toDate()?.toLocaleString()}
+                </p>
+                <p className="sm:text-sm md:text-base">
+                  {selectedAdmin.endTime?.toDate()?.toLocaleString()}
+                </p>
               </div>
               <div className="flex h-8 w-auto cursor-pointer justify-center rounded-full border-2 border-stone-600 bg-white transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
-                <p className="leading-8">點擊查看詳情</p>
+                <p className="sm:text-sm sm:leading-8 md:text-base md:leading-8">
+                  點擊查看詳情
+                </p>
               </div>
             </div>
             <div className="h-40 w-60 overflow-hidden rounded-lg">
@@ -212,7 +194,7 @@ const Calendar: React.FC = observer(() => {
           handleSignUp={handleSignUp}
         />
       )}
-      <div className="calendar-bg">
+      <div className="mx-12 flex h-full min-w-0 flex-col break-words rounded-2xl border-0 bg-white bg-clip-border p-3 text-sm shadow-xl sm:w-4/5 md:relative lg:w-1/2">
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"

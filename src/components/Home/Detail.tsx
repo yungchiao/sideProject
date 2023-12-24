@@ -21,105 +21,105 @@ const Detail: React.FC<DetailProps> = ({
     setQuantity(0);
   };
   return (
-    <div className="detail-container relative z-40  mt-4  rounded-md  bg-white p-4">
-      <div className=" gap-8">
-        <div className="absolute left-1/2 top-[-50px]  h-12 w-1/3 -translate-x-1/2 transform rounded-full border-2 bg-white shadow-md ">
-          <div className="flex justify-center py-2 align-middle text-xl font-bold tracking-widest text-brown">
-            詳細資訊
-          </div>
+    <div className="relative z-40 mt-4 flex  gap-8 rounded-md   bg-white lg:flex-col">
+      <div className="absolute left-1/2 top-[-50px]  h-12 w-1/3 min-w-[140px] -translate-x-1/2 transform rounded-full border-2 bg-white shadow-md">
+        <div className=" flex justify-center py-2 align-middle text-base font-bold tracking-widest text-brown md:text-xl">
+          詳細資訊
         </div>
-        <div className="mx-[20px] mb-4 mt-8 flex justify-center gap-8">
-          <div>
-            <div className="mb-5 h-60 w-[400px] overflow-hidden rounded-md">
-              <img
-                src={selectedAdmin.images}
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="block">
-              <h3 className="text-yellow-800  mb-4 text-2xl font-bold">
-                {selectedAdmin.name}
-              </h3>
-              <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
-              <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
-              <div className="mt-4 inline-block transition duration-200 hover:text-brown">
-                <div className="flex">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="h-6 w-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-                    />
-                  </svg>
+      </div>
+      <div className="mx-[20px] mb-4 flex  max-h-[600px] flex-col justify-center gap-8 overflow-auto pt-6 md:flex-row lg:pt-12">
+        <div className="sm:pt-40 md:pt-0">
+          <div className="mb-5  w-full overflow-hidden rounded-md md:mt-0 md:h-52 lg:h-60 ">
+            <img
+              src={selectedAdmin.images}
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="block">
+            <h3 className="mb-4  text-xl font-bold text-brown">
+              {selectedAdmin.name}
+            </h3>
+            <p>{selectedAdmin.startTime?.toDate()?.toLocaleString()}</p>
+            <p>{selectedAdmin.endTime?.toDate()?.toLocaleString()}</p>
+            <div className="mt-4 inline-block transition duration-200 hover:text-darkBrown">
+              <div className="flex">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="h-6 w-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                  />
+                </svg>
 
-                  <p>
-                    {selectedAdmin.latitude && selectedAdmin.longitude ? (
-                      <a
-                        href={getGoogleMapsLink(
-                          selectedAdmin.latitude,
-                          selectedAdmin.longitude,
-                        )}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {selectedAdmin.place}
-                      </a>
-                    ) : (
-                      <span>{selectedAdmin.place}</span>
-                    )}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-4 flex items-center gap-4">
-                <p className="">
-                  活動價格：NT${" "}
-                  <span className="mb-4 text-2xl font-bold text-brown">
-                    {selectedAdmin.price}
-                  </span>{" "}
-                  元
+                <p className="text-brown">
+                  {selectedAdmin.latitude && selectedAdmin.longitude ? (
+                    <a
+                      href={getGoogleMapsLink(
+                        selectedAdmin.latitude,
+                        selectedAdmin.longitude,
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {selectedAdmin.place}
+                    </a>
+                  ) : (
+                    <span>{selectedAdmin.place}</span>
+                  )}
                 </p>
               </div>
             </div>
-          </div>
-
-          <div className="grid content-between">
-            <div>
-              <p className="mb-10 h-[240px] max-w-lg overflow-auto rounded-md border p-4 text-sm leading-8">
-                {selectedAdmin.content}
+            <div className="mt-4 flex items-center gap-4">
+              <p className="">
+                活動價格：NT$
+                <span className="mb-4 text-2xl font-bold text-brown">
+                  {selectedAdmin.price}
+                </span>
+                元
               </p>
-              <div className="my-4 flex gap-4 ">
-                {selectedAdmin.hashtags &&
-                  Array.isArray(selectedAdmin.hashtags) &&
-                  selectedAdmin.hashtags.map((hashtag: any, index: any) => (
-                    <div className="hashtag flex h-8 w-auto items-center  rounded-full p-4">
-                      <p
-                        key={index}
-                        className="whitespace-nowrap text-stone-800"
-                      >
-                        # {hashtag}
-                      </p>
-                    </div>
-                  ))}
-              </div>
             </div>
-            <div className="mt-4 flex w-full items-center justify-between ">
-              <div>
-                <p className="whitespace-nowrap">請選擇人數：</p>
-              </div>
-              <div className="flex w-3/5 items-center justify-center">
-                <div className=" flex h-10 w-3/4 items-center justify-around rounded-md border">
+          </div>
+        </div>
+
+        <div className="grid w-full content-between md:w-1/2">
+          <div>
+            <p className="mb-10 h-52 w-full overflow-auto rounded-md border p-4 text-sm leading-8 lg:h-[240px]">
+              {selectedAdmin.content}
+            </p>
+            <div className="my-4 flex flex-col gap-4 md:flex-row ">
+              {selectedAdmin.hashtags &&
+                Array.isArray(selectedAdmin.hashtags) &&
+                selectedAdmin.hashtags.map((hashtag: any, index: any) => (
+                  <div className="hashtag inline-flex h-8 items-center  rounded-full p-4">
+                    <p
+                      key={index}
+                      className=" whitespace-nowrap text-stone-800"
+                    >
+                      # {hashtag}
+                    </p>
+                  </div>
+                ))}
+            </div>
+          </div>
+          <div className="mt-4 block w-full items-center justify-between md:flex ">
+            <div className="mb-4 flex w-auto flex-none justify-center md:mb-0 ">
+              <p className="mr-2 whitespace-nowrap">請選擇人數：</p>
+            </div>
+            <div className="flex grow gap-2">
+              <div className="flex w-full items-center justify-center">
+                <div className=" flex h-10 w-full items-center justify-around rounded-md border">
                   <button
                     onClick={() => setQuantity(Math.max(quantity - 1, 0))}
                   >

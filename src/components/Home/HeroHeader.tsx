@@ -16,36 +16,42 @@ const HeroHeader: React.FC = observer(() => {
   };
 
   return (
-    <div className="">
-      <div className="flex ">
-        <div className="flex w-1/2 justify-center pt-24 ">
+    <div>
+      <div className="flex flex-col 2xl:flex-row">
+        <div className="22xl:w-1/2 w-full justify-center sm:pt-12 md:pt-24 ">
           <div className="text-center ">
-            <div className="mx-auto mb-12 flex h-auto w-[100px] justify-center">
+            <div className="mx-auto mb-12 flex h-auto justify-center sm:w-[80px] md:w-[100px]">
               <img
                 src="/gravity-logo.png"
                 className="transition duration-300 ease-in-out hover:rotate-180 hover:scale-150"
               />
             </div>
-            <h1 className="mb-10 text-8xl">GRAVITY</h1>
-            <h1 className="mb-10 text-4xl">Placemaking Website</h1>
+            <h1 className="sm:mb-6 sm:text-5xl md:mb-10 md:text-8xl">
+              GRAVITY
+            </h1>
+            <h1 className="sm:mb-6 sm:text-xl md:mb-12 md:text-4xl">
+              Placemaking Website
+            </h1>
             <div className="flex items-center justify-center gap-2">
-              <h1 className="border-r-2 border-stone-800 pr-4 text-3xl font-bold tracking-widest">
+              <h1 className="border-r-2 border-stone-800 pr-4 font-bold tracking-widest sm:text-lg md:text-3xl">
                 地新引力
               </h1>
-              <p className="pl-3 text-lg tracking-widest">地方創生活動網站</p>
+              <p className="pl-3 tracking-widest sm:text-sm md:text-lg">
+                地方創生活動網站
+              </p>
             </div>
             {appStore.currentUserEmail ? (
               <div className="none"></div>
             ) : (
-              <div className="mt-20">
+              <div className="mt-10">
                 <Link color="foreground" to="/profile">
                   <Button className="bg-green text-white">登入</Button>
                 </Link>
               </div>
             )}
-            <div className="mx-auto mt-20 flex h-[260px] w-full justify-center rounded-md border-2 border-dashed border-stone-400 transition duration-200 hover:scale-105 hover:shadow-lg">
-              <div className=" p-8">
-                <div className="mb-8 flex gap-3">
+            <div className=" mx-auto mt-10 flex w-4/5  justify-center rounded-md border-2 border-dashed border-stone-400 transition duration-200 hover:scale-105 hover:shadow-lg  md:pb-0">
+              <div className=" sm:p-4 md:p-8">
+                <div className="flex gap-3 sm:mb-4 md:mb-8">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -60,11 +66,11 @@ const HeroHeader: React.FC = observer(() => {
                       d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
                     />
                   </svg>
-                  <p className="text-stone-600">
+                  <p className="sm:text-nowrap text-stone-600 sm:text-xs">
                     定期更新的地方創生活動等你來發掘！
                   </p>
                 </div>
-                <div className="mb-8 flex gap-3">
+                <div className="flex gap-3 sm:mb-4 md:mb-8">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -80,9 +86,11 @@ const HeroHeader: React.FC = observer(() => {
                     />
                   </svg>
 
-                  <p className="text-stone-600">社群功能幫你尋找同好！</p>
+                  <p className="sm:text-nowrap text-stone-600 sm:text-xs">
+                    社群功能幫你尋找同好！
+                  </p>
                 </div>
-                <div className="mb-8 flex gap-3">
+                <div className="flex gap-3 sm:mb-4 md:mb-8">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -98,11 +106,11 @@ const HeroHeader: React.FC = observer(() => {
                     />
                   </svg>
 
-                  <p className="text-stone-600">
+                  <p className="sm:text-nowrap text-stone-600 sm:text-xs">
                     分享心得記錄你和這片土地的點點滴滴！
                   </p>
                 </div>
-                <div className="mb-8 flex gap-3">
+                <div className=" flex gap-3">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -118,18 +126,20 @@ const HeroHeader: React.FC = observer(() => {
                     />
                   </svg>
 
-                  <p className="text-stone-600">接下來就讓我們一起來探索吧！</p>
+                  <p className="sm:text-nowrap text-stone-600 sm:text-xs">
+                    接下來就讓我們一起來探索吧！
+                  </p>
                 </div>
               </div>
             </div>
-            <div className=" mt-20 flex justify-center ">
+            <div className=" mb-6 mt-6 flex justify-center 2xl:mb-0 2xl:mt-10">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="0.2"
                 stroke="currentColor"
-                className="h-[200px] w-[200px]"
+                className="sm:h-[90px] sm:w-[90px] md:h-[150px] md:w-[150px]"
               >
                 <path
                   strokeLinecap="round"
@@ -140,8 +150,8 @@ const HeroHeader: React.FC = observer(() => {
             </div>
           </div>
         </div>
-        <div className="relative  w-2/3  bg-white">
-          <img src="/hero-header.png" className="w-full" />
+        <div className="relative  w-full   bg-white">
+          <img src="/hero-header.png" className=" w-full" />
 
           <div className="absolute left-0 top-0 z-20 w-full ">
             <motion.img

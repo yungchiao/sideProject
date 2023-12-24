@@ -92,7 +92,7 @@ const UserPost: React.FC = observer(() => {
   return (
     <div>
       {appStore.newUser ? (
-        <div className="m-auto h-[100vh] w-3/4  p-10 pb-28 pt-40">
+        <div className="m-auto  w-3/4  p-10 pb-28 pt-40">
           <select
             aria-label="Select Activity Name"
             value={activityName}
@@ -207,7 +207,7 @@ const UserPost: React.FC = observer(() => {
             onChange={handleContent}
           />
           <div className="mx-auto mt-10 flex items-center justify-center">
-            <div>
+            <div className="flex flex-col ">
               <GlobalButton
                 variant="green"
                 content="發布"
@@ -215,12 +215,12 @@ const UserPost: React.FC = observer(() => {
                 onClick={handleSubmit}
               />
               {isLoading && (
-                <div className="flex">
+                <div className="mt-6 flex gap-2">
                   <img
                     src="./gravity-logo.png"
-                    className="spin-slow relative mx-auto mt-4 flex h-[40px] w-[40px] object-cover"
+                    className="spin-slow relative mx-auto flex h-[40px] w-[40px] object-cover"
                   />
-                  <p className="">上傳中...</p>
+                  <p className="flex items-center">上傳中...</p>
                 </div>
               )}
             </div>

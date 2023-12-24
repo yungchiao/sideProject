@@ -18,6 +18,11 @@ export default {
         darkYellow: "#cd9a3c",
         darkBrown: "#76624f",
       },
+      screens: {
+        '3xl': '1920px',
+        '2xl': '1600px',
+        'sm': '360px'
+      }
     }
   },
   darkMode: "class",

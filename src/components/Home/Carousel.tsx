@@ -42,17 +42,18 @@ const Carousal: React.FC = () => {
 
   return (
     <div>
-      <div className=" carousel-container flex h-auto w-full cursor-pointer items-center justify-between gap-20 ">
-        <button className="h-auto w-[250px]" onClick={handlePrev}>
+      <div className="flex h-auto cursor-pointer  items-center overflow-x-hidden sm:gap-6  md:justify-center md:gap-20   lg:justify-between">
+        <button className=" h-auto  w-1/3 " onClick={handlePrev}>
           <img src="/left.png" className="h-full w-full" />
         </button>
+
         <Link to={imageRoutes[localImages[activeCampaignIndex]]}>
           {localImages.map((image, index) => (
             <img
               key={image}
               src={image}
               alt="Campaign Image"
-              className={`carousel-image ${
+              className={`w-full object-cover  ${
                 index === activeCampaignIndex
                   ? slideDirection === "right"
                     ? "slide-in-left"
@@ -65,8 +66,9 @@ const Carousal: React.FC = () => {
             />
           ))}
         </Link>
-        <button className=" h-auto w-[250px]" onClick={handleNext}>
-          <img src="/right.png" className=" h-full w-full" />
+
+        <button className=" h-auto w-1/3 " onClick={handleNext}>
+          <img src="/right.png" className="h-full w-full" />
         </button>
       </div>
     </div>

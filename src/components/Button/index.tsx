@@ -14,7 +14,7 @@ export const GlobalButton: React.FC<GlobalButtonProps> = ({
   disabled,
   onClick,
 }) => {
-  const baseClasses = "transform transition duration-200 ease-in-out";
+  const baseClasses = "relative transform transition duration-200 ease-in-out";
   const variantClasses = {
     yellow: "bg-yellow text-white",
     gray: "bg-gray text-white",

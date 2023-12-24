@@ -166,7 +166,7 @@ const AdminChat = observer(() => {
     <>
       {appStore.currentUserEmail === "imadmin@gmail.com" ? (
         <>
-          <div className="mx-20 flex h-[100vh] justify-between  overflow-auto p-4 pb-10 pt-28">
+          <div className="mx-20 flex  justify-between p-4 pb-10 pt-28">
             <div className="w-1/3">
               <div className="mb-8">
                 <UserSearch
@@ -179,7 +179,7 @@ const AdminChat = observer(() => {
                 <button
                   key={chat.id}
                   onClick={() => selectChat(chat.id)}
-                  className="trasition mb-4 flex w-[300px] content-center items-center gap-4 rounded-md border-1 bg-white p-2 duration-200 hover:border-2 hover:border-yellow"
+                  className="trasition mb-4 flex w-[300px] content-center items-center gap-4 rounded-md border bg-white p-2 duration-200 hover:border-2 hover:border-yellow"
                 >
                   <div className="flex  ">
                     <div className="h-[40px] w-[40px] overflow-hidden rounded-full ">
@@ -194,7 +194,10 @@ const AdminChat = observer(() => {
               ))}
             </div>
             <div className=" w-2/3   ">
-              <div className="h-[750px] overflow-auto rounded-md border p-4">
+              <h1 className="my-10 flex justify-center text-3xl font-bold text-brown">
+                後台聊天室
+              </h1>
+              <div className="h-[750px] overflow-auto rounded-md border border-stone-700 p-4">
                 {currentMessages.map((message, index) => (
                   <div
                     key={index}

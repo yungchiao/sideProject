@@ -1,9 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-.calendar-bg {
-  @apply relative flex h-full w-1/2 min-w-0 flex-col break-words rounded-2xl border-0 bg-white bg-clip-border p-3 text-sm shadow-xl;
-}
 
 html {
   @apply bg-stone-100;
@@ -47,19 +44,6 @@ body {
   html {
     font-family: "Josefin Sans", "Montserrat", sans-serif;
   }
-}
-
-.carousel-container {
-  width: 100%;
-  overflow-x: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.carousel-image {
-  width: 100%;
-  object-fit: cover;
 }
 
 .fc-event {
@@ -157,14 +141,6 @@ body {
   left: 0;
   width: 100px;
   z-index: 10;
-}
-
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80px;
-  width: 80px;
 }
 
 .fc-event-time {
