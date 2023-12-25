@@ -150,7 +150,7 @@ const Cart: React.FC = observer(() => {
     <div className="mt-4">
       <div className="flex justify-center ">
         <button
-          className={`mt-4 px-2 py-2 ${
+          className={` px-2 py-2 ${
             activeTab === "cart"
               ? "tab-border-left h-auto w-auto bg-yellow text-white"
               : "tab-border-left border-1 border-yellow"
@@ -160,7 +160,7 @@ const Cart: React.FC = observer(() => {
           <p className="leading-none">購物車</p>
         </button>
         <button
-          className={`mt-4 px-2 py-2 ${
+          className={` px-2 py-2 ${
             activeTab === "checkout"
               ? "tab-border-right h-auto w-auto bg-yellow  text-white"
               : "tab-border-right border-1 border-yellow"
@@ -171,7 +171,7 @@ const Cart: React.FC = observer(() => {
         </button>
       </div>
       {activeTab === "checkout" && (
-        <div className="p-6">
+        <div>
           {checkoutItems.length > 0 ? (
             <div>
               {checkoutItems.map((item, index) => (
@@ -193,8 +193,10 @@ const Cart: React.FC = observer(() => {
               ))}
             </div>
           ) : (
-            <div className="mx-40  my-6  justify-center rounded-md border p-4 text-center">
-              <h1 className="mb-4  items-center text-xl">尚未購買任何票券</h1>
+            <div className="mx-10 my-6  justify-center  rounded-md border p-4 text-center md:mx-40">
+              <h1 className="mb-4 items-center whitespace-nowrap text-xl">
+                尚未購買任何票券
+              </h1>
               <Button>
                 <Link to="/">回首頁逛逛</Link>
               </Button>
@@ -209,7 +211,7 @@ const Cart: React.FC = observer(() => {
               {cartItems.map((item, index) => (
                 <div
                   key={index}
-                  className="mx-auto my-6  flex  w-1/3 min-w-[650px]  justify-between rounded-md border bg-white p-2 px-[20px]  leading-none"
+                  className="mx-auto my-6 flex w-1/3 min-w-[650px]  justify-between rounded-md border bg-white p-2 px-[20px]  leading-none"
                 >
                   <p className="whitespace-nowrap py-2">{item.name}</p>
                   <p className="whitespace-nowrap py-2">數量:</p>
@@ -274,8 +276,10 @@ const Cart: React.FC = observer(() => {
               )}
             </>
           ) : (
-            <div className="mx-40  my-6  justify-center rounded-md border p-4 text-center">
-              <h1 className="mb-4  items-center text-xl">目前購物車為空</h1>
+            <div className="mx-10 my-6 justify-center  rounded-md border p-4 text-center md:mx-40">
+              <h1 className="mb-4 items-center whitespace-nowrap text-xl">
+                目前購物車為空
+              </h1>
               <Button>
                 <Link to="/">回首頁逛逛</Link>
               </Button>

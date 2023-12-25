@@ -307,7 +307,7 @@ const UserPage: React.FC = observer(() => {
             </div>
             {activeTab === "post" && (
               <div className="flex justify-center ">
-                <div className="mt-6 w-[50%] rounded-xl bg-white p-4">
+                <div className="mt-6 w-4/5 rounded-xl bg-white p-4 lg:w-1/2">
                   {appStore.userActivities.length > 0 ? (
                     <div>
                       {appStore.userActivities.map((activity) => (
@@ -352,8 +352,8 @@ const UserPage: React.FC = observer(() => {
               </div>
             )}
           </div>
-          <div className="mb-10 flex justify-center">
-            <h1 className="text-4xl">{userName} の 足跡</h1>
+          <div className="mb-6 flex justify-center">
+            <h1 className="text-xl md:text-4xl">{userName} の 足跡</h1>
           </div>
 
           <GoogleMap />

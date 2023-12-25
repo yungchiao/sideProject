@@ -38,8 +38,8 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
             <p className=" flex justify-center">
               {admin.startTime?.toDate()?.toLocaleString()}{" "}
             </p>
-            <p className="my-1   flex justify-center">|</p>
-            <p className="mb-4   flex justify-center">
+            <p className="my-1 flex justify-center">|</p>
+            <p className="mb-4 flex justify-center">
               {admin.endTime?.toDate()?.toLocaleString()}{" "}
             </p>
             <div className="mx-4 my-2 flex w-auto justify-center rounded-full border-2 p-2">

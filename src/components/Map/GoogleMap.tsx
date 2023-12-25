@@ -78,7 +78,7 @@ const GoogleMap: React.FC = observer(() => {
   }, [checkoutItems]);
 
   return (
-    <div className="tranition mx-auto flex w-1/3 overflow-hidden rounded-2xl duration-300 hover:scale-105">
+    <div className="tranition mx-auto flex w-4/5 overflow-hidden rounded-2xl duration-300 hover:scale-105 md:w-1/2">
       <div
         id="map"
         style={{

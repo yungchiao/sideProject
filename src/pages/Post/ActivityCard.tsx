@@ -66,8 +66,8 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
         </div>
         <div className="justify-spacing flex gap-6">
           <div>
-            <div className="flex gap-6">
-              <div className="border-yellow-500 ml-[25px] border-l-2 pl-2"></div>
+            <div className="flex justify-center gap-4 md:gap-6">
+              <div className="border-yellow-500 ml-[25px] border-l-2 "></div>
               <div>
                 <h3
                   className="mb-3 inline cursor-pointer text-lg font-bold text-brown transition duration-200 hover:scale-105 hover:text-darkBrown hover:shadow-lg"
@@ -88,16 +88,16 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
                 <div className="sm:max-width-[40%] md:max-width-[80%] max-h-[400px]  overflow-auto py-4 sm:w-full md:w-full">
                   <p className="leading-8">{activity.content}</p>
                 </div>
-                <div className="h-auto w-2/3 overflow-hidden rounded-md border p-2 shadow-md">
+                <div className="h-auto w-full overflow-hidden rounded-md border p-2 shadow-md md:w-2/3">
                   <img
                     src={activity.image}
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div className="mt-8 inline-block flex-col">
+                <div className="my-4 block gap-4 md:flex">
                   {activity.hashtags.map((hashtag: string, index: number) => (
                     <div
-                      className="hashtag mb-2 flex h-8 w-auto items-center rounded-full p-4"
+                      className="hashtag mb-2 inline-flex h-8 w-auto items-center rounded-full p-4"
                       key={index}
                     >
                       <p className="whitespace-nowrap text-stone-800">

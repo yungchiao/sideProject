@@ -10,7 +10,6 @@ interface UserProfileProps {
   onSelectUser: (email: string) => void;
   className?: string;
 }
-
 const UserProfile: React.FC<
   UserProfileProps & {
     isVisible: boolean;
