@@ -42,8 +42,8 @@ const Carousal: React.FC = () => {
 
   return (
     <div>
-      <div className="flex h-auto cursor-pointer  items-center overflow-x-hidden sm:gap-6  md:justify-center md:gap-20   lg:justify-between">
-        <button className=" h-auto  w-1/3 " onClick={handlePrev}>
+      <div className="flex h-auto cursor-pointer  items-center justify-center overflow-x-hidden  sm:gap-3 md:gap-12   lg:justify-between">
+        <button className=" h-auto  w-1/4 " onClick={handlePrev}>
           <img src="/left.png" className="h-full w-full" />
         </button>
 
@@ -67,7 +67,7 @@ const Carousal: React.FC = () => {
           ))}
         </Link>
 
-        <button className=" h-auto w-1/3 " onClick={handleNext}>
+        <button className=" h-auto w-1/4 " onClick={handleNext}>
           <img src="/right.png" className="h-full w-full" />
         </button>
       </div>

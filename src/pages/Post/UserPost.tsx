@@ -164,7 +164,6 @@ const UserPost: React.FC = observer(() => {
                   checked={selectedOption === "Cloudy"}
                   onChange={handleRadioChange}
                 />
-
                 <label>Cloudy</label>
               </div>
             </div>

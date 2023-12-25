@@ -98,11 +98,11 @@ const Detail: React.FC<DetailProps> = ({
             <p className="mb-4 h-52 w-full overflow-auto rounded-md border p-4 text-sm leading-8 lg:h-[240px]">
               {selectedAdmin.content}
             </p>
-            <div className="my-4 block gap-4 md:flex ">
+            <div className="my-4 block md:flex md:gap-4 ">
               {selectedAdmin.hashtags &&
                 Array.isArray(selectedAdmin.hashtags) &&
                 selectedAdmin.hashtags.map((hashtag: string, index: number) => (
-                  <div className="hashtag mb-2 inline-flex h-8  items-center rounded-full p-4">
+                  <div className="hashtag mb-2 mr-2 inline-flex  h-8 items-center rounded-full p-4">
                     <p key={index} className="whitespace-nowrap text-stone-800">
                       # {hashtag}
                     </p>

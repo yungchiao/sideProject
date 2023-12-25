@@ -111,7 +111,7 @@ const Home: React.FC = observer(() => {
         <HeroHeader />
       </div>
       <div className="w-full bg-white bg-[url('/lat.png')] bg-contain py-10  md:bg-no-repeat">
-        <div className="mb-30 tranition mx-auto flex h-auto  justify-center duration-300 hover:scale-105 sm:px-4  md:px-10">
+        <div className="mb-30 tranition mx-auto flex h-auto  justify-center duration-300 hover:scale-105 sm:px-4  md:px-20">
           <Carousal />
         </div>
       </div>

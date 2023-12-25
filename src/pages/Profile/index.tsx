@@ -91,15 +91,15 @@ const Profile: React.FC = observer(() => {
     setActiveTab(tabKey);
   };
   return (
-    <div className="flex h-[100vh] pt-20">
-      <div className=" w-1/3">
+    <div className="block h-[100vh] bg-white pt-20 md:flex">
+      <div className="h-1/3 w-full object-cover md:h-auto md:w-1/3">
         <img src="/profile.jpg" className="h-full w-full object-cover " />
       </div>
-      <div className="flex w-2/3 items-center justify-center bg-white">
+      <div className="flex w-full items-center justify-center bg-white pt-0 md:w-2/3 ">
         <div>
           <Card className="w-[400px]">
-            <div className="mb-6 rounded-lg p-4">
-              <div className="mb-6 flex  justify-center">
+            <div className="mb-6 rounded-lg p-12 md:p-4">
+              <div className="mb-6 flex justify-center">
                 <button
                   className={`mt-4 px-2 py-2 ${
                     activeTab === "login"
