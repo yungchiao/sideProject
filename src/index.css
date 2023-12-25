@@ -172,3 +172,7 @@ body {
 .rotate-image {
   transform: rotate(10deg);
 }
+
+input[type="radio"] {
+  margin-right: 10px;
+}

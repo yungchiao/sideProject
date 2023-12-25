@@ -92,7 +92,7 @@ const UserPost: React.FC = observer(() => {
   return (
     <div>
       {appStore.newUser ? (
-        <div className="m-auto  w-3/4  p-10 pb-28 pt-40">
+        <div className=" mx-auto w-3/4  pb-28 pt-40">
           <select
             aria-label="Select Activity Name"
             value={activityName}
@@ -134,34 +134,40 @@ const UserPost: React.FC = observer(() => {
           >
             <p className="text-stone-800">更多 #hashtag</p>
           </Button>
-          <form className="my-4 ">
-            <label className="mr-4 ">
-              <input
-                type="radio"
-                value="Sunny"
-                checked={selectedOption === "Sunny"}
-                onChange={handleRadioChange}
-              />
-              Sunny
-            </label>
-            <label className="mr-4 ">
-              <input
-                type="radio"
-                value="Rainy"
-                checked={selectedOption === "Rainy"}
-                onChange={handleRadioChange}
-              />
-              Rainy
-            </label>
-            <label className="mr-4 ">
-              <input
-                type="radio"
-                value="Cloudy"
-                checked={selectedOption === "Cloudy"}
-                onChange={handleRadioChange}
-              />
-              Cloudy
-            </label>
+          <form className="my-4">
+            <div className="flex">
+              <div className="whitespace-nowrap">
+                <label className="mr-4 ">
+                  <input
+                    type="radio"
+                    value="Sunny"
+                    checked={selectedOption === "Sunny"}
+                    onChange={handleRadioChange}
+                  />
+                  Sunny
+                </label>
+              </div>
+              <div className="whitespace-nowrap">
+                <input
+                  type="radio"
+                  value="Rainy"
+                  checked={selectedOption === "Rainy"}
+                  onChange={handleRadioChange}
+                />
+
+                <label className="mr-4 ">Rainy</label>
+              </div>
+              <div className=" whitespace-nowrap">
+                <input
+                  type="radio"
+                  value="Cloudy"
+                  checked={selectedOption === "Cloudy"}
+                  onChange={handleRadioChange}
+                />
+
+                <label>Cloudy</label>
+              </div>
+            </div>
           </form>
           <div className="container my-4 mt-2 flex">
             <input
@@ -201,7 +207,7 @@ const UserPost: React.FC = observer(() => {
             disableAnimation
             disableAutosize
             classNames={{
-              base: "w-4/5 ",
+              base: "w-full ",
               input: "resize-y min-h-[180px] max-h-[200px]",
             }}
             onChange={handleContent}

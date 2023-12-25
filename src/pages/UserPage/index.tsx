@@ -141,8 +141,8 @@ const UserPage: React.FC = observer(() => {
   return (
     <div>
       {appStore.newUser ? (
-        <div className="relative ">
-          <div className=" mx-auto mt-4  flex  flex-wrap justify-center pt-28 text-center">
+        <div className="relative">
+          <div className="mx-auto mt-4 flex flex-wrap justify-center pt-28 text-center">
             <div className=" relative">
               <div className="relative">
                 {isAvatarLoading && (
@@ -162,7 +162,7 @@ const UserPage: React.FC = observer(() => {
                   />
                 )}
                 <button
-                  className="absolute  bottom-5 right-24 h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow"
+                  className="absolute  bottom-5 right-[132px] h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow md:right-36"
                   onClick={handleTriggerChangeAvatar}
                 >
                   <svg
@@ -180,14 +180,12 @@ const UserPage: React.FC = observer(() => {
                     />
                   </svg>
                 </button>
-
                 <div className="flex justify-end">
                   {isChangeAvatar && (
-                    <div className="  absolute right-[-10px] top-[80px]  h-auto  w-24 justify-center rounded-md    bg-white py-1">
+                    <div className="absolute right-[32px] top-[100px] h-auto  w-24  justify-center rounded-md bg-white py-1 ">
                       <Link to="/paint" className="text-brown">
                         繪製頭貼
                       </Link>
-
                       <div className="container mx-auto mt-2">
                         <input
                           type="file"
@@ -217,24 +215,26 @@ const UserPage: React.FC = observer(() => {
                 </p>
               </button>
               {isChangeName && (
-                <div className="my-4 flex items-center justify-center gap-4">
-                  <input
-                    maxLength={20}
-                    className=" flex w-40 justify-center rounded-md border bg-white p-2 "
-                    value={userName}
-                    onChange={nameChange}
-                  />
-                  <Button
-                    onClick={handleSubmit}
-                    isDisabled={userName.trim().length === 0}
-                  >
-                    完成
-                  </Button>
+                <div className="my-4 ">
+                  <div className="flex items-center justify-center gap-4">
+                    <input
+                      maxLength={20}
+                      className=" flex w-40 justify-center rounded-md border bg-white p-2 "
+                      value={userName}
+                      onChange={nameChange}
+                    />
+                    <Button
+                      onClick={handleSubmit}
+                      isDisabled={userName.trim().length === 0}
+                    >
+                      完成
+                    </Button>
+                  </div>
                   {isNameLoading && (
-                    <div className="flex items-center gap-4">
+                    <div className="mt-6 flex items-center justify-center gap-4">
                       <img
                         src="./gravity-logo.png"
-                        className="spin-slow relative mx-auto  flex h-[40px] w-[40px] object-cover"
+                        className="spin-slow relative flex h-[40px] w-[40px] object-cover"
                       />
                       <p className="text-xs">更新中...</p>
                     </div>
@@ -278,7 +278,7 @@ const UserPage: React.FC = observer(() => {
             </div>
           </div>
 
-          <div className="mx-auto mb-6   rounded-lg  p-4">
+          <div className="mx-auto mb-6 rounded-lg p-4">
             <div className="flex justify-center ">
               <button
                 className={`px-4 py-2 ${
@@ -307,7 +307,7 @@ const UserPage: React.FC = observer(() => {
             </div>
             {activeTab === "post" && (
               <div className="flex justify-center ">
-                <div className="mt-6 w-4/5 rounded-xl bg-white p-4 lg:w-1/2">
+                <div className="mt-6 w-4/5 p-4 lg:w-1/2">
                   {appStore.userActivities.length > 0 ? (
                     <div>
                       {appStore.userActivities.map((activity) => (
@@ -319,7 +319,7 @@ const UserPage: React.FC = observer(() => {
                       ))}
                     </div>
                   ) : (
-                    <div className="mx-40 justify-center rounded-md border p-4 text-center">
+                    <div className=" justify-center rounded-md border p-4 text-center">
                       <h1 className="mb-4  items-center text-xl">
                         尚未分享文章!
                       </h1>

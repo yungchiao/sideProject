@@ -276,7 +276,7 @@ const Cart: React.FC = observer(() => {
               )}
             </>
           ) : (
-            <div className="mx-10 my-6 justify-center  rounded-md border p-4 text-center md:mx-40">
+            <div className="mx-10 my-6 justify-center rounded-md border p-4 text-center md:mx-40">
               <h1 className="mb-4 items-center whitespace-nowrap text-xl">
                 目前購物車為空
               </h1>

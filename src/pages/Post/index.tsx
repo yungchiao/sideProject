@@ -28,7 +28,6 @@ const Activity: React.FC = observer(() => {
             return { id: doc.id, ...data, avatar: avatarUrl };
           }),
         );
-
         if (appStore.newUser && appStore.newUser.following) {
           updatedActivities = updatedActivities.filter(
             (activity) =>
@@ -107,11 +106,11 @@ const Activity: React.FC = observer(() => {
             </div>
           </div>
         </div>
-        <div className="mx-6 mt-40 inline w-full justify-center rounded-xl bg-white px-8 shadow-lg md:mx-16 lg:ml-[550px] lg:mt-0 lg:w-1/2">
+        <div className="mx-6 mt-40 flex w-4/5 justify-center rounded-xl bg-white  shadow-lg md:mx-16 lg:ml-[550px] lg:mt-0 lg:w-1/2">
           {isLoading && (
             <div className="h-screen-bg flex items-center justify-center text-center">
               <div className="block rounded-md px-40 py-6">
-                <div className="spin-slow flex h-[150px] w-[150px] justify-center ">
+                <div className="spin-slow flex h-[90px] w-[90px] justify-center md:h-[150px] md:w-[150px] ">
                   <img
                     src="./gravity-logo.png"
                     className="h-full w-full object-cover"
@@ -124,15 +123,17 @@ const Activity: React.FC = observer(() => {
           {!isLoading && (
             <>
               {activitiesWithAvatar.length > 0 ? (
-                <div className="pt-4">
+                <div className="">
                   {activitiesWithAvatar.map((activity) => (
                     <ActivityCard key={activity.postId} activity={activity} />
                   ))}
                 </div>
               ) : (
-                <div className="flex h-[900px] items-center justify-center  text-center">
-                  <div className="block rounded-md border px-40 py-6">
-                    <h1 className="my-4 text-3xl">追蹤好友查看更多貼文！</h1>
+                <div className="flex h-[200px] items-center justify-center text-center  md:h-[900px]">
+                  <div className="block rounded-md border px-3 py-6">
+                    <h1 className="my-4 whitespace-nowrap text-xl md:text-3xl">
+                      追蹤好友查看更多貼文！
+                    </h1>
                   </div>
                 </div>
               )}

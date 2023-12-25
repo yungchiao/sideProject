@@ -59,8 +59,11 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
       }
     };
     return (
-      <div key={activity.postId} className="px-[4px] pt-6 ">
-        <div className=" mb-4 flex items-center gap-2  px-2 pb-2">
+      <div
+        key={activity.postId}
+        className="rounded-xl bg-white pb-4 pl-4 pr-8 pt-6"
+      >
+        <div className=" flex items-center gap-2 px-2   pb-4">
           <img src={avatar} className="h-10 w-10 rounded-full object-cover" />
           <p className="text-lg">{activity.userName}</p>
         </div>
