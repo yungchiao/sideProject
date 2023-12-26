@@ -162,7 +162,7 @@ const UserPage: React.FC = observer(() => {
                   />
                 )}
                 <button
-                  className="absolute  bottom-5 right-[132px] h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow md:right-36"
+                  className="absolute  bottom-5 right-[100px] h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow md:right-24"
                   onClick={handleTriggerChangeAvatar}
                 >
                   <svg
@@ -182,11 +182,11 @@ const UserPage: React.FC = observer(() => {
                 </button>
                 <div className="flex justify-end">
                   {isChangeAvatar && (
-                    <div className="absolute right-[32px] top-[100px] h-auto  w-24  justify-center rounded-md bg-white py-1 ">
+                    <div className="absolute right-[-1px] top-[90px] h-auto  w-24  justify-center rounded-md bg-white py-1 transition duration-200 hover:bg-stone-100">
                       <Link to="/paint" className="text-brown">
                         繪製頭貼
                       </Link>
-                      <div className="container mx-auto mt-2">
+                      <div className="container mx-auto mt-2 ">
                         <input
                           type="file"
                           id="file-upload"
@@ -195,7 +195,7 @@ const UserPage: React.FC = observer(() => {
                         />
                         <label
                           htmlFor="file-upload"
-                          className=" cursor-pointer rounded bg-brown px-4 py-2 font-bold text-white "
+                          className=" cursor-pointer rounded bg-brown px-4 py-2 font-bold text-white transition duration-200 hover:bg-darkBrown"
                         >
                           上傳檔案
                         </label>
