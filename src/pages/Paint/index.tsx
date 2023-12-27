@@ -16,49 +16,44 @@ const Paint: React.FC = observer(() => {
   const [history, setHistory] = useState<number[][]>([]);
 
   useEffect(() => {
-    const sketch = (p: p5) => {
-      let bg: p5.Image | undefined;
-      p.preload = () => {
-        bg = p.loadImage(
-          "/bg.jpg",
-          (img) => {
-            console.log("Image loaded successfully");
-          },
-          (err) => {
-            console.error("Failed to load image:", err);
-          },
-        );
-      };
+    const sketch = (p: any) => {
+      let canvas;
 
       p.setup = () => {
-        const canvas = p.createCanvas(500, 500);
-        canvasRef.current = canvas.elt;
-        if (bg) {
-          p.image(bg, 0, 0, p.width, p.height);
+        if (sketchRef.current) {
+          const canvasWidth = Math.min(sketchRef.current.clientWidth, 500);
+          canvas = p.createCanvas(canvasWidth, canvasWidth);
+          if (canvas) {
+            canvas.parent(sketchRef.current);
+          }
+          p.background(255);
+          p.noLoop();
         }
-        const borderWidth = 1;
-        p.stroke(0);
-        p.strokeWeight(borderWidth);
-        p.rect(
-          borderWidth / 2,
-          borderWidth / 2,
-          p.width - borderWidth,
-          p.height - borderWidth,
-        );
       };
 
       p.mouseDragged = () => {
-        drawLine(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
-      };
-
-      p.mousePressed = () => {
-        drawLine(p.mouseX, p.mouseY, p.mouseX, p.mouseY);
+        if (p.mouseX && p.mouseY && p.pmouseX && p.pmouseY) {
+          p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
+        }
       };
     };
-
     if (sketchRef.current && !p5Instance) {
       setP5Instance(new p5(sketch, sketchRef.current));
     }
+    const handleResize = () => {
+      if (sketchRef.current && p5Instance) {
+        const newWidth = Math.min(sketchRef.current.clientWidth, 500);
+        p5Instance.resizeCanvas(newWidth, newWidth);
+        p5Instance.background(255);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (p5Instance) {
+        p5Instance.remove();
+      }
+    };
   }, []);
 
   const saveCanvasState = () => {
@@ -212,7 +207,7 @@ const Paint: React.FC = observer(() => {
             </svg>
           </Button>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-4 border-b-2 pt-4">
+        <div className="my-6 flex flex-nowrap items-center justify-center gap-1 border-b-2 p-0 md:gap-4 md:pt-4">
           <button onClick={() => setColor("black")}>
             <div className="w=[100px] flex h-[80px] justify-center transition duration-200 hover:scale-110">
               <img
@@ -244,7 +239,10 @@ const Paint: React.FC = observer(() => {
           </button>
         </div>
       </div>
-      <div ref={sketchRef} className="mb-10 flex justify-center"></div>
+      <div
+        ref={sketchRef}
+        className="mx-20px mb-6 flex max-w-full justify-center p-4"
+      ></div>
       <div className="image-selection flex justify-center gap-4">
         {imageList.map((img, index) => (
           <div className="mb-3">

@@ -26,7 +26,7 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
                 />
               </div>
             </div>
-            <div className=" mt-[330px]  flex justify-center">
+            <div className="mt-[330px]  flex justify-center">
               <h3
                 onClick={() => handleAdminClick(admin)}
                 className="inline-block cursor-pointer text-lg font-bold text-brown"

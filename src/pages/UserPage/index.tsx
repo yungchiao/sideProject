@@ -331,7 +331,6 @@ const UserPage: React.FC = observer(() => {
                 </div>
               </div>
             )}
-
             {activeTab === "ticket" && (
               <div>
                 <Card>
@@ -341,7 +340,6 @@ const UserPage: React.FC = observer(() => {
                 </Card>
               </div>
             )}
-
             {activeTab === "like" && (
               <div>
                 <Card>
