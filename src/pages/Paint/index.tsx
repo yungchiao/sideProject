@@ -169,7 +169,7 @@ const Paint: React.FC = observer(() => {
 
   return (
     <>
-      <div className="m-auto mb-5 w-3/4 p-4 pt-28">
+      <div className="m-auto w-3/4  pt-28">
         <div className="flex justify-center gap-2">
           {isEraser ? (
             <Button
