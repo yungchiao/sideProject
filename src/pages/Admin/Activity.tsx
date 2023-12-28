@@ -229,48 +229,52 @@ const Activity: React.FC = observer(() => {
             <h1 className="mb-5 flex justify-center text-xl font-bold text-brown">
               新增活動
             </h1>
-            <Input
-              maxLength={10}
-              label="活動名稱"
-              value={activityName}
-              onChange={handleActivityNameChange}
-            />
-            <div className="mt-4 ">
+            <div className="flex items-center">
+              <p className="mr-2 whitespace-nowrap">活動名稱 </p>
+              <Input
+                maxLength={10}
+                value={activityName}
+                onChange={handleActivityNameChange}
+              />
+            </div>
+            <div className="mt-4 flex items-center">
+              <p className="mr-2 whitespace-nowrap">活動價格 </p>
               <Input
                 type="number"
                 maxLength={5}
-                label="活動價格"
                 onChange={handlePriceChange}
                 value={price.toString()}
               />
             </div>
-            <div className="mt-4">
-              <div className="my-4 ">
+            <div className="my-6 mt-8">
+              <div className="mb-2 ">
                 <p>{formatDateRange(startDate, endDate)}</p>
               </div>
-              <div className="mb-4 flex gap-4">
-                <DatePicker
-                  selected={startDate}
-                  onChange={(date) => date && setStartDate(date)}
-                  showTimeSelect
-                  selectsStart
-                  minTime={setHours(setMinutes(new Date(), 0), 24)}
-                  maxTime={setHours(setMinutes(new Date(), 59), 23)}
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  className=" w-[230px]  rounded-md border-2 border-green px-2 "
-                />
-                <p className="text-2xl">-</p>
-                <DatePicker
-                  selected={endDate}
-                  onChange={(date) => date && setEndDate(date)}
-                  showTimeSelect
-                  selectsEnd
-                  minDate={startDate}
-                  minTime={setHours(setMinutes(new Date(), 0), 24)}
-                  maxTime={setHours(setMinutes(new Date(), 59), 23)}
-                  dateFormat="MMMM d, yyyy h:mm aa"
-                  className=" w-[230px]  rounded-md border-2 border-green px-2"
-                />
+              <div className="z-30 flex justify-start ">
+                <div className="mb-4 text-center">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date) => date && setStartDate(date)}
+                    showTimeSelect
+                    selectsStart
+                    minTime={setHours(setMinutes(new Date(), 0), 24)}
+                    maxTime={setHours(setMinutes(new Date(), 59), 23)}
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    className=" z-30  w-[230px] rounded-md border-2 border-brown bg-white px-2"
+                  />
+                  <p className="text-lg">|</p>
+                  <DatePicker
+                    selected={endDate}
+                    onChange={(date) => date && setEndDate(date)}
+                    showTimeSelect
+                    selectsEnd
+                    minDate={startDate}
+                    minTime={setHours(setMinutes(new Date(), 0), 24)}
+                    maxTime={setHours(setMinutes(new Date(), 59), 23)}
+                    dateFormat="MMMM d, yyyy h:mm aa"
+                    className=" z-30  w-[230px] rounded-md border-2 border-brown bg-white px-2"
+                  />
+                </div>
               </div>
             </div>
             {Array.from({ length: items }, (_, i) => (
@@ -312,7 +316,7 @@ const Activity: React.FC = observer(() => {
               searchLocation={searchLocation}
               onPositionChange={handlePositionChange}
             />
-            <div className="grid w-full grid-cols-12 gap-4">
+            <div className="gp-4 grid w-full grid-cols-12">
               <div className="my-4">
                 <p className=" mb-2 text-xs">
                   Latitude: {position.latitude?.toString()}
@@ -373,7 +377,7 @@ const Activity: React.FC = observer(() => {
               value={content}
               onChange={handleContent}
               classNames={{
-                base: "w-4/5 ",
+                base: "w-full",
                 input: "resize-y min-h-[134px]",
               }}
             />
@@ -393,7 +397,7 @@ const Activity: React.FC = observer(() => {
           </div>
           <div className=" mt-2 h-[1140px] w-2/5 overflow-auto rounded-lg border bg-white p-10">
             <h1 className="flex justify-center text-xl font-bold text-brown">
-              已上架活動列表
+              活動列表
             </h1>
             <Form
               onActivitySelect={handleSelectedActivity}

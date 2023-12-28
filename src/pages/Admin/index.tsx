@@ -12,7 +12,10 @@ export const storage = getStorage(appStore.app);
 
 const Admin: React.FC = observer(() => {
   const [activeTab, setActiveTab] = useState("activity");
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSideBar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
   const handleTabChange = (tabKey: any) => {
     setActiveTab(tabKey);
   };

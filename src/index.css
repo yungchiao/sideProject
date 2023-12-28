@@ -176,3 +176,8 @@ body {
 input[type="radio"] {
   margin-right: 10px;
 }
+
+.react-datepicker__month {
+  z-index: 50;
+  background-color: white;
+}

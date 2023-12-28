@@ -146,8 +146,12 @@ const AdminAbout: React.FC = observer(() => {
   return (
     <>
       {isLoading ? (
-        <div className="loading-container">
-          <img src="/loading.gif" alt="Loading..." className="h-full w-full " />
+        <div className="mt-6 flex gap-2">
+          <img
+            src="./gravity-logo.png"
+            className="spin-slow relative mx-auto flex h-[40px] w-[40px] object-cover"
+          />
+          <p className="flex items-center">載入中...</p>
         </div>
       ) : (
         <>
