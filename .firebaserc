@@ -1,6 +1,8 @@
 {
   "projects": {
-    "staging": "gravity-fd062"
+    "staging": "gravity-backup",
+    "hosting": "gravity-fd062",
+    "default": "gravity-fd062"
   },
   "targets": {},
   "etags": {}
