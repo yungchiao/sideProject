@@ -223,7 +223,7 @@ const Activity: React.FC = observer(() => {
   const variant = "underlined";
   return (
     <>
-      <div className="flex">
+      <div className="flex ">
         <div className=" mx-[50px] flex  w-full justify-center gap-4   pt-28">
           <div className="mt-2 h-[1140px] w-3/5 overflow-auto rounded-lg border bg-white p-10">
             <h1 className="mb-5 flex justify-center text-xl font-bold text-brown">

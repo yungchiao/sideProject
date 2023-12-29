@@ -16,44 +16,30 @@ const Paint: React.FC = observer(() => {
   const [history, setHistory] = useState<number[][]>([]);
 
   useEffect(() => {
-    const sketch = (p: any) => {
-      let canvas;
+    const sketch = (p: p5) => {
+      let bg: p5.Image | undefined;
 
       p.setup = () => {
-        if (sketchRef.current) {
-          const canvasWidth = Math.min(sketchRef.current.clientWidth, 500);
-          canvas = p.createCanvas(canvasWidth, canvasWidth);
-          if (canvas) {
-            canvas.parent(sketchRef.current);
-          }
-          p.background(255);
-          p.noLoop();
-        }
+        const canvas = p.createCanvas(500, 500);
+        canvasRef.current = canvas.elt;
+        p.background(255);
+        const borderWidth = 1;
+        p.stroke(0);
+        p.strokeWeight(borderWidth);
       };
 
       p.mouseDragged = () => {
-        if (p.mouseX && p.mouseY && p.pmouseX && p.pmouseY) {
-          p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
-        }
+        drawLine(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
+      };
+
+      p.mousePressed = () => {
+        drawLine(p.mouseX, p.mouseY, p.mouseX, p.mouseY);
       };
     };
+
     if (sketchRef.current && !p5Instance) {
       setP5Instance(new p5(sketch, sketchRef.current));
     }
-    const handleResize = () => {
-      if (sketchRef.current && p5Instance) {
-        const newWidth = Math.min(sketchRef.current.clientWidth, 500);
-        p5Instance.resizeCanvas(newWidth, newWidth);
-        p5Instance.background(255);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      if (p5Instance) {
-        p5Instance.remove();
-      }
-    };
   }, []);
 
   const saveCanvasState = () => {
@@ -169,7 +155,7 @@ const Paint: React.FC = observer(() => {
 
   return (
     <>
-      <div className="m-auto w-3/4  pt-28">
+      <div className="m-auto mb-5 w-3/4 p-4 pt-28">
         <div className="flex justify-center gap-2">
           {isEraser ? (
             <Button
@@ -239,10 +225,7 @@ const Paint: React.FC = observer(() => {
           </button>
         </div>
       </div>
-      <div
-        ref={sketchRef}
-        className="mx-20px mb-6 flex max-w-full justify-center p-4"
-      ></div>
+      <div ref={sketchRef} className="mb-10 flex justify-center"></div>
       <div className="image-selection flex justify-center gap-4">
         {imageList.map((img, index) => (
           <div className="mb-3">

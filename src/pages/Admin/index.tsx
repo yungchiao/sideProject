@@ -9,13 +9,12 @@ import Activity from "./Activity";
 import AdminAbout from "./AdminAbout";
 import Checkout from "./Checkout";
 export const storage = getStorage(appStore.app);
-
-const Admin: React.FC = observer(() => {
+interface AdminProps {
+  isSidebarOpen: boolean;
+}
+const Admin: React.FC<AdminProps> = observer(({ isSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState("activity");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const toggleSideBar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+
   const handleTabChange = (tabKey: any) => {
     setActiveTab(tabKey);
   };
@@ -23,43 +22,49 @@ const Admin: React.FC = observer(() => {
     <>
       {appStore.currentUserEmail === "imadmin@gmail.com" ? (
         <>
-          <div className="flex">
-            <div className="navigation-menu">
-              <div className="grid h-[1300px] w-48 content-between bg-stone-300 px-5 pt-28">
-                <div className="">
-                  <button
-                    className={`mt-2 h-10 w-full  border-b-2 border-neutral-100 ${
-                      activeTab === "activity" ? "text-brown" : ""
-                    } `}
-                    onClick={() => handleTabChange("activity")}
-                  >
-                    活動管理
-                  </button>
-                  <button
-                    className={`mt-2 h-10 w-full  border-b-2 border-neutral-100 ${
-                      activeTab === "checkout" ? "text-brown" : ""
-                    } `}
-                    onClick={() => handleTabChange("checkout")}
-                  >
-                    訂單總覽
-                  </button>
-                  <button
-                    className={`mt-2 h-10 w-full  border-b-2 border-neutral-100 ${
-                      activeTab === "about" ? "text-brown" : ""
-                    } `}
-                    onClick={() => handleTabChange("about")}
-                  >
-                    團隊資訊
-                  </button>
-                </div>
-                <div>
-                  <div className="my-10  flex  justify-center">
+          <div className=" flex overflow-hidden">
+            <div
+              className={`navigation-menu  ${
+                isSidebarOpen ? " flex" : "hidden"
+              } xl:flex`}
+            >
+              <div>
+                <div className="grid h-[1300px] w-48 content-between bg-stone-300 px-5 pt-28">
+                  <div className="">
                     <button
-                      className="mt-2 h-10 w-full  border-b-2 border-neutral-100 pb-8 "
-                      onClick={appStore.logout}
+                      className={`mt-2 h-10 w-full  border-b-2 border-neutral-100 ${
+                        activeTab === "activity" ? "text-brown" : ""
+                      } `}
+                      onClick={() => handleTabChange("activity")}
                     >
-                      <p className="text-stone-800 hover:text-brown">登出</p>
+                      活動管理
                     </button>
+                    <button
+                      className={`mt-2 h-10 w-full  border-b-2 border-neutral-100 ${
+                        activeTab === "checkout" ? "text-brown" : ""
+                      } `}
+                      onClick={() => handleTabChange("checkout")}
+                    >
+                      訂單總覽
+                    </button>
+                    <button
+                      className={`mt-2 h-10 w-full  border-b-2 border-neutral-100 ${
+                        activeTab === "about" ? "text-brown" : ""
+                      } `}
+                      onClick={() => handleTabChange("about")}
+                    >
+                      團隊資訊
+                    </button>
+                  </div>
+                  <div>
+                    <div className="my-10  flex  justify-center">
+                      <button
+                        className="mt-2 h-10 w-full  border-b-2 border-neutral-100 pb-8 "
+                        onClick={appStore.logout}
+                      >
+                        <p className="text-stone-800 hover:text-brown">登出</p>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

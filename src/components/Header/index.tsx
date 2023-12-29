@@ -14,8 +14,10 @@ import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
 import { Admin, CartItem } from "../../type";
 import { SearchIcon } from "./SearchIcon.tsx";
-
-const Header: React.FC = observer(() => {
+interface HeaderProps {
+  toggleSidebar: () => void;
+}
+const Header: React.FC<HeaderProps> = observer(({ toggleSidebar }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
   const auth = getAuth();
@@ -99,13 +101,16 @@ const Header: React.FC = observer(() => {
   return (
     <Navbar isBordered className="fixed top-0  z-50 border-b-2 bg-white p-6">
       <NavbarContent justify="start">
-        <NavbarBrand className="mr-4">
+        <NavbarBrand className="mr-2">
           <Link color="foreground" to="/" onClick={scrollToTop}>
-            <div className="h-10 w-10 overflow-hidden">
+            <div className="h-6 w-6 overflow-hidden object-cover xl:h-10 xl:w-10">
               <img src="/gravity-logo.png" />
             </div>
           </Link>
         </NavbarBrand>
+        <div className="xl:hidden">
+          <button onClick={toggleSidebar}>menu</button>
+        </div>
         <NavbarContent className="hidden gap-3 sm:flex">
           <NavbarItem isActive>
             <Link
