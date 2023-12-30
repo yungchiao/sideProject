@@ -225,7 +225,7 @@ const Activity: React.FC = observer(() => {
     <>
       <div className="flex">
         <div className="mx-[50px] block w-full justify-center gap-4 pt-28 sm:mx-[20px] lg:flex">
-          <div className=" shadow-inner-bottom mt-2  h-[200px] w-full overflow-auto rounded-lg border bg-white p-4 md:h-[300px] lg:h-[1140px] lg:w-2/5 lg:p-10 lg:shadow-none">
+          <div className=" mt-2  h-[200px] w-full overflow-auto rounded-lg border bg-white p-6 md:h-[300px] lg:h-[1140px] lg:w-2/5 lg:px-10 lg:shadow-none">
             <h1 className="flex justify-center text-xl font-bold text-brown">
               活動列表
             </h1>
@@ -234,7 +234,7 @@ const Activity: React.FC = observer(() => {
               onSearchLocationChange={handleSearchLocationChange}
             />
           </div>
-          <div className="mt-2 h-[1140px] w-full overflow-auto rounded-lg border bg-white p-6 lg:w-3/5 lg:p-10">
+          <div className="mt-2 h-[1140px] w-full overflow-auto rounded-lg border bg-white p-6 lg:w-3/5 lg:px-10">
             <h1 className="mb-2 flex justify-center text-xl font-bold text-brown lg:mb-5">
               新增活動
             </h1>
@@ -269,7 +269,7 @@ const Activity: React.FC = observer(() => {
                     minTime={setHours(setMinutes(new Date(), 0), 24)}
                     maxTime={setHours(setMinutes(new Date(), 59), 23)}
                     dateFormat="MMMM d, yyyy h:mm aa"
-                    className=" z-30  w-[230px] rounded-md border-2 border-brown bg-white px-2"
+                    className="z-30  w-[230px] rounded-md border-2 border-brown bg-white px-2"
                   />
                   <p className="text-lg">|</p>
                   <DatePicker
@@ -362,7 +362,7 @@ const Activity: React.FC = observer(() => {
                 />
                 <label
                   htmlFor="file-upload"
-                  className="fc-today-button  cursor-pointer rounded-lg bg-brown px-4 py-2 font-bold text-white hover:bg-darkYellow"
+                  className="fc-today-button  cursor-pointer rounded-lg bg-brown px-4 py-2 font-bold text-white transition duration-200 hover:bg-darkYellow"
                 >
                   選擇圖片
                 </label>
