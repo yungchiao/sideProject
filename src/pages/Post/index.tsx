@@ -1,9 +1,9 @@
-import { Button } from "@nextui-org/react";
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import { db } from "../../type";
 import ActivityCard from "./ActivityCard";
 import UserSearch from "./UserSearch";
@@ -154,9 +154,7 @@ const Activity: React.FC = observer(() => {
             <h1 className="mb-4 whitespace-nowrap text-xl md:text-3xl">
               登入後查看更多
             </h1>
-            <Link to="/profile">
-              <Button>登入</Button>
-            </Link>
+            <GlobalButton variant="gray" content="登入" to="/profile" />
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { Button, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import {
   Timestamp,
   collection,
@@ -10,8 +10,8 @@ import {
 } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import { ChatRoom, Message } from "../../type";
 import UserSearch from "../Post/UserSearch";
 
@@ -274,13 +274,11 @@ const AdminChat = observer(() => {
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={handleKeyDown}
                 />
-
-                <Button
-                  className=" bg-stone-800 text-white"
+                <GlobalButton
+                  variant="gray"
+                  content="傳送"
                   onClick={handleSendMessage}
-                >
-                  傳送
-                </Button>
+                />
               </div>
             </div>
           </div>
@@ -292,9 +290,11 @@ const AdminChat = observer(() => {
               只有 <span className="text-green">Admin</span> 身份可進入此頁面。
             </p>
             <div className="mt-4 flex justify-center">
-              <Button>
-                <Link to="/profile">以Admin身份登入</Link>
-              </Button>
+              <GlobalButton
+                variant="gray"
+                content="以Admin身份登入"
+                to="/profile"
+              />
             </div>
           </div>
         </div>

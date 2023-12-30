@@ -1,11 +1,10 @@
 import emailjs from "@emailjs/browser";
-import { Button } from "@nextui-org/react";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import { CartItem, CheckoutItem } from "../../type";
 
 const Cart: React.FC = observer(() => {
@@ -199,9 +198,7 @@ const Cart: React.FC = observer(() => {
                 <h1 className="mb-4 items-center whitespace-nowrap text-xl">
                   尚未購買任何票券
                 </h1>
-                <Button>
-                  <Link to="/">回首頁逛逛</Link>
-                </Button>
+                <GlobalButton variant="gray" content="回首頁逛逛" to="/" />
               </div>
             </div>
           )}
@@ -249,16 +246,18 @@ const Cart: React.FC = observer(() => {
               <div className="flex justify-center">
                 <div className=" text-center">
                   <p className="mt-4">總金額：NT$ {subtotal} 元</p>
-                  <Button className="mt-8 bg-brown">
-                    <p className="text-white" onClick={handleCheckOut}>
-                      確認付款
-                    </p>
-                  </Button>
+                  <div className="mt-8">
+                    <GlobalButton
+                      variant="brown"
+                      content="確認付款"
+                      onClick={handleCheckOut}
+                    />
+                  </div>
                 </div>
               </div>
               {showConfirmModal && (
                 <>
-                  <div className="fixed left-1/2 top-1/2 z-40 grid h-[300px] w-1/4 -translate-x-1/2 -translate-y-1/2 transform place-content-center gap-6 rounded-lg border border-b-[20px] border-brown bg-white p-4 shadow-lg">
+                  <div className="fixed left-1/2 top-1/2 z-40 grid h-[300px] w-4/5 -translate-x-1/2 -translate-y-1/2 transform place-content-center gap-6 rounded-lg border border-b-[20px] border-brown bg-white p-4 shadow-lg md:w-1/4">
                     <div className=" flex justify-center">
                       <div>
                         <p className="mb-3">已送出訂單資訊至您的E-mail!</p>
@@ -266,12 +265,11 @@ const Cart: React.FC = observer(() => {
                       </div>
                     </div>
                     <div className=" flex justify-center gap-4">
-                      <button
+                      <GlobalButton
+                        variant="green"
+                        content="確定"
                         onClick={handleConfirm}
-                        className="whitespace-nowrap rounded-lg bg-green px-4 py-2 text-white transition duration-200 hover:bg-darkGreen"
-                      >
-                        確定
-                      </button>
+                      />
                     </div>
                   </div>
                   <div className="background-cover"></div>
@@ -284,9 +282,7 @@ const Cart: React.FC = observer(() => {
                 <h1 className="mb-4 items-center whitespace-nowrap text-xl">
                   目前購物車為空
                 </h1>
-                <Button>
-                  <Link to="/">回首頁逛逛</Link>
-                </Button>
+                <GlobalButton variant="gray" content="回首頁逛逛" to="/" />
               </div>
             </div>
           )}

@@ -5,8 +5,9 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import p5 from "p5";
 import React, { useEffect, useRef, useState } from "react";
-import { v4 } from "uuid";
 import { toast } from "react-toastify";
+import { v4 } from "uuid";
+import { GlobalButton } from "../../components/Button";
 const Paint: React.FC = observer(() => {
   const sketchRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -241,8 +242,16 @@ const Paint: React.FC = observer(() => {
         ))}
       </div>
       <div className="mt-4 flex justify-center gap-2 pb-10">
-        <Button onClick={saveDrawing}>下載作品</Button>
-        <Button onClick={saveAndUploadDrawing}>設定為頭貼</Button>
+        <GlobalButton
+          variant="brown"
+          content="下載作品"
+          onClick={saveDrawing}
+        />
+        <GlobalButton
+          variant="brown"
+          content="設定為頭貼"
+          onClick={saveAndUploadDrawing}
+        />
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 import React from "react";
+import { GlobalButton } from "../../components/Button";
 import { Admin } from "../../type";
-
 interface DetailProps {
   selectedAdmin: Admin;
   quantity: number;
@@ -127,12 +127,11 @@ const Detail: React.FC<DetailProps> = ({
                 </div>
               </div>
               <div>
-                <button
+                <GlobalButton
+                  variant="brown"
+                  content="確定報名"
                   onClick={modifiedHandleSignUp}
-                  className="rounded-md bg-brown p-2"
-                >
-                  <p className="whitespace-nowrap text-white">確定報名</p>
-                </button>
+                />
               </div>
             </div>
           </div>

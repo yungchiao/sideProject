@@ -1,4 +1,4 @@
-import { Button, Input, Textarea } from "@nextui-org/react";
+import { Input, Textarea } from "@nextui-org/react";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import Map from "../../components/Map";
 import { ActivityType } from "../../type";
 import Form from "./Form";
@@ -304,12 +305,14 @@ const Activity: React.FC = observer(() => {
                 onChange={(e) => handleHashtagChange(i, e)}
               />
             ))}
-            <Button
-              className="mb-4 border border-stone-800 bg-white"
-              onClick={addAmount}
-            >
-              <p className="text-stone-800">more #hashtag</p>
-            </Button>
+            <div className="mb-4">
+              <GlobalButton
+                variant="white"
+                content="more #hashtag"
+                onClick={addAmount}
+              />
+            </div>
+
             <div className="grid w-full grid-cols-12 gap-4">
               <Input
                 maxLength={10}
@@ -392,17 +395,12 @@ const Activity: React.FC = observer(() => {
               }}
             />
             <div className="mx-auto mt-10 flex items-center justify-center">
-              <Button
+              <GlobalButton
+                variant="green"
+                content="新增"
                 onClick={handleSubmit}
                 disabled={!isAllFieldsFilled}
-                className={`bg-green px-4 py-2 text-white hover:bg-darkGreen ${
-                  !isAllFieldsFilled
-                    ? "disabled:cursor-not-allowed disabled:bg-stone-200"
-                    : ""
-                }`}
-              >
-                <p className="text-white">新增</p>
-              </Button>
+              />
             </div>
           </div>
         </div>

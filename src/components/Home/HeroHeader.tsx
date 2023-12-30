@@ -1,9 +1,8 @@
-import { Button } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 
 const HeroHeader: React.FC = observer(() => {
   const cloudVariants = {
@@ -44,9 +43,7 @@ const HeroHeader: React.FC = observer(() => {
               <div className="none"></div>
             ) : (
               <div className="mt-10">
-                <Link color="foreground" to="/profile">
-                  <Button className="bg-green text-white">登入</Button>
-                </Link>
+                <GlobalButton variant="green" content="登入" to="/profile" />
               </div>
             )}
             <div className=" mx-auto mt-10 flex w-4/5  justify-center rounded-md border-2 border-dashed border-stone-400 transition duration-200 hover:scale-105 hover:shadow-lg  md:pb-0">

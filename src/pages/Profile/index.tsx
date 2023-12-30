@@ -1,4 +1,4 @@
-import { Button, Card, Input, Link } from "@nextui-org/react";
+import { Card, Input, Link } from "@nextui-org/react";
 import { FirebaseError, initializeApp } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
@@ -11,6 +11,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 const app = initializeApp(appStore.config);
 export const storage = getStorage(app);
 const Profile: React.FC = observer(() => {
@@ -143,13 +144,11 @@ const Profile: React.FC = observer(() => {
                     </Link>
                   </p>
                   <div className="flex justify-end gap-2">
-                    <Button
-                      fullWidth
-                      className="bg-green"
+                    <GlobalButton
+                      variant="green"
+                      content="登入"
                       onClick={handleLogin}
-                    >
-                      <p className="text-white">登入</p>
-                    </Button>
+                    />
                   </div>
                 </form>
               )}
@@ -210,13 +209,11 @@ const Profile: React.FC = observer(() => {
                     </Link>
                   </p>
                   <div className="flex justify-end gap-2">
-                    <Button
-                      fullWidth
-                      className=" bg-green"
+                    <GlobalButton
+                      variant="green"
+                      content="註冊"
                       onClick={() => handleRegister(email, password)}
-                    >
-                      <p className="text-white">註冊</p>
-                    </Button>
+                    />
                   </div>
                 </form>
               )}

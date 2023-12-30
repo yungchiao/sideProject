@@ -1,11 +1,10 @@
-import { Button } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
 import { Admin, CartItem, LikeItem } from "../../type";
+import { GlobalButton } from "../../components/Button";
 
 const Like: React.FC = observer(() => {
   const [likeItems, setLikeItems] = useState<LikeItem[]>([]);
@@ -164,9 +163,7 @@ const Like: React.FC = observer(() => {
               <h1 className="mb-4 items-center whitespace-nowrap text-xl">
                 尚未收藏活動!
               </h1>
-              <Button>
-                <Link to="/">回首頁逛逛</Link>
-              </Button>
+              <GlobalButton variant="gray" content="回首頁逛逛" to="/" />
             </div>
           </div>
         )}

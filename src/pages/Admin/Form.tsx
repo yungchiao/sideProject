@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import { ActivityType } from "../../type";
-
 interface FormProps {
   onActivitySelect: (activity: ActivityType) => void;
   onSearchLocationChange: (location: string) => void;
@@ -93,18 +93,16 @@ const Form: React.FC<FormProps> = ({
               <p>確定要刪除嗎？</p>
             </div>
             <div className=" flex justify-center gap-4">
-              <button
+              <GlobalButton
+                variant="green"
+                content="確定"
                 onClick={handleConfirmDelete}
-                className="whitespace-nowrap rounded-lg bg-green px-4 py-2 text-white transition duration-200 hover:bg-darkGreen"
-              >
-                確定
-              </button>
-              <button
+              />
+              <GlobalButton
+                variant="yellow"
+                content="取消"
                 onClick={handleCancelDelete}
-                className="whitespace-nowrap rounded-lg bg-yellow px-4 py-2 text-white transition duration-200 hover:bg-darkYellow"
-              >
-                取消
-              </button>
+              />
             </div>
           </div>
           <div className="background-cover"></div>

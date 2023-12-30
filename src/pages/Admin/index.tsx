@@ -1,13 +1,12 @@
-import { Button } from "@nextui-org/react";
 import { getStorage } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
 import Activity from "./Activity";
 import AdminAbout from "./AdminAbout";
 import Checkout from "./Checkout";
+import { GlobalButton } from "../../components/Button";
 export const storage = getStorage(appStore.app);
 interface AdminProps {
   isSidebarOpen: boolean;
@@ -100,9 +99,11 @@ const Admin: React.FC<AdminProps> = observer(
                 身份可進入此頁面。
               </p>
               <div className="mt-4 flex justify-center">
-                <Button>
-                  <Link to="/profile">以Admin身份登入</Link>
-                </Button>
+                <GlobalButton
+                  variant="gray"
+                  content="以Admin身份登入"
+                  to="/profile"
+                />
               </div>
             </div>
           </div>

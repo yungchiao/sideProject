@@ -1,11 +1,10 @@
-import { Button, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import { Timestamp, doc, onSnapshot, runTransaction } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import { Message } from "../../type";
-
 const Chat = observer(() => {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -181,18 +180,14 @@ const Chat = observer(() => {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            <Button className="bg-stone-800 text-white" onClick={sendMessage}>
-              傳送
-            </Button>
+            <GlobalButton variant="gray" content="傳送" onClick={sendMessage} />
           </div>
         </div>
       ) : (
         <div className="flex h-screen w-full items-center justify-center text-center">
           <div className=" rounded-md border px-10 py-6 md:px-40">
             <h1 className="mb-4 text-xl md:text-3xl">登入後開始聊聊</h1>
-            <Link to="/profile">
-              <Button>登入</Button>
-            </Link>
+            <GlobalButton variant="gray" content="登入" to="/profile" />
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { Button, Input, Textarea } from "@nextui-org/react";
+import { Input, Textarea } from "@nextui-org/react";
 import { collection, doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 export const storage = getStorage(appStore.app);
 const AdminAbout: React.FC = observer(() => {
   useEffect(() => {
@@ -275,12 +276,11 @@ const AdminAbout: React.FC = observer(() => {
             </div>
             <div className=" mx-auto mt-6 grid items-center justify-center text-center">
               <div>
-                <Button
+                <GlobalButton
+                  variant="green"
+                  content="更新"
                   onClick={handleSubmit}
-                  className="min-w-[80px] bg-green hover:bg-darkGreen"
-                >
-                  <p className="text-white">更新</p>
-                </Button>
+                />
                 {isUpdateLoading && (
                   <div className="mt-6 flex justify-center gap-2">
                     <img
