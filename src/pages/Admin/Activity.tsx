@@ -224,9 +224,18 @@ const Activity: React.FC = observer(() => {
   return (
     <>
       <div className="flex">
-        <div className=" mx-[50px] flex  w-full justify-center gap-4   pt-28">
-          <div className="mt-2 h-[1140px] w-3/5 overflow-auto rounded-lg border bg-white p-10">
-            <h1 className="mb-5 flex justify-center text-xl font-bold text-brown">
+        <div className="mx-[50px] block w-full justify-center gap-4 pt-28 sm:mx-[20px] lg:flex">
+          <div className=" shadow-inner-bottom mt-2  h-[200px] w-full overflow-auto rounded-lg border bg-white p-4 md:h-[300px] lg:h-[1140px] lg:w-2/5 lg:p-10 lg:shadow-none">
+            <h1 className="flex justify-center text-xl font-bold text-brown">
+              活動列表
+            </h1>
+            <Form
+              onActivitySelect={handleSelectedActivity}
+              onSearchLocationChange={handleSearchLocationChange}
+            />
+          </div>
+          <div className="mt-2 h-[1140px] w-full overflow-auto rounded-lg border bg-white p-6 lg:w-3/5 lg:p-10">
+            <h1 className="mb-2 flex justify-center text-xl font-bold text-brown lg:mb-5">
               新增活動
             </h1>
             <div className="flex items-center">
@@ -394,15 +403,6 @@ const Activity: React.FC = observer(() => {
                 <p className="text-white">新增</p>
               </Button>
             </div>
-          </div>
-          <div className=" mt-2 h-[1140px] w-2/5 overflow-auto rounded-lg border bg-white p-10">
-            <h1 className="flex justify-center text-xl font-bold text-brown">
-              活動列表
-            </h1>
-            <Form
-              onActivitySelect={handleSelectedActivity}
-              onSearchLocationChange={handleSearchLocationChange}
-            />
           </div>
         </div>
       </div>

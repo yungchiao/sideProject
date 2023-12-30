@@ -222,6 +222,24 @@ const Profile: React.FC = observer(() => {
               )}
             </div>
           </Card>
+          <div className="flex rounded-lg border p-3">
+            <p className="border-r pr-3 text-sm text-stone-500">
+              Admin端
+              <br />
+              帳號：imadmin@gmail.com
+              <br />
+              密碼：88888888
+              <br />
+            </p>
+
+            <p className="pl-3 text-sm text-stone-500">
+              使用者測試
+              <br />
+              帳號：test001@gmail.com
+              <br />
+              密碼：123456
+            </p>
+          </div>
         </div>
       </div>
     </div>

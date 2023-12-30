@@ -85,7 +85,7 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
                 元
               </p>
             </div>{" "}
-            <div className=" mx-auto mb-4 mt-2 flex w-full justify-center gap-2 overflow-x-auto">
+            <div className=" mx-auto mb-4 mt-2 flex w-full gap-2 overflow-x-auto">
               {admin.hashtags &&
                 Array.isArray(admin.hashtags) &&
                 admin.hashtags.map((hashtag: string, index: number) => (
