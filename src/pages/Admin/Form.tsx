@@ -43,10 +43,10 @@ const Form: React.FC<FormProps> = ({
   return (
     <div>
       {appStore.admins.map((admin) => (
-        <div className="mt-4 flex items-center justify-between rounded-lg border p-4 px-5">
+        <div className="mt-2 flex items-center justify-between rounded-lg border p-4 px-5  lg:mt-4">
           <div key={admin.id}>
-            <h3 className="mr-2 w-20 text-sm">{admin.name}</h3>
-            <div className="flex  gap-2">
+            <h3 className="mr-2  text-sm">{admin.name}</h3>
+            <div className="mt-4 flex gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -80,7 +80,7 @@ const Form: React.FC<FormProps> = ({
               </svg>
             </div>
           </div>
-          <div className="min-w-40 h-40 w-40 overflow-hidden rounded-md">
+          <div className=" h-40 w-40 overflow-hidden rounded-md sm:h-20 sm:w-20 md:h-32 md:w-32">
             <img src={admin.images} className="h-full w-full object-cover" />
           </div>
         </div>
