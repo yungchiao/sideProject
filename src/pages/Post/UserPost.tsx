@@ -211,8 +211,8 @@ const UserPost: React.FC = observer(() => {
             }}
             onChange={handleContent}
           />
-          <div className="mx-auto mt-10 flex items-center justify-center">
-            <div className="flex flex-col ">
+          <div className="mx-auto mt-10 grid items-center justify-center text-center">
+            <div>
               <GlobalButton
                 variant="green"
                 content="發布"

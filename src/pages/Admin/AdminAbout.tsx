@@ -273,16 +273,16 @@ const AdminAbout: React.FC = observer(() => {
                 </div>
               ))}
             </div>
-            <div className=" mx-auto mt-6 flex items-center justify-center">
-              <div className="grid">
+            <div className=" mx-auto mt-6 grid items-center justify-center text-center">
+              <div>
                 <Button
                   onClick={handleSubmit}
-                  className="bg-green hover:bg-darkGreen"
+                  className="min-w-[80px] bg-green hover:bg-darkGreen"
                 >
                   <p className="text-white">更新</p>
                 </Button>
                 {isUpdateLoading && (
-                  <div className="mt-6 flex gap-2">
+                  <div className="mt-6 flex justify-center gap-2">
                     <img
                       src="./gravity-logo.png"
                       className="spin-slow relative mx-auto flex h-[40px] w-[40px] object-cover"
