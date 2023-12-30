@@ -68,7 +68,7 @@ const Like: React.FC = observer(() => {
   };
   return (
     <div className="">
-      <div className="mx-auto w-3/5 rounded-lg py-4 text-center ">
+      <div className="rounded-lg text-center ">
         {likeItems.length > 0 ? (
           <>
             {likeItems.map((item, index) => (
@@ -159,13 +159,15 @@ const Like: React.FC = observer(() => {
             ))}
           </>
         ) : (
-          <div className=" justify-center rounded-md border p-4 text-center ">
-            <h1 className="mb-4 items-center whitespace-nowrap text-xl">
-              尚未收藏活動!
-            </h1>
-            <Button>
-              <Link to="/">回首頁逛逛</Link>
-            </Button>
+          <div className="flex justify-center ">
+            <div className="mt-6 w-4/5 rounded-md border p-4 text-center lg:w-1/2">
+              <h1 className="mb-4 items-center whitespace-nowrap text-xl">
+                尚未收藏活動!
+              </h1>
+              <Button>
+                <Link to="/">回首頁逛逛</Link>
+              </Button>
+            </div>
           </div>
         )}
       </div>

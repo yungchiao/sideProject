@@ -286,9 +286,9 @@ const AdminChat = observer(() => {
           </div>
         </>
       ) : (
-        <div className="h-screen-bg  flex items-center justify-center pt-28">
-          <div className="  rounded-md border px-40 py-6">
-            <p className="text-3xl">
+        <div className="flex h-screen w-full items-center justify-center text-center">
+          <div className=" rounded-md border px-10 py-6 md:px-40">
+            <p className="text:xl md:text-3xl">
               只有 <span className="text-green">Admin</span> 身份可進入此頁面。
             </p>
             <div className="mt-4 flex justify-center">

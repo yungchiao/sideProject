@@ -199,7 +199,6 @@ const Activity: React.FC = observer(() => {
         place: place,
         direction: direction,
       };
-
       if (selectedActivity) {
         const docRef = doc(appStore.db, "admin", selectedActivity.id);
         await updateDoc(docRef, activityData);
@@ -226,7 +225,7 @@ const Activity: React.FC = observer(() => {
   return (
     <>
       <div className="flex">
-        <div className="mx-[50px] block w-full justify-center gap-4 pb-6 pt-28 sm:mx-[20px] lg:flex">
+        <div className="mx-[50px] block w-full justify-center gap-4 pb-6 pt-36 sm:mx-[20px] lg:flex">
           <div className=" mt-2  h-[200px] w-full overflow-auto rounded-lg border bg-white p-6 md:h-[300px] lg:h-[1140px] lg:w-2/5 lg:px-10 lg:shadow-none">
             <h1 className="flex justify-center text-xl font-bold text-brown">
               活動列表

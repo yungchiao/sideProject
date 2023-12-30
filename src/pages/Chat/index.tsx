@@ -187,9 +187,9 @@ const Chat = observer(() => {
           </div>
         </div>
       ) : (
-        <div className="mx-40  flex   h-[100vh] items-center justify-center   text-center">
-          <div className="block rounded-md border px-40 py-6">
-            <h1 className="mb-4 text-3xl">登入後開始聊聊</h1>
+        <div className="flex h-screen w-full items-center justify-center text-center">
+          <div className=" rounded-md border px-10 py-6 md:px-40">
+            <h1 className="mb-4 text-xl md:text-3xl">登入後開始聊聊</h1>
             <Link to="/profile">
               <Button>登入</Button>
             </Link>

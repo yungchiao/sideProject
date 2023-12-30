@@ -178,7 +178,7 @@ const Cart: React.FC = observer(() => {
               {checkoutItems.map((item, index) => (
                 <div
                   key={index}
-                  className="mx-auto mb-4 flex w-1/3 min-w-[500px] justify-between rounded-md border bg-white p-2 px-[20px] align-middle leading-none"
+                  className="mx-auto my-6 flex w-1/3 min-w-[500px] justify-between rounded-md border bg-white p-2 px-[20px] align-middle leading-none"
                 >
                   <p className="whitespace-nowrap py-2 ">{item.name}</p>
                   <p className="whitespace-nowrap py-2">
@@ -194,13 +194,15 @@ const Cart: React.FC = observer(() => {
               ))}
             </div>
           ) : (
-            <div className="mx-10 my-6  justify-center  rounded-md border p-4 text-center md:mx-40">
-              <h1 className="mb-4 items-center whitespace-nowrap text-xl">
-                尚未購買任何票券
-              </h1>
-              <Button>
-                <Link to="/">回首頁逛逛</Link>
-              </Button>
+            <div className="flex justify-center ">
+              <div className="my-6 w-4/5 rounded-md border p-4 text-center lg:w-1/2">
+                <h1 className="mb-4 items-center whitespace-nowrap text-xl">
+                  尚未購買任何票券
+                </h1>
+                <Button>
+                  <Link to="/">回首頁逛逛</Link>
+                </Button>
+              </div>
             </div>
           )}
         </div>
@@ -277,13 +279,15 @@ const Cart: React.FC = observer(() => {
               )}
             </>
           ) : (
-            <div className="mx-10 my-6 justify-center rounded-md border p-4 text-center md:mx-40">
-              <h1 className="mb-4 items-center whitespace-nowrap text-xl">
-                目前購物車為空
-              </h1>
-              <Button>
-                <Link to="/">回首頁逛逛</Link>
-              </Button>
+            <div className="flex justify-center ">
+              <div className="my-6 w-4/5 rounded-md border p-4 text-center lg:w-1/2">
+                <h1 className="mb-4 items-center whitespace-nowrap text-xl">
+                  目前購物車為空
+                </h1>
+                <Button>
+                  <Link to="/">回首頁逛逛</Link>
+                </Button>
+              </div>
             </div>
           )}
         </div>

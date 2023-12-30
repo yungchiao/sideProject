@@ -163,7 +163,7 @@ const UserPage: React.FC = observer(() => {
                   />
                 )}
                 <button
-                  className="absolute  bottom-5 right-[100px] h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow md:right-24"
+                  className="absolute  bottom-5 right-[80px] h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow md:right-24"
                   onClick={handleTriggerChangeAvatar}
                 >
                   <svg
@@ -364,9 +364,11 @@ const UserPage: React.FC = observer(() => {
           </div>
         </div>
       ) : (
-        <div className="h-screen-bg  mx-40   flex items-center justify-center   text-center">
-          <div className="block rounded-md border px-40 py-6">
-            <h1 className="mb-4 text-3xl">登入後查看更多</h1>
+        <div className="h-screen-bg flex w-full items-center justify-center text-center">
+          <div className=" rounded-md border px-10 py-6 md:px-40">
+            <h1 className="mb-4 whitespace-nowrap text-xl md:text-3xl">
+              登入後查看更多
+            </h1>
             <Link to="/profile">
               <Button>登入</Button>
             </Link>

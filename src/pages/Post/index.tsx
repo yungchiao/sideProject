@@ -149,9 +149,11 @@ const Activity: React.FC = observer(() => {
           </div>
         </div>
       ) : (
-        <div className="h-screen-bg  mx-40   flex items-center justify-center   text-center">
-          <div className="block rounded-md border px-40 py-6">
-            <h1 className="mb-4 text-3xl">登入後查看更多</h1>
+        <div className="flex h-screen w-full items-center justify-center text-center">
+          <div className=" rounded-md border px-10 py-6 md:px-40">
+            <h1 className="mb-4 whitespace-nowrap text-xl md:text-3xl">
+              登入後查看更多
+            </h1>
             <Link to="/profile">
               <Button>登入</Button>
             </Link>
