@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import { GlobalButton } from "../../components/Button";
@@ -80,7 +81,7 @@ const UserPost: React.FC = observer(() => {
         });
       }
       handleCleanInfo();
-      alert("已發布貼文！");
+      toast.success("已發布貼文！");
       setIsLoading(false);
     } catch (error) {
       console.error("添加貼文失敗", error);

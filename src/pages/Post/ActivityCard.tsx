@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
 import { ActivityCardProps, Admin, CartItem } from "../../type.ts";
@@ -50,12 +51,12 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
         const userEmail = appStore.currentUserEmail;
         if (userEmail) {
           appStore.newCart(userEmail, cartItem);
-          alert("加入訂單成功！");
+          toast.success("加入訂單成功！");
         } else {
-          alert("用戶未登入");
+          toast.error("用戶未登入");
         }
       } else {
-        alert("請選擇數量");
+        toast.error("請選擇數量");
       }
     };
     return (

@@ -3,9 +3,9 @@ import { collection, doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
-
 export const storage = getStorage(appStore.app);
 const AdminAbout: React.FC = observer(() => {
   useEffect(() => {
@@ -82,7 +82,7 @@ const AdminAbout: React.FC = observer(() => {
       const totalImageCount = existingImages.length + event.target.files.length;
 
       if (totalImageCount > 5) {
-        alert(
+        toast.error(
           `您最多只能上傳5張圖片。目前已有 ${existingImages.length} 張圖片。`,
         );
         return;
@@ -124,7 +124,7 @@ const AdminAbout: React.FC = observer(() => {
       await updateDoc(aboutDocRef, newAboutData);
 
       console.log("已更新關於資訊");
-      alert("已更新！");
+      toast.success("已更新！");
       setIsUpdateLoading(false);
     } catch (error) {
       console.error("更新失敗", error);

@@ -29,9 +29,9 @@ import {
   uploadBytes,
 } from "firebase/storage";
 import { configure, makeAutoObservable } from "mobx";
+import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { About, Admin, FirebaseConfig, NewUser } from "./type";
-
 configure({
   enforceActions: "never",
 });
@@ -304,7 +304,7 @@ class AppStore {
       this.newUser = null;
     });
     appStore.setIsLoggedIn(false);
-    alert("登出成功！");
+    toast.success("登出成功！");
   }
 
   fetchUserData = async (userId: string) => {

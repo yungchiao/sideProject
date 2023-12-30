@@ -5,6 +5,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import Cart from "../../components/Cart";
@@ -97,11 +98,11 @@ const UserPage: React.FC = observer(() => {
       }
       const userDocRef = doc(appStore.db, "user", userEmail);
       await updateDoc(userDocRef, NameData);
-      alert("名稱更新成功！");
+      toast.success("名稱更新成功！");
       setNameIsLoading(false);
     } catch (error) {
       console.error("更改名稱失敗", error);
-      alert("更改名稱失敗");
+      toast.error("更改名稱失敗");
     } finally {
       toggleChangeName();
       setNameIsLoading(false);
@@ -121,10 +122,10 @@ const UserPage: React.FC = observer(() => {
         await updateDoc(userDocRef, {
           avatar: imageUrl,
         });
-        alert("頭貼更新成功！");
+        toast.success("頭貼更新成功！");
       } catch (error) {
         console.error("更改頭貼失敗", error);
-        alert("更改頭貼失敗");
+        toast.error("更改頭貼失敗");
       }
     } else {
       setImageUpload(null);

@@ -5,6 +5,7 @@ import Fuse from "fuse.js";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
 import { Admin, CartItem } from "../../type";
@@ -80,12 +81,12 @@ const Header: React.FC<HeaderProps> = observer(
         const userEmail = appStore.currentUserEmail;
         if (userEmail) {
           appStore.newCart(userEmail, cartItem);
-          alert("加入訂單成功！");
+          toast.success("加入訂單成功！");
         } else {
-          alert("用戶未登入");
+          toast.error("用戶未登入");
         }
       } else {
-        alert("請選擇數量");
+        toast.error("請選擇數量");
       }
     };
     const handleAdminClick = (admin: Admin) => {
@@ -98,13 +99,17 @@ const Header: React.FC<HeaderProps> = observer(
         behavior: "smooth",
       });
     };
+    const handleMenuClick = () => {
+      scrollToTop();
+      toggleSidebarAndOverlay();
+    };
 
     return (
       <Navbar isBordered className="fixed top-0  z-50 border-b-2 bg-white p-6">
         <NavbarContent justify="start">
           {location.pathname === "/admin" && (
             <NavbarItem className="xl:hidden ">
-              <button onClick={toggleSidebarAndOverlay}>
+              <button onClick={handleMenuClick}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

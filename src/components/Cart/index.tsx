@@ -4,6 +4,7 @@ import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
 import { CartItem, CheckoutItem } from "../../type";
 
@@ -90,7 +91,7 @@ const Cart: React.FC = observer(() => {
       setCartItems(newCartItems);
 
       appStore.deleteFromCart(appStore.currentUserEmail, itemToDelete.id);
-      window.alert("已刪除商品");
+      toast.success("已刪除商品");
     }
   }
   const subtotal = cartItems.reduce(
@@ -133,7 +134,7 @@ const Cart: React.FC = observer(() => {
         });
       } catch (error) {
         console.error("訂單處理失敗", error);
-        alert("訂單處理失敗");
+        toast.error("訂單處理失敗");
       }
     }
   };

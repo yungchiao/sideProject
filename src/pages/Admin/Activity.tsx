@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import Map from "../../components/Map";
@@ -168,7 +169,7 @@ const Activity: React.FC = observer(() => {
   };
   const handleSubmit = async () => {
     if (!isAllFieldsFilled) {
-      alert("尚有未完成內容");
+      toast.error("尚有未完成內容");
       return;
     }
     try {
@@ -203,28 +204,29 @@ const Activity: React.FC = observer(() => {
         const docRef = doc(appStore.db, "admin", selectedActivity.id);
         await updateDoc(docRef, activityData);
         handleCleanInfo();
-        alert("活動更新成功！");
+        toast.success("活動更新成功！");
         console.log("活動更新成功！");
       } else {
         const articlesCollection = collection(appStore.db, "admin");
         const docRef = doc(articlesCollection);
         await setDoc(docRef, activityData);
         handleCleanInfo();
-        alert("活動新增成功！");
+        toast.success("活動新增成功！");
       }
     } catch (error) {
-      console.error("活動處理失敗", error);
+      toast.error("活動處理失敗");
     }
   };
   const directionItems = ["北", "中", "南", "東"];
   const addAmount = () => {
     setItems((prevItems) => prevItems + 1);
   };
+
   const variant = "underlined";
   return (
     <>
       <div className="flex">
-        <div className="mx-[50px] block w-full justify-center gap-4 pt-28 sm:mx-[20px] lg:flex">
+        <div className="mx-[50px] block w-full justify-center gap-4 pb-6 pt-28 sm:mx-[20px] lg:flex">
           <div className=" mt-2  h-[200px] w-full overflow-auto rounded-lg border bg-white p-6 md:h-[300px] lg:h-[1140px] lg:w-2/5 lg:px-10 lg:shadow-none">
             <h1 className="flex justify-center text-xl font-bold text-brown">
               活動列表

@@ -5,7 +5,7 @@ import { appStore } from "../../AppStore";
 import ActivityCard from "../../components/AdminCard";
 import ActivityModal from "../../components/ModalDetail";
 import { Admin, CartItem, LikeItem } from "../../type";
-
+import { toast } from "react-toastify";
 const North: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -48,12 +48,12 @@ const North: React.FC = observer(() => {
       const userEmail = appStore.currentUserEmail;
       if (userEmail) {
         appStore.newCart(userEmail, cartItem);
-        alert("加入訂單成功！");
+        toast.success("加入訂單成功！");
       } else {
-        alert("用戶未登入");
+        toast.error("用戶未登入");
       }
     } else {
-      alert("請選擇數量");
+      toast.error("請選擇數量");
     }
   };
 
@@ -70,9 +70,9 @@ const North: React.FC = observer(() => {
     const userEmail = appStore.currentUserEmail;
     if (userEmail) {
       appStore.newLike(userEmail, likeItem);
-      alert("加入收藏成功！");
+      toast.success("加入收藏成功！");
     } else {
-      alert("用戶未登入");
+      toast.error("用戶未登入");
     }
   };
 
@@ -81,7 +81,7 @@ const North: React.FC = observer(() => {
       const newLikeItems = likeItems.filter((item) => item.id !== admin.id);
       setLikeItems(newLikeItems);
       appStore.deleteFromLike(appStore.currentUserEmail, admin.id);
-      window.alert("取消收藏");
+      toast.success("取消收藏");
     }
   }
 

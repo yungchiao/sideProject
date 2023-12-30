@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import p5 from "p5";
 import React, { useEffect, useRef, useState } from "react";
 import { v4 } from "uuid";
-
+import { toast } from "react-toastify";
 const Paint: React.FC = observer(() => {
   const sketchRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -17,8 +17,6 @@ const Paint: React.FC = observer(() => {
 
   useEffect(() => {
     const sketch = (p: p5) => {
-      let bg: p5.Image | undefined;
-
       p.setup = () => {
         const canvas = p.createCanvas(500, 500);
         canvasRef.current = canvas.elt;
@@ -116,7 +114,7 @@ const Paint: React.FC = observer(() => {
         try {
           const imageUrl = await uploadImage(file);
           await updateAvatarUrl(imageUrl);
-          alert("上傳成功");
+          toast.success("上傳成功");
         } catch (error) {
           console.error("上傳失敗", error);
         }
