@@ -18,15 +18,15 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
           className="relative mx-auto w-full rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
         >
           <CardBody className="flex overflow-visible p-0">
-            <div className="absolute left-1/2 top-[-95px] -translate-x-1/2 transform">
-              <div className="mx-auto flex h-[400px] w-[400px] justify-center overflow-hidden rounded-full">
+            <div className="absolute left-1/2 top-[-95px] -translate-x-1/2 transform md:top-[-155px] lg:top-[-145px]">
+              <div className="mx-auto flex h-[400px] w-[400px] justify-center overflow-hidden rounded-full md:h-[450px] md:w-[450px]">
                 <img
                   src={admin.images}
                   className="h-full w-full object-cover"
                 />
               </div>
             </div>
-            <div className="mt-[330px]  flex justify-center">
+            <div className="mt-[330px] flex justify-center lg:mt-[280px]">
               <h3
                 onClick={() => handleAdminClick(admin)}
                 className="inline-block cursor-pointer text-lg font-bold text-brown"
