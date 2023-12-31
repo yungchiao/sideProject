@@ -143,7 +143,7 @@ const Profile: React.FC = observer(() => {
                       <p className="cursor-pointer text-green">註冊</p>
                     </Link>
                   </p>
-                  <div className="flex justify-end gap-2">
+                  <div className="flex justify-center gap-2">
                     <GlobalButton
                       variant="green"
                       content="登入"

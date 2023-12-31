@@ -143,7 +143,6 @@ body {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .search-client {
-  margin-top: 0.8rem;
   display: inline-block;
   align-items: center;
   gap: 1rem;

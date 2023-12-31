@@ -121,7 +121,7 @@ const Chat = observer(() => {
                       {formatMessageTime(message.createdAt)}
                     </div>
                     <p
-                      className={` w-fit rounded-md border p-2 ${
+                      className={` w-fit max-w-[140px] rounded-md border p-2 md:w-auto md:max-w-none ${
                         message.sender === "client"
                           ? "ml-auto bg-white text-stone-800"
                           : "mr-auto bg-gray-600 text-white"
@@ -152,7 +152,7 @@ const Chat = observer(() => {
                       />
                     </div>
                     <p
-                      className={` w-fit rounded-md border p-2 ${
+                      className={` w-fit max-w-[140px] rounded-md border p-2 md:w-auto md:max-w-none ${
                         message.sender === "client"
                           ? "ml-auto bg-white text-stone-800"
                           : "mr-auto bg-gray-600 text-white"

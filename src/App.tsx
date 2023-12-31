@@ -50,6 +50,18 @@ const App: React.FC = observer(() => {
     toggleSidebar();
     setIsOverlayVisible(!isOverlayVisible);
   };
+
+  const handleSidebarClick = (event: any) => {
+    if (!event.target.closest(".search-client")) {
+      toggleSidebarAndOverlay();
+    }
+  };
+  const handleClick = (event: any) => {
+    if (!isLargeScreen) {
+      toggleSidebarAndOverlay();
+      handleSidebarClick(event);
+    }
+  };
   return (
     <>
       <Header
@@ -77,7 +89,17 @@ const App: React.FC = observer(() => {
         <Route path="cart" element={<Cart />} />
         <Route path="chat" element={<Chat />} />
         <Route path="about" element={<About />} />
-        <Route path="adminchat" element={<AdminChat />} />
+        <Route
+          path="adminchat"
+          element={
+            <AdminChat
+              toggleSidebarAndOverlay={toggleSidebarAndOverlay}
+              isSidebarOpen={isSidebarOpen}
+              isLargeScreen={isLargeScreen}
+              handleClick={(event: any) => handleClick(event)}
+            />
+          }
+        />
         <Route path="north" element={<North />} />
         <Route path="south" element={<South />} />
         <Route path="east" element={<East />} />

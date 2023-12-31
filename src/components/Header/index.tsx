@@ -107,7 +107,8 @@ const Header: React.FC<HeaderProps> = observer(
     return (
       <Navbar isBordered className="fixed top-0  z-50 border-b-2 bg-white p-6">
         <NavbarContent justify="start">
-          {location.pathname === "/admin" && (
+          {(location.pathname === "/admin" ||
+            location.pathname === "/adminchat") && (
             <NavbarItem className="xl:hidden ">
               <button onClick={handleMenuClick}>
                 <svg

@@ -38,8 +38,11 @@ const UserSearch: React.FC<UserSearchProps> = observer(
     const handleHideClick = () => {
       setIsvisible(false);
     };
+    const handleUserSearchClick = (event: any) => {
+      event.stopPropagation();
+    };
     return (
-      <div className="absolute  flex flex-col">
+      <div className="absolute  flex flex-col " onClick={handleUserSearchClick}>
         <div className="relative flex h-10 w-60 justify-between rounded-lg bg-white ">
           <input
             className="input-placeholder relative w-[200px] rounded-lg pl-3 text-small font-normal  outline-none dark:bg-default-500/20"
