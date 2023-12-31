@@ -177,9 +177,11 @@ const Cart: React.FC = observer(() => {
               {checkoutItems.map((item, index) => (
                 <div
                   key={index}
-                  className="mx-auto my-6 flex w-1/3 min-w-[500px] justify-between rounded-md border bg-white p-2 px-[20px] align-middle leading-none"
+                  className="mx-auto my-6 grid justify-center rounded-md border bg-white p-2 px-[20px] align-middle leading-none sm:w-2/3 md:w-1/4 xl:flex xl:w-1/2 xl:justify-between"
                 >
-                  <p className="whitespace-nowrap py-2 ">{item.name}</p>
+                  <p className="whitespace-nowrap border-b-2 py-2 xl:border-none">
+                    {item.name}
+                  </p>
                   <p className="whitespace-nowrap py-2">
                     數量: {item.quantity}
                   </p>
@@ -211,16 +213,19 @@ const Cart: React.FC = observer(() => {
               {cartItems.map((item, index) => (
                 <div
                   key={index}
-                  className="mx-auto my-6 flex w-1/3 min-w-[650px]  justify-between rounded-md border bg-white p-2 px-[20px]  leading-none"
+                  className="relative mx-auto my-6 grid w-2/3 items-center justify-center  rounded-md border bg-white p-2 px-[20px]  xl:relative xl:flex xl:w-2/3 xl:justify-between"
                 >
-                  <p className="whitespace-nowrap py-2">{item.name}</p>
-                  <p className="whitespace-nowrap py-2">數量:</p>
-                  <div className="flex items-center gap-4">
+                  <p className="whitespace-nowrap border-b-2 py-2 pb-2 xl:border-none xl:pb-0">
+                    {item.name}
+                  </p>
+
+                  <div className="flex items-center gap-4 pt-2 xl:pt-0">
+                    <p className="whitespace-nowrap py-2">數量:</p>
                     <button
                       onClick={() => {
                         changeItemQuantity(index, -1);
                       }}
-                      className="flex h-4 w-4 items-center justify-center rounded-full bg-stone-700 py-2"
+                      className=" flex h-4 w-4 items-center justify-center rounded-full bg-stone-700 py-2"
                     >
                       <p className="text-base text-white">-</p>
                     </button>
@@ -239,7 +244,7 @@ const Cart: React.FC = observer(() => {
                     小計: NT${item.price * item.quantity}元
                   </p>
                   <button onClick={() => deleteItem(index)}>
-                    <div className="h-8 w-8 cursor-pointer bg-[url('/trash.png')] bg-contain" />
+                    <div className=" mx-auto h-12 w-12 cursor-pointer bg-[url('/trash.png')] bg-contain md:right-0 md:top-0" />
                   </button>
                 </div>
               ))}

@@ -212,7 +212,7 @@ const UserPost: React.FC = observer(() => {
             }}
             onChange={handleContent}
           />
-          <div className="mx-auto mt-10 grid items-center justify-center text-center">
+          <div className="mx-auto mt-10 grid items-center text-center">
             <div>
               <GlobalButton
                 variant="green"
@@ -230,10 +230,10 @@ const UserPost: React.FC = observer(() => {
                 </div>
               )}
             </div>
-          </div>{" "}
+          </div>
         </div>
       ) : (
-        <div className="mx-40  flex   h-[100vh] items-center justify-center   text-center">
+        <div className="mx-40 flex h-[100vh] items-center justify-center   text-center">
           <div className="block rounded-md border px-40 py-6">
             <h1 className="mb-4 text-3xl">登入後即可發文</h1>
             <Link to="/profile">

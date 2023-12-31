@@ -17,6 +17,7 @@ import Form from "./Form";
 export const storage = getStorage(appStore.app);
 
 const Activity: React.FC = observer(() => {
+  const [isLoading, setIsLoading] = useState(false);
   const [startDate, setStartDate] = useState(
     setHours(setMinutes(new Date(), 30), 24),
   );
@@ -394,13 +395,22 @@ const Activity: React.FC = observer(() => {
                 input: "resize-y min-h-[134px]",
               }}
             />
-            <div className="mx-auto mt-10 flex items-center justify-center">
+            <div className="justify-cente mx-auto mt-10 grid items-center">
               <GlobalButton
                 variant="green"
                 content="新增"
                 onClick={handleSubmit}
                 disabled={!isAllFieldsFilled}
               />
+              {isLoading && (
+                <div className="mt-6 flex justify-center gap-2">
+                  <img
+                    src="./gravity-logo.png"
+                    className="spin-slow relative mx-auto flex h-[40px] w-[40px] object-cover"
+                  />
+                  <p className="flex items-center">上傳中...</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

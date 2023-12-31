@@ -164,7 +164,7 @@ const UserPage: React.FC = observer(() => {
                   />
                 )}
                 <button
-                  className="absolute  bottom-5 right-[80px] h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow md:right-24"
+                  className="absolute bottom-5 right-[100px] h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow md:right-28"
                   onClick={handleTriggerChangeAvatar}
                 >
                   <svg

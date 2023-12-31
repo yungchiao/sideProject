@@ -15,6 +15,7 @@ const Paint: React.FC = observer(() => {
   const [isEraser, setIsEraser] = useState<boolean>(false);
   const [p5Instance, setP5Instance] = useState<p5 | null>(null);
   const [history, setHistory] = useState<number[][]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const sketch = (p: p5) => {
@@ -105,6 +106,7 @@ const Paint: React.FC = observer(() => {
     }
   };
   const saveAndUploadDrawing = async () => {
+    setIsLoading(true);
     if (canvasRef.current) {
       canvasRef.current.toBlob(async (blob) => {
         if (!blob) {
@@ -116,6 +118,7 @@ const Paint: React.FC = observer(() => {
           const imageUrl = await uploadImage(file);
           await updateAvatarUrl(imageUrl);
           toast.success("上傳成功");
+          setIsLoading(false);
         } catch (error) {
           console.error("上傳失敗", error);
         }
@@ -241,17 +244,28 @@ const Paint: React.FC = observer(() => {
           </div>
         ))}
       </div>
-      <div className="mt-4 flex justify-center gap-2 pb-10">
-        <GlobalButton
-          variant="brown"
-          content="下載作品"
-          onClick={saveDrawing}
-        />
-        <GlobalButton
-          variant="brown"
-          content="設定為頭貼"
-          onClick={saveAndUploadDrawing}
-        />
+      <div className="pb-10">
+        <div className="mt-4 flex justify-center gap-2 ">
+          <GlobalButton
+            variant="brown"
+            content="下載作品"
+            onClick={saveDrawing}
+          />
+          <GlobalButton
+            variant="brown"
+            content="設定為頭貼"
+            onClick={saveAndUploadDrawing}
+          />
+        </div>
+        {isLoading && (
+          <div className="mt-6 flex items-center justify-center gap-2">
+            <img
+              src="./gravity-logo.png"
+              className="spin-slow relative  flex h-[40px] w-[40px] object-cover"
+            />
+            <p className="items-center">上傳中...</p>
+          </div>
+        )}
       </div>
     </>
   );
