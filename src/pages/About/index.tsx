@@ -14,7 +14,7 @@ const About: React.FC = observer(() => {
       </div>
       <div className="relative">
         <div className="mx-auto flex items-center justify-center gap-8">
-          <div className="spin-slow absolute top-8 flex h-[180px] w-[180px] justify-center lg:static">
+          <div className="spin-slow absolute top-8 mt-6 flex h-[180px] w-[180px] justify-center lg:static">
             <img
               src="./gravity-logo.png"
               className="h-full w-full object-cover"
@@ -68,7 +68,7 @@ const About: React.FC = observer(() => {
                   viewBox="0 0 24 24"
                   strokeWidth="0.8"
                   stroke="currentColor"
-                  className="h-12 w-12"
+                  className="sm:h-8 sm:w-8 md:h-12 md:w-12"
                 >
                   <path
                     strokeLinecap="round"
@@ -88,7 +88,7 @@ const About: React.FC = observer(() => {
                   viewBox="0 0 24 24"
                   strokeWidth="0.8"
                   stroke="currentColor"
-                  className="h-12 w-12"
+                  className="sm:h-8 sm:w-8 md:h-12 md:w-12"
                 >
                   <path
                     strokeLinecap="round"
@@ -109,7 +109,7 @@ const About: React.FC = observer(() => {
                   viewBox="0 0 24 24"
                   strokeWidth="0.8"
                   stroke="currentColor"
-                  className="h-12 w-12"
+                  className="sm:h-8 sm:w-8 md:h-12 md:w-12"
                 >
                   <path
                     strokeLinecap="round"

@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
 import { GlobalButton } from "../../components/Button";
@@ -80,7 +81,7 @@ const UserPost: React.FC = observer(() => {
         });
       }
       handleCleanInfo();
-      alert("已發布貼文！");
+      toast.success("已發布貼文！");
       setIsLoading(false);
     } catch (error) {
       console.error("添加貼文失敗", error);
@@ -211,8 +212,8 @@ const UserPost: React.FC = observer(() => {
             }}
             onChange={handleContent}
           />
-          <div className="mx-auto mt-10 flex items-center justify-center">
-            <div className="flex flex-col ">
+          <div className="mx-auto mt-10 grid items-center text-center">
+            <div>
               <GlobalButton
                 variant="green"
                 content="發布"
@@ -229,10 +230,10 @@ const UserPost: React.FC = observer(() => {
                 </div>
               )}
             </div>
-          </div>{" "}
+          </div>
         </div>
       ) : (
-        <div className="mx-40  flex   h-[100vh] items-center justify-center   text-center">
+        <div className="mx-40 flex h-[100vh] items-center justify-center   text-center">
           <div className="block rounded-md border px-40 py-6">
             <h1 className="mb-4 text-3xl">登入後即可發文</h1>
             <Link to="/profile">

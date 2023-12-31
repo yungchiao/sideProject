@@ -5,6 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
 import { Admin, CartItem } from "../../type";
@@ -89,12 +90,12 @@ const Calendar: React.FC = observer(() => {
       const userEmail = appStore.currentUserEmail;
       if (userEmail) {
         appStore.newCart(userEmail, cartItem);
-        alert("加入訂單成功！");
+        toast.success("加入訂單成功！");
       } else {
-        alert("用戶未登入");
+        toast.error("用戶未登入");
       }
     } else {
-      alert("請選擇數量");
+      toast.error("請選擇數量");
     }
   };
   const getClosestEventDate = (): Date => {

@@ -5,8 +5,9 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import p5 from "p5";
 import React, { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 import { v4 } from "uuid";
-
+import { GlobalButton } from "../../components/Button";
 const Paint: React.FC = observer(() => {
   const sketchRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -14,46 +15,31 @@ const Paint: React.FC = observer(() => {
   const [isEraser, setIsEraser] = useState<boolean>(false);
   const [p5Instance, setP5Instance] = useState<p5 | null>(null);
   const [history, setHistory] = useState<number[][]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const sketch = (p: any) => {
-      let canvas;
-
+    const sketch = (p: p5) => {
       p.setup = () => {
-        if (sketchRef.current) {
-          const canvasWidth = Math.min(sketchRef.current.clientWidth, 500);
-          canvas = p.createCanvas(canvasWidth, canvasWidth);
-          if (canvas) {
-            canvas.parent(sketchRef.current);
-          }
-          p.background(255);
-          p.noLoop();
-        }
+        const canvas = p.createCanvas(500, 500);
+        canvasRef.current = canvas.elt;
+        p.background(255);
+        const borderWidth = 1;
+        p.stroke(0);
+        p.strokeWeight(borderWidth);
       };
 
       p.mouseDragged = () => {
-        if (p.mouseX && p.mouseY && p.pmouseX && p.pmouseY) {
-          p.line(p.mouseX, p.mouseY, p.pmouseX, p.pmouseY);
-        }
+        drawLine(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
+      };
+
+      p.mousePressed = () => {
+        drawLine(p.mouseX, p.mouseY, p.mouseX, p.mouseY);
       };
     };
+
     if (sketchRef.current && !p5Instance) {
       setP5Instance(new p5(sketch, sketchRef.current));
     }
-    const handleResize = () => {
-      if (sketchRef.current && p5Instance) {
-        const newWidth = Math.min(sketchRef.current.clientWidth, 500);
-        p5Instance.resizeCanvas(newWidth, newWidth);
-        p5Instance.background(255);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      if (p5Instance) {
-        p5Instance.remove();
-      }
-    };
   }, []);
 
   const saveCanvasState = () => {
@@ -120,6 +106,7 @@ const Paint: React.FC = observer(() => {
     }
   };
   const saveAndUploadDrawing = async () => {
+    setIsLoading(true);
     if (canvasRef.current) {
       canvasRef.current.toBlob(async (blob) => {
         if (!blob) {
@@ -130,7 +117,8 @@ const Paint: React.FC = observer(() => {
         try {
           const imageUrl = await uploadImage(file);
           await updateAvatarUrl(imageUrl);
-          alert("上傳成功");
+          toast.success("上傳成功");
+          setIsLoading(false);
         } catch (error) {
           console.error("上傳失敗", error);
         }
@@ -169,7 +157,7 @@ const Paint: React.FC = observer(() => {
 
   return (
     <>
-      <div className="m-auto w-3/4  pt-28">
+      <div className="m-auto mb-5 w-3/4 p-4 pt-28">
         <div className="flex justify-center gap-2">
           {isEraser ? (
             <Button
@@ -239,10 +227,7 @@ const Paint: React.FC = observer(() => {
           </button>
         </div>
       </div>
-      <div
-        ref={sketchRef}
-        className="mx-20px mb-6 flex max-w-full justify-center p-4"
-      ></div>
+      <div ref={sketchRef} className="mb-10 flex justify-center"></div>
       <div className="image-selection flex justify-center gap-4">
         {imageList.map((img, index) => (
           <div className="mb-3">
@@ -259,9 +244,28 @@ const Paint: React.FC = observer(() => {
           </div>
         ))}
       </div>
-      <div className="mt-4 flex justify-center gap-2 pb-10">
-        <Button onClick={saveDrawing}>下載作品</Button>
-        <Button onClick={saveAndUploadDrawing}>設定為頭貼</Button>
+      <div className="pb-10">
+        <div className="mt-4 flex justify-center gap-2 ">
+          <GlobalButton
+            variant="brown"
+            content="下載作品"
+            onClick={saveDrawing}
+          />
+          <GlobalButton
+            variant="brown"
+            content="設定為頭貼"
+            onClick={saveAndUploadDrawing}
+          />
+        </div>
+        {isLoading && (
+          <div className="mt-6 flex items-center justify-center gap-2">
+            <img
+              src="./gravity-logo.png"
+              className="spin-slow relative  flex h-[40px] w-[40px] object-cover"
+            />
+            <p className="items-center">上傳中...</p>
+          </div>
+        )}
       </div>
     </>
   );

@@ -1,10 +1,10 @@
-import { Button } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
 import { Admin, CartItem, LikeItem } from "../../type";
+import { GlobalButton } from "../../components/Button";
 
 const Like: React.FC = observer(() => {
   const [likeItems, setLikeItems] = useState<LikeItem[]>([]);
@@ -31,7 +31,7 @@ const Like: React.FC = observer(() => {
       setLikeItems(newLikeItems);
 
       appStore.deleteFromLike(appStore.currentUserEmail, itemToDelete.id);
-      window.alert("取消收藏");
+      toast.success("取消收藏");
     }
   }
   const handleAdminClick = (item: any) => {
@@ -57,17 +57,17 @@ const Like: React.FC = observer(() => {
       const userEmail = appStore.currentUserEmail;
       if (userEmail) {
         appStore.newCart(userEmail, cartItem);
-        alert("加入訂單成功！");
+        toast.success("加入訂單成功！");
       } else {
-        alert("用戶未登入");
+        toast.error("用戶未登入");
       }
     } else {
-      alert("請選擇數量");
+      toast.error("請選擇數量");
     }
   };
   return (
     <div className="">
-      <div className="mx-auto w-3/5 rounded-lg py-4 text-center ">
+      <div className="rounded-lg text-center ">
         {likeItems.length > 0 ? (
           <>
             {likeItems.map((item, index) => (
@@ -158,13 +158,13 @@ const Like: React.FC = observer(() => {
             ))}
           </>
         ) : (
-          <div className=" justify-center rounded-md border p-4 text-center ">
-            <h1 className="mb-4 items-center whitespace-nowrap text-xl">
-              尚未收藏活動!
-            </h1>
-            <Button>
-              <Link to="/">回首頁逛逛</Link>
-            </Button>
+          <div className="flex justify-center ">
+            <div className="mt-6 w-4/5 rounded-md border p-4 text-center lg:w-1/2">
+              <h1 className="mb-4 items-center whitespace-nowrap text-xl">
+                尚未收藏活動!
+              </h1>
+              <GlobalButton variant="gray" content="回首頁逛逛" to="/" />
+            </div>
           </div>
         )}
       </div>

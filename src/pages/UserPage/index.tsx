@@ -1,12 +1,14 @@
-import { Button, Card, CardBody } from "@nextui-org/react";
+import { Card, CardBody } from "@nextui-org/react";
 import { getAuth } from "firebase/auth";
 import { doc, getFirestore, onSnapshot, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import Cart from "../../components/Cart";
 import Like from "../../components/Like";
 import GoogleMap from "../../components/Map/GoogleMap";
@@ -97,11 +99,11 @@ const UserPage: React.FC = observer(() => {
       }
       const userDocRef = doc(appStore.db, "user", userEmail);
       await updateDoc(userDocRef, NameData);
-      alert("名稱更新成功！");
+      toast.success("名稱更新成功！");
       setNameIsLoading(false);
     } catch (error) {
       console.error("更改名稱失敗", error);
-      alert("更改名稱失敗");
+      toast.error("更改名稱失敗");
     } finally {
       toggleChangeName();
       setNameIsLoading(false);
@@ -121,10 +123,10 @@ const UserPage: React.FC = observer(() => {
         await updateDoc(userDocRef, {
           avatar: imageUrl,
         });
-        alert("頭貼更新成功！");
+        toast.success("頭貼更新成功！");
       } catch (error) {
         console.error("更改頭貼失敗", error);
-        alert("更改頭貼失敗");
+        toast.error("更改頭貼失敗");
       }
     } else {
       setImageUpload(null);
@@ -162,7 +164,7 @@ const UserPage: React.FC = observer(() => {
                   />
                 )}
                 <button
-                  className="absolute  bottom-5 right-[100px] h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow md:right-24"
+                  className="absolute bottom-5 right-[100px] h-10 w-10 rounded-full border-1 border-stone-600 bg-white shadow-md transition duration-200 hover:scale-105 hover:border-none hover:bg-yellow md:right-28"
                   onClick={handleTriggerChangeAvatar}
                 >
                   <svg
@@ -223,12 +225,12 @@ const UserPage: React.FC = observer(() => {
                       value={userName}
                       onChange={nameChange}
                     />
-                    <Button
+                    <GlobalButton
+                      variant="green"
+                      content="完成"
                       onClick={handleSubmit}
-                      isDisabled={userName.trim().length === 0}
-                    >
-                      完成
-                    </Button>
+                      disabled={userName.trim().length === 0}
+                    />
                   </div>
                   {isNameLoading && (
                     <div className="mt-6 flex items-center justify-center gap-4">
@@ -323,9 +325,11 @@ const UserPage: React.FC = observer(() => {
                       <h1 className="mb-4  items-center text-xl">
                         尚未分享文章!
                       </h1>
-                      <Button>
-                        <Link to="/post">前往社群</Link>
-                      </Button>
+                      <GlobalButton
+                        variant="gray"
+                        content="前往社群"
+                        to="/post"
+                      />
                     </div>
                   )}
                 </div>
@@ -357,18 +361,20 @@ const UserPage: React.FC = observer(() => {
           <GoogleMap />
 
           <div className="my-10  flex  justify-center">
-            <Button onClick={appStore.logout} className="bg-green">
-              <p className="mx-auto flex text-white">登出</p>
-            </Button>
+            <GlobalButton
+              variant="green"
+              content="登出"
+              onClick={appStore.logout}
+            />
           </div>
         </div>
       ) : (
-        <div className="h-screen-bg  mx-40   flex items-center justify-center   text-center">
-          <div className="block rounded-md border px-40 py-6">
-            <h1 className="mb-4 text-3xl">登入後查看更多</h1>
-            <Link to="/profile">
-              <Button>登入</Button>
-            </Link>
+        <div className="h-screen-bg flex w-full items-center justify-center text-center">
+          <div className=" rounded-md border px-10 py-6 md:px-40">
+            <h1 className="mb-4 whitespace-nowrap text-xl md:text-3xl">
+              登入後查看更多
+            </h1>
+            <GlobalButton variant="gray" content="登入" to="/profile" />
           </div>
         </div>
       )}

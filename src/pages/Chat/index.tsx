@@ -1,11 +1,10 @@
-import { Button, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import { Timestamp, doc, onSnapshot, runTransaction } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import { Message } from "../../type";
-
 const Chat = observer(() => {
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -122,7 +121,7 @@ const Chat = observer(() => {
                       {formatMessageTime(message.createdAt)}
                     </div>
                     <p
-                      className={` w-fit rounded-md border p-2 ${
+                      className={` w-fit max-w-[140px] rounded-md border p-2 md:w-auto md:max-w-none ${
                         message.sender === "client"
                           ? "ml-auto bg-white text-stone-800"
                           : "mr-auto bg-gray-600 text-white"
@@ -153,7 +152,7 @@ const Chat = observer(() => {
                       />
                     </div>
                     <p
-                      className={` w-fit rounded-md border p-2 ${
+                      className={` w-fit max-w-[140px] rounded-md border p-2 md:w-auto md:max-w-none ${
                         message.sender === "client"
                           ? "ml-auto bg-white text-stone-800"
                           : "mr-auto bg-gray-600 text-white"
@@ -181,18 +180,14 @@ const Chat = observer(() => {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
             />
-            <Button className="bg-stone-800 text-white" onClick={sendMessage}>
-              傳送
-            </Button>
+            <GlobalButton variant="gray" content="傳送" onClick={sendMessage} />
           </div>
         </div>
       ) : (
-        <div className="mx-40  flex   h-[100vh] items-center justify-center   text-center">
-          <div className="block rounded-md border px-40 py-6">
-            <h1 className="mb-4 text-3xl">登入後開始聊聊</h1>
-            <Link to="/profile">
-              <Button>登入</Button>
-            </Link>
+        <div className="flex h-screen w-full items-center justify-center text-center">
+          <div className=" rounded-md border px-10 py-6 md:px-40">
+            <h1 className="mb-4 text-xl md:text-3xl">登入後開始聊聊</h1>
+            <GlobalButton variant="gray" content="登入" to="/profile" />
           </div>
         </div>
       )}

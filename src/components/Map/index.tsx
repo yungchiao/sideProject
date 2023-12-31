@@ -1,7 +1,7 @@
-import { Button, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { GlobalButton } from "../../components/Button";
 interface LocationInputProps {
   onPositionChange: (position: { latitude: number; longitude: number }) => void;
   searchLocation: string;
@@ -44,12 +44,11 @@ const LocationInput: React.FC<LocationInputProps> = ({
     <div>
       <div className="flex items-center gap-2">
         <Input value={address} onChange={handleAddressChange} />
-        <Button
+        <GlobalButton
+          variant="white"
+          content="搜尋地點"
           onClick={handleSearch}
-          className="border border-stone-800 bg-white"
-        >
-          搜尋地點
-        </Button>
+        />
       </div>
     </div>
   );

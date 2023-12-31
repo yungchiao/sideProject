@@ -1,4 +1,4 @@
-import { Button, Card, Input, Link } from "@nextui-org/react";
+import { Card, Input, Link } from "@nextui-org/react";
 import { FirebaseError, initializeApp } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
@@ -9,8 +9,9 @@ import { getStorage } from "firebase/storage";
 import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
-
+import { GlobalButton } from "../../components/Button";
 const app = initializeApp(appStore.config);
 export const storage = getStorage(app);
 const Profile: React.FC = observer(() => {
@@ -42,11 +43,11 @@ const Profile: React.FC = observer(() => {
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          alert("登入成功!");
+          toast.success("登入成功!");
           console.log("登入成功：", user);
         })
         .catch((error) => {
-          alert("登入失敗!");
+          toast.error("登入失敗!");
           console.error("登入失敗：", error);
         });
     }
@@ -75,14 +76,14 @@ const Profile: React.FC = observer(() => {
         : "/bear.jpg";
       const finalName = name.trim() ? name : "某位探險家";
       await appStore.addUser(user.uid, email, finalName, avatarUrl);
-      alert("註冊成功!");
+      toast.success("註冊成功!");
       console.log("註冊成功：", user);
     } catch (error) {
       const firebaseError = error as FirebaseError;
       if (firebaseError.code === "auth/email-already-in-use") {
-        alert("該電子郵件地址已被使用!");
+        toast.error("該電子郵件地址已被使用!");
       } else {
-        alert("註冊失敗!");
+        toast.error("註冊失敗!");
       }
       console.error("註冊失敗：", firebaseError);
     }
@@ -142,14 +143,12 @@ const Profile: React.FC = observer(() => {
                       <p className="cursor-pointer text-green">註冊</p>
                     </Link>
                   </p>
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      fullWidth
-                      className="bg-green"
+                  <div className="flex justify-center gap-2">
+                    <GlobalButton
+                      variant="green"
+                      content="登入"
                       onClick={handleLogin}
-                    >
-                      <p className="text-white">登入</p>
-                    </Button>
+                    />
                   </div>
                 </form>
               )}
@@ -210,18 +209,34 @@ const Profile: React.FC = observer(() => {
                     </Link>
                   </p>
                   <div className="flex justify-end gap-2">
-                    <Button
-                      fullWidth
-                      className=" bg-green"
+                    <GlobalButton
+                      variant="green"
+                      content="註冊"
                       onClick={() => handleRegister(email, password)}
-                    >
-                      <p className="text-white">註冊</p>
-                    </Button>
+                    />
                   </div>
                 </form>
               )}
             </div>
           </Card>
+          <div className="flex rounded-lg border p-3">
+            <p className="border-r pr-3 text-sm text-stone-500">
+              Admin端
+              <br />
+              帳號：imadmin@gmail.com
+              <br />
+              密碼：88888888
+              <br />
+            </p>
+
+            <p className="pl-3 text-sm text-stone-500">
+              使用者測試
+              <br />
+              帳號：test001@gmail.com
+              <br />
+              密碼：123456
+            </p>
+          </div>
         </div>
       </div>
     </div>

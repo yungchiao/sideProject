@@ -1,10 +1,10 @@
 import emailjs from "@emailjs/browser";
-import { Button } from "@nextui-org/react";
 import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import { CartItem, CheckoutItem } from "../../type";
 
 const Cart: React.FC = observer(() => {
@@ -90,7 +90,7 @@ const Cart: React.FC = observer(() => {
       setCartItems(newCartItems);
 
       appStore.deleteFromCart(appStore.currentUserEmail, itemToDelete.id);
-      window.alert("已刪除商品");
+      toast.success("已刪除商品");
     }
   }
   const subtotal = cartItems.reduce(
@@ -133,7 +133,7 @@ const Cart: React.FC = observer(() => {
         });
       } catch (error) {
         console.error("訂單處理失敗", error);
-        alert("訂單處理失敗");
+        toast.error("訂單處理失敗");
       }
     }
   };
@@ -177,9 +177,11 @@ const Cart: React.FC = observer(() => {
               {checkoutItems.map((item, index) => (
                 <div
                   key={index}
-                  className="mx-auto mb-4 flex w-1/3 min-w-[500px] justify-between rounded-md border bg-white p-2 px-[20px] align-middle leading-none"
+                  className="mx-auto my-6 grid justify-center rounded-md border bg-white p-2 px-[20px] align-middle leading-none sm:w-2/3 md:w-1/4 xl:flex xl:w-1/2 xl:justify-between"
                 >
-                  <p className="whitespace-nowrap py-2 ">{item.name}</p>
+                  <p className="whitespace-nowrap border-b-2 py-2 xl:border-none">
+                    {item.name}
+                  </p>
                   <p className="whitespace-nowrap py-2">
                     數量: {item.quantity}
                   </p>
@@ -193,13 +195,13 @@ const Cart: React.FC = observer(() => {
               ))}
             </div>
           ) : (
-            <div className="mx-10 my-6  justify-center  rounded-md border p-4 text-center md:mx-40">
-              <h1 className="mb-4 items-center whitespace-nowrap text-xl">
-                尚未購買任何票券
-              </h1>
-              <Button>
-                <Link to="/">回首頁逛逛</Link>
-              </Button>
+            <div className="flex justify-center ">
+              <div className="my-6 w-4/5 rounded-md border p-4 text-center lg:w-1/2">
+                <h1 className="mb-4 items-center whitespace-nowrap text-xl">
+                  尚未購買任何票券
+                </h1>
+                <GlobalButton variant="gray" content="回首頁逛逛" to="/" />
+              </div>
             </div>
           )}
         </div>
@@ -211,16 +213,19 @@ const Cart: React.FC = observer(() => {
               {cartItems.map((item, index) => (
                 <div
                   key={index}
-                  className="mx-auto my-6 flex w-1/3 min-w-[650px]  justify-between rounded-md border bg-white p-2 px-[20px]  leading-none"
+                  className="relative mx-auto my-6 grid w-2/3 items-center justify-center  rounded-md border bg-white p-2 px-[20px]  xl:relative xl:flex xl:w-2/3 xl:justify-between"
                 >
-                  <p className="whitespace-nowrap py-2">{item.name}</p>
-                  <p className="whitespace-nowrap py-2">數量:</p>
-                  <div className="flex items-center gap-4">
+                  <p className="whitespace-nowrap border-b-2 py-2 pb-2 xl:border-none xl:pb-0">
+                    {item.name}
+                  </p>
+
+                  <div className="flex items-center gap-4 pt-2 xl:pt-0">
+                    <p className="whitespace-nowrap py-2">數量:</p>
                     <button
                       onClick={() => {
                         changeItemQuantity(index, -1);
                       }}
-                      className="flex h-4 w-4 items-center justify-center rounded-full bg-stone-700 py-2"
+                      className=" flex h-4 w-4 items-center justify-center rounded-full bg-stone-700 py-2"
                     >
                       <p className="text-base text-white">-</p>
                     </button>
@@ -239,23 +244,25 @@ const Cart: React.FC = observer(() => {
                     小計: NT${item.price * item.quantity}元
                   </p>
                   <button onClick={() => deleteItem(index)}>
-                    <div className="h-8 w-8 cursor-pointer bg-[url('/trash.png')] bg-contain" />
+                    <div className=" mx-auto h-12 w-12 cursor-pointer bg-[url('/trash.png')] bg-contain md:right-0 md:top-0" />
                   </button>
                 </div>
               ))}
               <div className="flex justify-center">
                 <div className=" text-center">
                   <p className="mt-4">總金額：NT$ {subtotal} 元</p>
-                  <Button className="mt-8 bg-brown">
-                    <p className="text-white" onClick={handleCheckOut}>
-                      確認付款
-                    </p>
-                  </Button>
+                  <div className="mt-8">
+                    <GlobalButton
+                      variant="brown"
+                      content="確認付款"
+                      onClick={handleCheckOut}
+                    />
+                  </div>
                 </div>
               </div>
               {showConfirmModal && (
                 <>
-                  <div className="fixed left-1/2 top-1/2 z-40 grid h-[300px] w-1/4 -translate-x-1/2 -translate-y-1/2 transform place-content-center gap-6 rounded-lg border border-b-[20px] border-brown bg-white p-4 shadow-lg">
+                  <div className="fixed left-1/2 top-1/2 z-40 grid h-[300px] w-4/5 -translate-x-1/2 -translate-y-1/2 transform place-content-center gap-6 rounded-lg border border-b-[20px] border-brown bg-white p-4 shadow-lg md:w-1/4">
                     <div className=" flex justify-center">
                       <div>
                         <p className="mb-3">已送出訂單資訊至您的E-mail!</p>
@@ -263,12 +270,11 @@ const Cart: React.FC = observer(() => {
                       </div>
                     </div>
                     <div className=" flex justify-center gap-4">
-                      <button
+                      <GlobalButton
+                        variant="green"
+                        content="確定"
                         onClick={handleConfirm}
-                        className="whitespace-nowrap rounded-lg bg-green px-4 py-2 text-white transition duration-200 hover:bg-darkGreen"
-                      >
-                        確定
-                      </button>
+                      />
                     </div>
                   </div>
                   <div className="background-cover"></div>
@@ -276,13 +282,13 @@ const Cart: React.FC = observer(() => {
               )}
             </>
           ) : (
-            <div className="mx-10 my-6 justify-center rounded-md border p-4 text-center md:mx-40">
-              <h1 className="mb-4 items-center whitespace-nowrap text-xl">
-                目前購物車為空
-              </h1>
-              <Button>
-                <Link to="/">回首頁逛逛</Link>
-              </Button>
+            <div className="flex justify-center ">
+              <div className="my-6 w-4/5 rounded-md border p-4 text-center lg:w-1/2">
+                <h1 className="mb-4 items-center whitespace-nowrap text-xl">
+                  目前購物車為空
+                </h1>
+                <GlobalButton variant="gray" content="回首頁逛逛" to="/" />
+              </div>
             </div>
           )}
         </div>

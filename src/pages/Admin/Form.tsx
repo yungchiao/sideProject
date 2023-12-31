@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import { ActivityType } from "../../type";
-
 interface FormProps {
   onActivitySelect: (activity: ActivityType) => void;
   onSearchLocationChange: (location: string) => void;
@@ -43,10 +43,10 @@ const Form: React.FC<FormProps> = ({
   return (
     <div>
       {appStore.admins.map((admin) => (
-        <div className="mt-4 flex items-center justify-between rounded-lg border p-4 px-5">
+        <div className="mt-2 flex items-center justify-between rounded-lg border p-4 px-5  lg:mt-4">
           <div key={admin.id}>
-            <h3 className="mr-2 w-20 text-sm">{admin.name}</h3>
-            <div className="flex  gap-2">
+            <h3 className="mr-2  text-sm">{admin.name}</h3>
+            <div className="mt-4 flex gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -80,7 +80,7 @@ const Form: React.FC<FormProps> = ({
               </svg>
             </div>
           </div>
-          <div className="min-w-40 h-40 w-40 overflow-hidden rounded-md">
+          <div className=" h-40 w-40 overflow-hidden rounded-md sm:h-20 sm:w-20 md:h-32 md:w-32">
             <img src={admin.images} className="h-full w-full object-cover" />
           </div>
         </div>
@@ -93,18 +93,16 @@ const Form: React.FC<FormProps> = ({
               <p>確定要刪除嗎？</p>
             </div>
             <div className=" flex justify-center gap-4">
-              <button
+              <GlobalButton
+                variant="green"
+                content="確定"
                 onClick={handleConfirmDelete}
-                className="whitespace-nowrap rounded-lg bg-green px-4 py-2 text-white transition duration-200 hover:bg-darkGreen"
-              >
-                確定
-              </button>
-              <button
+              />
+              <GlobalButton
+                variant="yellow"
+                content="取消"
                 onClick={handleCancelDelete}
-                className="whitespace-nowrap rounded-lg bg-yellow px-4 py-2 text-white transition duration-200 hover:bg-darkYellow"
-              >
-                取消
-              </button>
+              />
             </div>
           </div>
           <div className="background-cover"></div>

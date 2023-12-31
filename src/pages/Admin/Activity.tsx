@@ -1,4 +1,4 @@
-import { Button, Input, Textarea } from "@nextui-org/react";
+import { Input, Textarea } from "@nextui-org/react";
 import setHours from "date-fns/setHours";
 import setMinutes from "date-fns/setMinutes";
 import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
@@ -7,14 +7,17 @@ import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import Map from "../../components/Map";
 import { ActivityType } from "../../type";
 import Form from "./Form";
 export const storage = getStorage(appStore.app);
 
 const Activity: React.FC = observer(() => {
+  const [isLoading, setIsLoading] = useState(false);
   const [startDate, setStartDate] = useState(
     setHours(setMinutes(new Date(), 30), 24),
   );
@@ -168,7 +171,7 @@ const Activity: React.FC = observer(() => {
   };
   const handleSubmit = async () => {
     if (!isAllFieldsFilled) {
-      alert("尚有未完成內容");
+      toast.error("尚有未完成內容");
       return;
     }
     try {
@@ -198,35 +201,44 @@ const Activity: React.FC = observer(() => {
         place: place,
         direction: direction,
       };
-
       if (selectedActivity) {
         const docRef = doc(appStore.db, "admin", selectedActivity.id);
         await updateDoc(docRef, activityData);
         handleCleanInfo();
-        alert("活動更新成功！");
+        toast.success("活動更新成功！");
         console.log("活動更新成功！");
       } else {
         const articlesCollection = collection(appStore.db, "admin");
         const docRef = doc(articlesCollection);
         await setDoc(docRef, activityData);
         handleCleanInfo();
-        alert("活動新增成功！");
+        toast.success("活動新增成功！");
       }
     } catch (error) {
-      console.error("活動處理失敗", error);
+      toast.error("活動處理失敗");
     }
   };
   const directionItems = ["北", "中", "南", "東"];
   const addAmount = () => {
     setItems((prevItems) => prevItems + 1);
   };
+
   const variant = "underlined";
   return (
     <>
       <div className="flex">
-        <div className=" mx-[50px] flex  w-full justify-center gap-4   pt-28">
-          <div className="mt-2 h-[1140px] w-3/5 overflow-auto rounded-lg border bg-white p-10">
-            <h1 className="mb-5 flex justify-center text-xl font-bold text-brown">
+        <div className="mx-[50px] block w-full justify-center gap-4 pb-6 pt-36 sm:mx-[20px] lg:flex">
+          <div className=" mt-2  h-[200px] w-full overflow-auto rounded-lg border bg-white p-6 md:h-[300px] lg:h-[1140px] lg:w-2/5 lg:px-10 lg:shadow-none">
+            <h1 className="flex justify-center text-xl font-bold text-brown">
+              活動列表
+            </h1>
+            <Form
+              onActivitySelect={handleSelectedActivity}
+              onSearchLocationChange={handleSearchLocationChange}
+            />
+          </div>
+          <div className="mt-2 h-[1140px] w-full overflow-auto rounded-lg border bg-white p-6 lg:w-3/5 lg:px-10">
+            <h1 className="mb-2 flex justify-center text-xl font-bold text-brown lg:mb-5">
               新增活動
             </h1>
             <div className="flex items-center">
@@ -260,7 +272,7 @@ const Activity: React.FC = observer(() => {
                     minTime={setHours(setMinutes(new Date(), 0), 24)}
                     maxTime={setHours(setMinutes(new Date(), 59), 23)}
                     dateFormat="MMMM d, yyyy h:mm aa"
-                    className=" z-30  w-[230px] rounded-md border-2 border-brown bg-white px-2"
+                    className="z-30  w-[230px] rounded-md border-2 border-brown bg-white px-2"
                   />
                   <p className="text-lg">|</p>
                   <DatePicker
@@ -294,12 +306,14 @@ const Activity: React.FC = observer(() => {
                 onChange={(e) => handleHashtagChange(i, e)}
               />
             ))}
-            <Button
-              className="mb-4 border border-stone-800 bg-white"
-              onClick={addAmount}
-            >
-              <p className="text-stone-800">more #hashtag</p>
-            </Button>
+            <div className="mb-4">
+              <GlobalButton
+                variant="white"
+                content="more #hashtag"
+                onClick={addAmount}
+              />
+            </div>
+
             <div className="grid w-full grid-cols-12 gap-4">
               <Input
                 maxLength={10}
@@ -353,7 +367,7 @@ const Activity: React.FC = observer(() => {
                 />
                 <label
                   htmlFor="file-upload"
-                  className="fc-today-button  cursor-pointer rounded-lg bg-brown px-4 py-2 font-bold text-white hover:bg-darkYellow"
+                  className="fc-today-button  cursor-pointer rounded-lg bg-brown px-4 py-2 font-bold text-white transition duration-200 hover:bg-darkYellow"
                 >
                   選擇圖片
                 </label>
@@ -381,28 +395,23 @@ const Activity: React.FC = observer(() => {
                 input: "resize-y min-h-[134px]",
               }}
             />
-            <div className="mx-auto mt-10 flex items-center justify-center">
-              <Button
+            <div className="justify-cente mx-auto mt-10 grid items-center">
+              <GlobalButton
+                variant="green"
+                content="新增"
                 onClick={handleSubmit}
                 disabled={!isAllFieldsFilled}
-                className={`bg-green px-4 py-2 text-white hover:bg-darkGreen ${
-                  !isAllFieldsFilled
-                    ? "disabled:cursor-not-allowed disabled:bg-stone-200"
-                    : ""
-                }`}
-              >
-                <p className="text-white">新增</p>
-              </Button>
+              />
+              {isLoading && (
+                <div className="mt-6 flex justify-center gap-2">
+                  <img
+                    src="./gravity-logo.png"
+                    className="spin-slow relative mx-auto flex h-[40px] w-[40px] object-cover"
+                  />
+                  <p className="flex items-center">上傳中...</p>
+                </div>
+              )}
             </div>
-          </div>
-          <div className=" mt-2 h-[1140px] w-2/5 overflow-auto rounded-lg border bg-white p-10">
-            <h1 className="flex justify-center text-xl font-bold text-brown">
-              活動列表
-            </h1>
-            <Form
-              onActivitySelect={handleSelectedActivity}
-              onSearchLocationChange={handleSearchLocationChange}
-            />
           </div>
         </div>
       </div>

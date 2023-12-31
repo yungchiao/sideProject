@@ -12,8 +12,8 @@ const About: React.FC = observer(() => {
   return (
     <>
       {hasCheckoutData ? (
-        <div className="mx-auto grid justify-center  pt-28">
-          <div className="mx-auto  h-[1100px] w-[1000px] overflow-auto rounded-lg border bg-white p-6">
+        <div className="mx-4 flex justify-center pb-4 pt-28">
+          <div className="mx-auto  h-[1100px] w-full overflow-auto rounded-lg border bg-white p-6">
             {appStore.allUsersCart.map((user, userIndex) => {
               if (!user.checkout || user.checkout.length === 0) {
                 return null;
@@ -24,7 +24,7 @@ const About: React.FC = observer(() => {
                   <div className="mb-4 flex items-center gap-2">
                     <img
                       src={user.avatar}
-                      className="h-16 w-16 rounded-full p-1"
+                      className="rounded-full p-1 sm:h-10 sm:w-10 md:h-16 md:w-16"
                     />
                     <h2> {user.email}</h2>
                   </div>
