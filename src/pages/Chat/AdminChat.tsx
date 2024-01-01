@@ -179,14 +179,14 @@ const AdminChat: React.FC<AdminChatProps> = observer(
                 } xl:relative xl:translate-x-0`}
                 onClick={handleClick}
               >
-                <div className="pb-28 pl-4 pt-28">
+                <div className="absolute left-[20px] top-[-40px] pb-28 pl-4 pt-28">
                   <UserSearch
                     onSelectUser={handleSelectUser}
                     showFollowButton={false}
                     userProfileClassName="search-client"
                   />
                 </div>
-                <div className="h-[720px] w-[400px] overflow-auto rounded-lg border p-4 ">
+                <div className="h-[750px] w-[400px] overflow-auto rounded-lg border p-4 pt-40">
                   {chats.map((chat) => (
                     <button
                       key={chat.id}

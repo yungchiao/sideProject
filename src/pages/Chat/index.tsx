@@ -85,7 +85,7 @@ const Chat = observer(() => {
   return (
     <>
       {appStore.currentUserEmail ? (
-        <div className="mx-8 pt-28 sm:mx-4 md:px-4 lg:mx-20 lg:px-10">
+        <div className="mx-8 pb-20 pt-28 sm:mx-4 md:px-4 lg:mx-20 lg:px-10">
           <div className="flex justify-center sm:my-4 md:my-8">
             <h1 className="font-bold text-brown  sm:text-xl md:text-3xl">
               客服聊聊
