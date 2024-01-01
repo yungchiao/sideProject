@@ -170,6 +170,7 @@ const Activity: React.FC = observer(() => {
     setCurrentImageUrl("");
   };
   const handleSubmit = async () => {
+    setIsLoading(true);
     if (!isAllFieldsFilled) {
       toast.error("尚有未完成內容");
       return;
@@ -213,6 +214,7 @@ const Activity: React.FC = observer(() => {
         await setDoc(docRef, activityData);
         handleCleanInfo();
         toast.success("活動新增成功！");
+        setIsLoading(false);
       }
     } catch (error) {
       toast.error("活動處理失敗");
@@ -406,7 +408,7 @@ const Activity: React.FC = observer(() => {
                 <div className="mt-6 flex justify-center gap-2">
                   <img
                     src="./gravity-logo.png"
-                    className="spin-slow relative mx-auto flex h-[40px] w-[40px] object-cover"
+                    className="spin-slow relative flex h-[40px] w-[40px] object-cover"
                   />
                   <p className="flex items-center">上傳中...</p>
                 </div>

@@ -59,7 +59,7 @@ const Footer: React.FC = observer(() => {
               </div>
             </a>
             <a
-              href="mailto:jolina4526@gmail.com"
+              href="mailto:gravity.placemaker2023@gmail.com"
               target="_blank"
               rel="noopener noreferrer"
             >

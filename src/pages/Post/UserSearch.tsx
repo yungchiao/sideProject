@@ -42,7 +42,10 @@ const UserSearch: React.FC<UserSearchProps> = observer(
       event.stopPropagation();
     };
     return (
-      <div className="absolute  flex flex-col " onClick={handleUserSearchClick}>
+      <div
+        className=" flex flex-col justify-center"
+        onClick={handleUserSearchClick}
+      >
         <div className="relative flex h-10 w-60 justify-between rounded-lg bg-white ">
           <input
             className="input-placeholder relative w-[200px] rounded-lg pl-3 text-small font-normal  outline-none dark:bg-default-500/20"
@@ -76,7 +79,7 @@ const UserSearch: React.FC<UserSearchProps> = observer(
             ? appStore.searchResults.map((user: UserFollow) => (
                 <div
                   key={user.userEmail}
-                  className=" left-[-30px] top-full z-10 mt-2 rounded-lg  p-3"
+                  className="absolute    z-10 mt-2  rounded-lg"
                   onClick={() => handleUserClick(user.userEmail)}
                 >
                   <UserProfile
