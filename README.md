@@ -66,6 +66,7 @@
 <img src="https://i.imgur.com/xLUWOaq.jpg" width="100%" height="auto">
   </p>
 <hr/>
+
 ## Get Started
 
 * Website
