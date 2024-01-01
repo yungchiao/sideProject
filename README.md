@@ -19,8 +19,7 @@
 
 # Gravity
 
->[Gravity](https://gravity-01.web.app/) is a platform enables users to sign up for various placemaking events and share their thoughts on the events, thereby increasing the visibility of local placemaking activities.
-
+> [Gravity](https://gravity-01.web.app/) is a platform enables users to sign up for various placemaking events and share their thoughts on the events, thereby increasing the visibility of local placemaking activities.
 
 ## About Gravity
 
@@ -28,16 +27,17 @@
 - Used `MobX` for state management.
 - Integrated `fullcalendar` to provide comprehensive calendar functionality.
 - Integrated `Google API` to render data onto the map, achieving data visualization and enhancing interactivity.
-- Used `Firebase` for user authentication and data storage. 
+- Used `Firebase` for user authentication and data storage.
 - Featured an **admin dashboard**, allowing teams to use this website to add, modify, and delete events.
 - Used `Email.js` to send verification emails to users who successfully signed up for events.
 - Developed fuzzy search functionality using `Fuse.js`.
 - Used Tailwind and `Next UI` to rapidly develop operational experience a beautifully designed UI.
-- Used `Framer-Motion` to create smooth interaction and user  experience of the application.
+- Used `Framer-Motion` to create smooth interaction and user experience of the application.
 
 ## Tech
 
 ### Language
+
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![MobX Badge](https://img.shields.io/badge/MobX-FF9955.svg?style=for-the-badge&logo=MobX&logoColor=white)
 ![TailwindCSS Badge](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
@@ -48,9 +48,11 @@
 `Framer Motion` `Fuse.js` `Email.js`
 
 ### Library
+
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 
 ### Tools
+
 ![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)
 ![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
 ![vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
@@ -59,33 +61,48 @@
 <hr/>
 
 ## Flow Chart
+
 <p align="center">
 <img src="https://i.imgur.com/CxvNBvF.jpg" width="100%" height="auto">
   </p>
 <hr/>
 
 ## Get Started
-* Website
-  * [Gravity](https://gravity-01.web.app/)
-* Test Account
-  * Client
-    * Email:test001@gmail.com
-    * Password:123456
-  * Admin
-    * Email:imadmin@gmail.com
-    * Password:88888888
-  * Search friend's account to follow friends
-    * grace0728@gmail.com
-    * jolina4526@gmail.com
+
+- Website
+  - [Gravity](https://gravity-01.web.app/)
+- Test Account
+  - Client
+    - Email:test001@gmail.com
+    - Password:123456
+  - Admin
+    - Email:imadmin@gmail.com
+    - Password:88888888
+  - Search friend's account to follow friends
+    - grace0728@gmail.com
+    - jolina4526@gmail.com
 
 ## Demo
+
 [Demo Video](https://youtu.be/69Nz2L4DkMo?si=XR0kxz344fsoxU2i)
 
+### Client
 
+- **Sign up placemaking events**
 
+- **Check out events on the website calendar**
 
+- **Checkout the orders**
 
+- **Share posts**
 
+- **Follow other users to read their posts**
+  <img src="../vite-project/src/assets/follow_friends.gif" width="80%" height="auto">
+- **Paint down your Avatar**
 
+### Admin
 
-
+- **Add placemaking events**
+- **Edit and delete placemaking events**
+- **Chat with clients**
+- **Edit the contents about Gravity to page "about"**

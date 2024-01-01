@@ -79,7 +79,7 @@ const UserSearch: React.FC<UserSearchProps> = observer(
             ? appStore.searchResults.map((user: UserFollow) => (
                 <div
                   key={user.userEmail}
-                  className="absolute  left-[-30px] top-full z-10 mt-2  rounded-lg"
+                  className="absolute    z-10 mt-2  rounded-lg"
                   onClick={() => handleUserClick(user.userEmail)}
                 >
                   <UserProfile
