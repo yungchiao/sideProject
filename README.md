@@ -2,7 +2,7 @@
 <img src="https://i.imgur.com/IWKmtxB.png" width="150" height="150">
   </p>
 <p align="center" dir="auto">
-   <a href="#tech">Tech</a>
+   <a href="#tech-stack">Tech</a>
     ｜
   <a href="#get-started">Get Started</a>
     ｜
@@ -34,7 +34,7 @@
 - Used Tailwind and `Next UI` to rapidly develop operational experience a beautifully designed UI.
 - Used `Framer-Motion` to create smooth interaction and user experience of the application.
 
-## Tech
+## Tech Stack
 
 ### Language
 
