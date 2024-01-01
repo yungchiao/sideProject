@@ -63,10 +63,9 @@
 ## Flow Chart
 
 <p align="center">
-<img src="https://i.imgur.com/CxvNBvF.jpg" width="100%" height="auto">
+<img src="https://i.imgur.com/xLUWOaq.jpg" width="100%" height="auto">
   </p>
 <hr/>
-
 ## Get Started
 
 * Website
@@ -90,48 +89,45 @@
 ### Client
 * **Sign up placemaking events**
 
-<img src="https://i.imgur.com/UozXdT9.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/UozXdT9.gif" width="80%" height="auto">
 
 * **Check out events on the website calendar**
 
-<img src="https://i.imgur.com/0QtDx0n.gif" width="80%" height="auto">
-
-* **Checkout the orders**
-
-<img src="https://i.imgur.com/6nK4Acj.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/0QtDx0n.gif" width="80%" height="auto">
 
 * **Share posts**
 
-<img src="https://i.imgur.com/RTSWYNv.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/RTSWYNv.gif" width="80%" height="auto">
 
 * **Follow other users to read their posts**
   
-<img src="https://i.imgur.com/2E95x8l.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/2E95x8l.gif" width="80%" height="auto">
 
 * **Paint down your Avatar**
 
-<img src="https://i.imgur.com/LltWItC.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/LltWItC.gif" width="80%" height="auto">
 
 <hr/>
 
 ### Admin
 * **Add placemaking events**
 
-<img src="https://i.imgur.com/0QtDx0n.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/0QtDx0n.gif" width="80%" height="auto">
 
-* **Edit and delete placemaking events**
+* **Delete placemaking events**
   
-<img src="https://i.imgur.com/3F5ZEHN.gif" width="80%" height="auto">
-<img src="https://i.imgur.com/OGcstUe.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/3F5ZEHN.gif" width="80%" height="auto">
+
+* **Edi placemaking events**
+  
+  <img src="https://i.imgur.com/OGcstUe.gif" width="80%" height="auto">
 
 * **Chat with clients**
   
-<img src="https://i.imgur.com/RnbO2DU.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/RnbO2DU.gif" width="80%" height="auto">
 
 * **Edit the contents about Gravity to page "about"**
 
-<img src="https://i.imgur.com/guEY9vx.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/guEY9vx.gif" width="80%" height="auto">
 
-
-https://i.imgur.com/6nK4Acj.gif
 
