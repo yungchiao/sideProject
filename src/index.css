@@ -140,7 +140,7 @@ body {
   justify-content: center;
   gap: 1rem;
   --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
+  color: #ffffff;
 }
 .search-client {
   display: inline-block;

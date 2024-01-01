@@ -78,8 +78,8 @@ const Activity: React.FC = observer(() => {
     <div>
       {appStore.newUser ? (
         <div className="pt-10">
-          <div className="relative flex justify-center pb-20 pt-20">
-            <div className="fixed top-20 flex h-[160px] w-full content-center items-center justify-center gap-2 bg-brown  shadow-md transition duration-200 hover:scale-105 hover:bg-darkBrown sm:grid lg:left-[-50px] lg:top-[-50px] lg:grid lg:h-[500px] lg:w-[500px] lg:rounded-full lg:pt-20">
+          <div className="relative flex justify-center pb-20 pt-32">
+            <div className="fixed top-20 flex h-[200px] w-full content-center items-center justify-center gap-2 bg-brown  shadow-md transition duration-200 hover:scale-105 hover:bg-darkBrown sm:grid lg:left-[-50px] lg:top-[-50px] lg:grid lg:h-[500px] lg:w-[500px] lg:rounded-full lg:pt-20">
               <div className="relative">
                 <div className="relative flex justify-center gap-2">
                   <div className="absolute top-[-45px] flex h-[40px] w-60 cursor-pointer items-center justify-center gap-2 rounded-lg bg-yellow transition   duration-200  hover:bg-darkYellow lg:static lg:w-60">
@@ -104,7 +104,7 @@ const Activity: React.FC = observer(() => {
                     </Link>
                   </div>
                 </div>
-                <div className=" absolute bottom-[-10px]  mt-0 flex justify-center lg:static lg:mt-4">
+                <div className="   mt-0 flex justify-center lg:static lg:mt-4">
                   <UserSearch />
                 </div>
               </div>
