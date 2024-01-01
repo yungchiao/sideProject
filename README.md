@@ -119,7 +119,7 @@
   
   <img src="https://i.imgur.com/3F5ZEHN.gif" width="80%" height="auto">
 
-* **Edi placemaking events**
+* **Edit placemaking events**
   
   <img src="https://i.imgur.com/OGcstUe.gif" width="80%" height="auto">
 
