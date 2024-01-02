@@ -13,17 +13,17 @@ const About: React.FC = observer(() => {
         <div className="absolute bottom-[-1px]  h-[30px] w-full overflow-x-hidden bg-[url('/waving.png')] bg-cover bg-no-repeat "></div>
       </div>
       <div className="relative">
-        <div className="mx-auto flex items-center justify-center gap-8">
+        <div className="mx-auto  flex items-center justify-center gap-8">
           <div className="spin-slow absolute top-8 mt-6 flex h-[180px] w-[180px] justify-center lg:static">
             <img
               src="./gravity-logo.png"
-              className="h-full w-full object-cover"
+              className=" h-full w-full object-cover"
             />
           </div>
           <div className="inline">
             {appStore.aboutInfos.map((about, index) => (
               <div className="block gap-4 pt-60 lg:pt-10 " key={index}>
-                <h1 className="mb-8 ml-8 flex w-[2/3] justify-center pt-4 text-3xl font-bold text-brown lg:mx-auto lg:ml-8 lg:justify-start">
+                <h1 className="mb-8 ml-8 mt-8 flex w-[2/3] justify-center pt-4 text-3xl font-bold text-brown lg:mx-auto lg:ml-8 lg:justify-start">
                   地新引力的故事
                 </h1>
                 <div className="flex lg:w-full">
