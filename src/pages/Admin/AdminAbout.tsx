@@ -274,7 +274,7 @@ const AdminAbout: React.FC = observer(() => {
                 </div>
               ))}
             </div>
-            <div className=" mx-auto mt-6 grid items-center justify-center text-center">
+            <div className=" mx-auto mb-10 mt-6 grid items-center justify-center text-center">
               <div>
                 <GlobalButton
                   variant="green"
