@@ -27,13 +27,13 @@ const Admin: React.FC<AdminProps> = observer(
           <>
             <div className="flex justify-between overflow-hidden ">
               <div
-                className={`navigation-menu absolute top-0 z-50 h-full w-[200px] bg-stone-300 transition-transform  duration-300 lg:w-1/5 xl:z-10 xl:w-2/12 ${
+                className={`navigation-menu fixed top-0  z-50 h-full w-[200px] bg-stone-300 transition-transform  duration-300 lg:w-1/5 xl:z-10 xl:w-2/12 ${
                   isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                 } xl:relative xl:translate-x-0`}
                 onClick={!isLargeScreen ? toggleSidebarAndOverlay : undefined}
               >
                 <div>
-                  <div className="grid h-[1380px] w-full content-between justify-center bg-stone-300 px-5 pt-10 xl:pt-28">
+                  <div className="h- grid h-[100vh] w-full content-between justify-center bg-stone-300 px-5 pt-10 xl:pt-28">
                     <div>
                       <button
                         className={`mt-2 h-10 w-full  border-b-2 border-neutral-100 ${
