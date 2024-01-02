@@ -96,11 +96,12 @@
 
 * **Check out events on the website calendar**
 
-  <img src="https://i.imgur.com/0QtDx0n.gif" width="80%" height="auto">
+  <img src="https://i.imgur.com/A6fZexU.gif" width="80%" height="auto">
 
 * **Search events (fuzzy search)**
 
   <img src="https://i.imgur.com/btovkU6.gif" width="80%" height="auto">
+
 
 * **Share posts**
 
