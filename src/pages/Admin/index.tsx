@@ -3,10 +3,10 @@ import { observer } from "mobx-react-lite";
 import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import Activity from "./Activity";
 import AdminAbout from "./AdminAbout";
 import Checkout from "./Checkout";
-import { GlobalButton } from "../../components/Button";
 export const storage = getStorage(appStore.app);
 interface AdminProps {
   isSidebarOpen: boolean;
@@ -33,7 +33,7 @@ const Admin: React.FC<AdminProps> = observer(
                 onClick={!isLargeScreen ? toggleSidebarAndOverlay : undefined}
               >
                 <div>
-                  <div className="h- grid h-[100vh] w-full content-between justify-center bg-stone-300 px-5 pt-10 xl:pt-28">
+                  <div className=" grid h-[100vh] w-full content-between  justify-center bg-stone-300 px-5 pt-10 xl:h-[1380px] xl:pt-28">
                     <div>
                       <button
                         className={`mt-2 h-10 w-full  border-b-2 border-neutral-100 ${
