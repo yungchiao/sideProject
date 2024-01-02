@@ -174,7 +174,7 @@ const AdminChat: React.FC<AdminChatProps> = observer(
           <>
             <div className="mx-4 flex justify-between gap-4 p-4 pb-10 pt-28 lg:mx-20">
               <div
-                className={`absolute left-0 top-0  z-50 h-[1100px] rounded-none bg-stone-200 p-4 transition-transform duration-300 xl:static xl:z-0  xl:h-[1000px] xl:rounded-xl ${
+                className={`fixed left-0 top-0  z-50 h-[1100px] rounded-none bg-stone-200 p-4 transition-transform duration-300 xl:static xl:z-0  xl:h-[1000px] xl:rounded-xl ${
                   isSidebarOpen ? "translate-x-0" : "-translate-x-[500px]"
                 } xl:relative xl:translate-x-0`}
                 onClick={handleClick}
