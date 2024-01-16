@@ -3,43 +3,46 @@ import { getAuth } from "firebase/auth";
 import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import { observer } from "mobx-react-lite";
-import p5 from "p5";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { v4 } from "uuid";
 import { GlobalButton } from "../../components/Button";
+
 const Paint: React.FC = observer(() => {
   const sketchRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [color, setColor] = useState<string>("black");
   const [isEraser, setIsEraser] = useState<boolean>(false);
-  const [p5Instance, setP5Instance] = useState<p5 | null>(null);
+  const [p5Instance, setP5Instance] = useState<any | null>(null);
   const [history, setHistory] = useState<number[][]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const sketch = (p: p5) => {
-      p.setup = () => {
-        const canvas = p.createCanvas(500, 500);
-        canvasRef.current = canvas.elt;
-        p.background(255);
-        const borderWidth = 1;
-        p.stroke(0);
-        p.strokeWeight(borderWidth);
+    import("p5").then((p5Module) => {
+      const sketch = (p: any) => {
+        p.setup = () => {
+          const canvas = p.createCanvas(500, 500);
+          canvasRef.current = canvas.elt;
+          p.background(255);
+          const borderWidth = 1;
+          p.stroke(0);
+          p.strokeWeight(borderWidth);
+        };
+
+        p.mouseDragged = () => {
+          drawLine(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
+        };
+
+        p.mousePressed = () => {
+          drawLine(p.mouseX, p.mouseY, p.mouseX, p.mouseY);
+        };
       };
 
-      p.mouseDragged = () => {
-        drawLine(p.pmouseX, p.pmouseY, p.mouseX, p.mouseY);
-      };
-
-      p.mousePressed = () => {
-        drawLine(p.mouseX, p.mouseY, p.mouseX, p.mouseY);
-      };
-    };
-
-    if (sketchRef.current && !p5Instance) {
-      setP5Instance(new p5(sketch, sketchRef.current));
-    }
+      if (sketchRef.current && !p5Instance) {
+        const instance = new p5Module.default(sketch, sketchRef.current);
+        setP5Instance(instance);
+      }
+    });
   }, []);
 
   const saveCanvasState = () => {
@@ -148,7 +151,7 @@ const Paint: React.FC = observer(() => {
 
   const selectImageAsBackground = (imageSrc: any) => {
     if (p5Instance) {
-      p5Instance.loadImage(imageSrc, (img) => {
+      p5Instance.loadImage(imageSrc, (img: any) => {
         p5Instance.clear(0, 0, 0, 0);
         p5Instance.background(img);
       });
