@@ -117,7 +117,7 @@
 
 <hr/>
 
-### Admin
+### Admin (Click on the profile icon in the top right corner to enter the admin dashboard)
 * **Add placemaking events**
 
   <img src="https://i.imgur.com/0QtDx0n.gif" width="80%" height="auto">

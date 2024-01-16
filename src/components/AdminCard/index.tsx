@@ -8,9 +8,16 @@ interface ActivityCardProps {
   getGoogleMapsLink: (latitude: string, longitude: string) => string;
   handleAdminClick: (admin: any) => void;
   admin: Admin;
+  isLoading?: boolean;
 }
 const ActivityCard: React.FC<ActivityCardProps> = observer(
-  ({ admin, handleAdminClick, handleIconClick, getGoogleMapsLink }) => {
+  ({
+    admin,
+    handleAdminClick,
+    handleIconClick,
+    getGoogleMapsLink,
+    isLoading,
+  }) => {
     return (
       <div className="relative">
         <Card
@@ -20,10 +27,16 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
           <CardBody className="flex overflow-visible p-0">
             <div className="absolute left-1/2 top-[-95px] -translate-x-1/2 transform md:top-[-155px] lg:top-[-185px]">
               <div className="mx-auto flex h-[400px] w-[400px] justify-center overflow-hidden rounded-full md:h-[450px] md:w-[450px]">
-                <img
-                  src={admin.images}
-                  className="h-full w-full object-cover"
-                />
+                {!isLoading && (
+                  <img
+                    src={
+                      "//wsrv.nl/?url=" +
+                      encodeURIComponent(admin.images) +
+                      "&w=500&output=webp&maxage=1y&q=80"
+                    }
+                    className="h-full w-full object-cover"
+                  />
+                )}
               </div>
             </div>
             <div className="mt-[330px] flex justify-center lg:mt-[280px]">
@@ -85,15 +98,15 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
                 元
               </p>
             </div>{" "}
-            <div className=" mx-auto mb-4 mt-2 flex w-full gap-2 overflow-x-auto">
+            <div className="mx-auto mb-4 mt-2 flex w-full gap-2 overflow-x-auto">
               {admin.hashtags &&
                 Array.isArray(admin.hashtags) &&
                 admin.hashtags.map((hashtag: string, index: number) => (
-                  <div className="hashtag flex h-8 w-auto items-center  rounded-full p-2">
-                    <p
-                      key={index}
-                      className="whitespace-nowrap  text-sm text-stone-800"
-                    >
+                  <div
+                    key={index}
+                    className="hashtag flex h-8 w-auto items-center  rounded-full p-2"
+                  >
+                    <p className="whitespace-nowrap  text-sm text-stone-800">
                       #{hashtag}
                     </p>
                   </div>
