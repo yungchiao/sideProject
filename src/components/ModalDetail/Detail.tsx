@@ -1,6 +1,6 @@
 import React from "react";
-import { GlobalButton } from "../../components/Button";
 import { Admin } from "../../type";
+import { GlobalButton } from "../Button";
 interface DetailProps {
   selectedAdmin: Admin;
   quantity: number;

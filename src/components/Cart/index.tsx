@@ -64,7 +64,10 @@ const Cart: React.FC = observer(() => {
     return () => unsubscribe();
   }, [appStore.currentUserEmail]);
 
-  const changeItemQuantity = async (itemIndex: any, quantityChange: any) => {
+  const changeItemQuantity = async (
+    itemIndex: number,
+    quantityChange: number,
+  ) => {
     const item = cartItems[itemIndex];
     const newQuantity = item.quantity + quantityChange;
 

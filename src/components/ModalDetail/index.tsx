@@ -1,7 +1,7 @@
 import { Modal, ModalBody, ModalContent } from "@nextui-org/react";
 import { observer } from "mobx-react-lite";
 import { Admin } from "../../type";
-import Detail from "../Home/Detail";
+import Detail from "./Detail";
 
 interface ActivityModalProps {
   isOpen: boolean;

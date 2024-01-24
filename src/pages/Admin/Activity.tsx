@@ -208,6 +208,7 @@ const Activity: React.FC = observer(() => {
         handleCleanInfo();
         toast.success("活動更新成功！");
         console.log("活動更新成功！");
+        setIsLoading(false);
       } else {
         const articlesCollection = collection(appStore.db, "admin");
         const docRef = doc(articlesCollection);
