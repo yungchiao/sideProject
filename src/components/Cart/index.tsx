@@ -103,7 +103,7 @@ const Cart: React.FC = observer(() => {
   const SERVED_ID = "service_um0snro";
   const TEMPLETE_ID = "template_7jpstzp";
   const PUBLIC_KEY = "KGd5mgGXtzBQFKCyN";
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  let form: { name: ""; email: ""; message: "" };
   const formatCartItemsForEmail = () => {
     return cartItems
       .map((item) => `${item.name} x ${item.quantity} - NT$${item.price}元`)

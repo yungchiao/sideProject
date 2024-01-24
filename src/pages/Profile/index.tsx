@@ -21,7 +21,6 @@ const Profile: React.FC = observer(() => {
       navigate("/");
     }
   }, [appStore.currentUserEmail, navigate]);
-  const [selected, setSelected] = useState("login");
   const [activeTab, setActiveTab] = useState("login");
   const auth = getAuth();
   const [email, setEmail] = useState<string>("");
@@ -139,7 +138,7 @@ const Profile: React.FC = observer(() => {
                   />
                   <p className="text-center text-small">
                     尚未創建帳號?
-                    <Link size="sm" onPress={() => setSelected("sign-up")}>
+                    <Link size="sm" onPress={() => setActiveTab("sign-up")}>
                       <p className="cursor-pointer text-green">註冊</p>
                     </Link>
                   </p>
@@ -204,7 +203,7 @@ const Profile: React.FC = observer(() => {
                   </div>
                   <p className="text-center text-small">
                     已經有帳號了嗎?{" "}
-                    <Link size="sm" onPress={() => setSelected("login")}>
+                    <Link size="sm" onPress={() => setActiveTab("login")}>
                       <p className="cursor-pointer text-green">登入</p>
                     </Link>
                   </p>

@@ -14,7 +14,6 @@ const Paint: React.FC = observer(() => {
   const [color, setColor] = useState<string>("black");
   const [isEraser, setIsEraser] = useState<boolean>(false);
   const [p5Instance, setP5Instance] = useState<any | null>(null);
-  const [history, setHistory] = useState<number[][]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -44,30 +43,28 @@ const Paint: React.FC = observer(() => {
       }
     });
   }, []);
+  let drawingHistory: any = [];
 
   const saveCanvasState = () => {
     if (p5Instance) {
       p5Instance.loadPixels();
       const currentState = p5Instance.pixels.slice();
-      setHistory((prevHistory) => [...prevHistory, currentState]);
+      drawingHistory = [...drawingHistory, currentState];
     }
   };
 
   const undoLastAction = () => {
-    setHistory((prevHistory) => {
-      if (prevHistory.length > 0) {
-        const lastState = prevHistory[prevHistory.length - 1];
-        if (p5Instance) {
-          p5Instance.loadPixels();
-          for (let i = 0; i < lastState.length; i++) {
-            p5Instance.pixels[i] = lastState[i];
-          }
-          p5Instance.updatePixels();
-          return prevHistory.slice(0, -1);
+    if (drawingHistory.length > 0) {
+      const lastState = drawingHistory[drawingHistory.length - 1];
+      if (p5Instance) {
+        p5Instance.loadPixels();
+        for (let i = 0; i < lastState.length; i++) {
+          p5Instance.pixels[i] = lastState[i];
         }
+        p5Instance.updatePixels();
+        drawingHistory = drawingHistory.slice(0, -1);
       }
-      return prevHistory;
-    });
+    }
   };
 
   const drawLine = (x0: number, y0: number, x1: number, y1: number) => {

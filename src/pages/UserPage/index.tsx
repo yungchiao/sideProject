@@ -46,7 +46,6 @@ const UserPage: React.FC = observer(() => {
   const [isDetailFollowing, setDetailFollowing] = useState(false);
   const [isChangeAvatar, setChangeAvatar] = useState(false);
   const [isChangeName, setChangeName] = useState(false);
-  const [imageUpload, setImageUpload] = useState<File | null>(null);
   const [avatarUrl, setAvatarUrl] = useState("/bear.jpg");
   const [userName, setUserName] = useState<string>("");
   const [isAvatarLoading, setAvatarIsLoading] = useState(false);
@@ -112,9 +111,9 @@ const UserPage: React.FC = observer(() => {
   const handleChangeAvatar = async (e: any) => {
     setAvatarIsLoading(true);
     if (e.target.files && e.target.files[0]) {
-      setImageUpload(e.target.files[0]);
+      const file = e.target.files[0];
       try {
-        const imageUrl = await uploadImage(e.target.files[0]);
+        const imageUrl = await uploadImage(file);
         const userEmail = auth.currentUser?.email;
         if (!userEmail) {
           throw new Error("找不到該用戶！");
@@ -129,7 +128,7 @@ const UserPage: React.FC = observer(() => {
         toast.error("更改頭貼失敗");
       }
     } else {
-      setImageUpload(null);
+      toast.error("請選擇圖片");
     }
     toggleChangeAvatar();
     setAvatarIsLoading(false);

@@ -91,11 +91,11 @@ const Activity: React.FC = observer(() => {
   };
 
   const uploadImage = async (imagesFile: File): Promise<string> => {
-    if (!imageUpload) {
+    if (!imagesFile) {
       throw new Error("No image file provided");
     }
-    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-    await uploadBytes(imageRef, imageUpload);
+    const imageRef = ref(storage, `images/${imagesFile.name + v4()}`);
+    await uploadBytes(imageRef, imagesFile);
     return getDownloadURL(imageRef);
   };
 
@@ -176,12 +176,9 @@ const Activity: React.FC = observer(() => {
       return;
     }
     try {
-      let imageUrl = "";
-
       if (imageUpload) {
         const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
         await uploadBytes(imageRef, imageUpload);
-        imageUrl = await getDownloadURL(imageRef);
       }
       let imageUrlToSave = currentImageUrl;
 
