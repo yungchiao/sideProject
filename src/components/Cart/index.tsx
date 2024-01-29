@@ -103,7 +103,6 @@ const Cart: React.FC = observer(() => {
   const SERVED_ID = "service_um0snro";
   const TEMPLETE_ID = "template_7jpstzp";
   const PUBLIC_KEY = "KGd5mgGXtzBQFKCyN";
-  let form: { name: ""; email: ""; message: "" };
   const formatCartItemsForEmail = () => {
     return cartItems
       .map((item) => `${item.name} x ${item.quantity} - NT$${item.price}元`)
@@ -122,7 +121,7 @@ const Cart: React.FC = observer(() => {
           {
             from_name: "Gravity Team 地新引力",
             to_name: appStore.newUser.name,
-            from_email: form.email,
+            from_email: "gravity.placemaker2023@gmail.com",
             to_email: appStore.newUser.email,
             message: `歡迎加入地新引力的世界，一起幫助逐漸消逝的傳統文化與精神再度復活，讓我們一起征服宇宙吧！\n\n您的訂單如下:\n${formattedCartItems}\n\n總金額：NT$ ${subtotal} 元`,
             test: "Gravity Team 地新引力",
