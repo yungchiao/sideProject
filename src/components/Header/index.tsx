@@ -19,7 +19,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = observer(
   ({ toggleSidebarAndOverlay, isOverlayVisible, isLargeScreen }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const toggleModal = () => setIsModalOpen(!isModalOpen);
+    const toggleModal = (open: boolean) => setIsModalOpen(open);
     const auth = getAuth();
     const location = useLocation();
     useEffect(() => {
@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = observer(
     }, []);
     const [headerSelectedAdmin, setHeaderSelectedAdmin] =
       useState<Admin | null>(null);
-    const [quantity, setQuantity] = useState(0);
+    const [quantity, setQuantity] = useState(1);
     const [query, setQuery] = useState("");
     const [avatarUrl, setAvatarUrl] = useState("/bear.jpg");
     const [searchActive, setSearchActive] = useState(false);
@@ -89,9 +89,15 @@ const Header: React.FC<HeaderProps> = observer(
         toast.error("請選擇數量");
       }
     };
+    useEffect(() => {
+      if (isModalOpen) {
+        setQuantity(1);
+      }
+    }, [isModalOpen, headerSelectedAdmin?.id]);
     const handleAdminClick = (admin: Admin) => {
       setHeaderSelectedAdmin(admin);
-      toggleModal();
+      setQuantity(1);
+      setIsModalOpen(true);
     };
     const scrollToTop = () => {
       window.scrollTo({
@@ -261,7 +267,10 @@ const Header: React.FC<HeaderProps> = observer(
           </Link>
         </NavbarContent>
         {isModalOpen && headerSelectedAdmin && (
-          <div className="background-cover" onClick={toggleModal}></div>
+          <div
+            className="background-cover"
+            onClick={() => setIsModalOpen(false)}
+          ></div>
         )}
         {isModalOpen && headerSelectedAdmin && (
           <ActivityModal

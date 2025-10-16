@@ -6,6 +6,7 @@ interface DetailProps {
   quantity: number;
   setQuantity: (quantity: number) => void;
   handleSignUp: () => void;
+  onClose: () => void;
 }
 const getGoogleMapsLink = (latitude: any, longitude: any) => {
   return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
@@ -15,10 +16,12 @@ const Detail: React.FC<DetailProps> = ({
   quantity,
   setQuantity,
   handleSignUp,
+  onClose,
 }) => {
   const modifiedHandleSignUp = () => {
     handleSignUp();
-    setQuantity(0);
+    setQuantity(1);
+    onClose();
   };
   return (
     <div className="relative z-40 mt-4 flex  gap-8 rounded-md   bg-white lg:flex-col">
@@ -118,7 +121,7 @@ const Detail: React.FC<DetailProps> = ({
               <div className="flex w-full items-center justify-center">
                 <div className=" flex h-10 w-full items-center justify-around rounded-md border">
                   <button
-                    onClick={() => setQuantity(Math.max(quantity - 1, 0))}
+                    onClick={() => setQuantity(Math.max(quantity - 1, 1))}
                   >
                     -
                   </button>

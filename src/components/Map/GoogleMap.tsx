@@ -67,7 +67,7 @@ const GoogleMap: React.FC = observer(() => {
         return;
       }
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAWdoz8i2b7xhNwdKtdZ11b67z223yQg_0&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyD-nDFKTyjJqe6-g6sDtf7npNZ6FzqRiaE&libraries=places&region=TW&language=zh-TW`;
       script.async = true;
       script.defer = true;
       window.initMap = initMap;
