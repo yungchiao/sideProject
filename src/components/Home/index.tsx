@@ -1,6 +1,7 @@
 import "firebase/firestore";
 import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
 import ActivityModal from "../../components/ModalDetail";
 import Calendar from "../../pages/Calendar";
@@ -8,7 +9,6 @@ import { Admin, CartItem, LikeItem } from "../../type";
 import ActivityCard from "../AdminCard";
 import Carousal from "./Carousel";
 import HeroHeader from "./HeroHeader";
-import { toast } from "react-toastify";
 
 const Home: React.FC = observer(() => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -131,6 +131,7 @@ const Home: React.FC = observer(() => {
         )}
         {isModalOpen && selectedAdmin && (
           <ActivityModal
+            key={selectedAdmin.id}
             isOpen={isModalOpen}
             toggleModal={toggleModal}
             selectedAdmin={selectedAdmin}

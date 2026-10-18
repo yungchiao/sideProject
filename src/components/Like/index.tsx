@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { appStore } from "../../AppStore";
+import { GlobalButton } from "../../components/Button";
 import ActivityModal from "../../components/ModalDetail";
 import { Admin, CartItem, LikeItem } from "../../type";
-import { GlobalButton } from "../../components/Button";
 
 const Like: React.FC = observer(() => {
   const [likeItems, setLikeItems] = useState<LikeItem[]>([]);
@@ -21,7 +21,7 @@ const Like: React.FC = observer(() => {
     };
 
     fetchLikeData();
-  }, [appStore.currentUserEmail]);
+  }, []);
 
   function deleteItem(itemIndex: any) {
     const itemToDelete = likeItems[itemIndex];
@@ -66,14 +66,14 @@ const Like: React.FC = observer(() => {
     }
   };
   return (
-    <div className="">
+    <div>
       <div className="rounded-lg text-center ">
         {likeItems.length > 0 ? (
           <>
             {likeItems.map((item, index) => (
               <div
                 key={index}
-                className="mb-4 block items-center justify-between rounded-md border bg-white p-4  lg:flex"
+                className="mx-0 mb-4 block items-center justify-between rounded-md border bg-white p-4  md:mx-32 lg:flex"
               >
                 <p
                   className="mb-4 cursor-pointer whitespace-nowrap text-lg font-bold text-brown transition duration-200 hover:scale-105 hover:text-darkBrown lg:mb-0"

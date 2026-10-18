@@ -21,8 +21,10 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
     return (
       <div className="relative">
         <Card
+          isPressable
+          onClick={() => handleAdminClick(admin)}
           key={admin.id}
-          className="relative mx-auto w-full rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
+          className="relative mx-auto w-full cursor-pointer rounded-lg border bg-white p-4 transition duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
         >
           <CardBody className="flex overflow-visible p-0">
             <div className="absolute left-1/2 top-[-95px] -translate-x-1/2 transform md:top-[-155px] lg:top-[-185px]">
@@ -40,10 +42,7 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
               </div>
             </div>
             <div className="mt-[330px] flex justify-center lg:mt-[280px]">
-              <h3
-                onClick={() => handleAdminClick(admin)}
-                className="inline-block cursor-pointer text-lg font-bold text-brown"
-              >
+              <h3 className="inline-block text-lg font-bold text-brown">
                 {admin.name}
               </h3>
             </div>
@@ -81,6 +80,7 @@ const ActivityCard: React.FC<ActivityCardProps> = observer(
                     href={getGoogleMapsLink(admin.latitude, admin.longitude)}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     {admin.place}
                   </a>

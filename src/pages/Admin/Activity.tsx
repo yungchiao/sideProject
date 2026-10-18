@@ -91,11 +91,11 @@ const Activity: React.FC = observer(() => {
   };
 
   const uploadImage = async (imagesFile: File): Promise<string> => {
-    if (!imageUpload) {
+    if (!imagesFile) {
       throw new Error("No image file provided");
     }
-    const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
-    await uploadBytes(imageRef, imageUpload);
+    const imageRef = ref(storage, `images/${imagesFile.name + v4()}`);
+    await uploadBytes(imageRef, imagesFile);
     return getDownloadURL(imageRef);
   };
 
@@ -176,12 +176,9 @@ const Activity: React.FC = observer(() => {
       return;
     }
     try {
-      let imageUrl = "";
-
       if (imageUpload) {
         const imageRef = ref(storage, `images/${imageUpload.name + v4()}`);
         await uploadBytes(imageRef, imageUpload);
-        imageUrl = await getDownloadURL(imageRef);
       }
       let imageUrlToSave = currentImageUrl;
 
@@ -208,6 +205,7 @@ const Activity: React.FC = observer(() => {
         handleCleanInfo();
         toast.success("活動更新成功！");
         console.log("活動更新成功！");
+        setIsLoading(false);
       } else {
         const articlesCollection = collection(appStore.db, "admin");
         const docRef = doc(articlesCollection);

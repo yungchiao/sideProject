@@ -23,12 +23,13 @@ const LocationInput: React.FC<LocationInputProps> = ({
 
   const handleSearch = async () => {
     try {
+      const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json`,
         {
           params: {
             address: address,
-            key: "AIzaSyD-nDFKTyjJqe6-g6sDtf7npNZ6FzqRiaE",
+            key: apiKey,
           },
         },
       );
